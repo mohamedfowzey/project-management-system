@@ -19,6 +19,7 @@ export default function Login() {
           {!! errors && <span className='text-xs'>{errors?.email?.message}</span>}
     <CustomInput name="password" register = {register('password',Validations.password)} HTMLtype="password" />
           {!! errors && <span className='text-xs'>{errors?.password?.message}</span>}
+          <button type='submit'>submit</button>
 </form>
     </>
   )
