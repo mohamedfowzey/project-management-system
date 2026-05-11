@@ -15,9 +15,9 @@ export default function Login() {
   return (
     <>
     <form onSubmit={handleSubmit(onsubmit)}>
-    <CustomInput register = {register('email',Validations?.email)} errors={errors} />
+    <CustomInput name="email" register = {register('email',Validations?.email)} HTMLtype="email" />
           {!! errors && <span className='text-xs'>{errors?.email?.message}</span>}
-    <CustomInput register = {register('password',Validations.password)} errors={errors} />
+    <CustomInput name="password" register = {register('password',Validations.password)} HTMLtype="password" />
           {!! errors && <span className='text-xs'>{errors?.password?.message}</span>}
 </form>
     </>
