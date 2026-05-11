@@ -7,8 +7,11 @@
 :root {
   --main-color: rgba(239, 155, 40, 1);
   --bg-main-color: rgba(49, 89, 81, 0.9);
+  --bg-main-light-color: rgba(49, 89, 81, 0.361);
   --bg-sub-color: #f3f4f6;
   --main-font: "Inter", sans-serif;
+  --auth-text-color:white;
+  font-family: var(--main-font)
 }
 .dark {
 }
@@ -18,9 +21,22 @@
 .bg-main-color {
   background-color: var(--bg-main-color);
 }
+.bg-main-light-color {
+  background-color: var(--bg-main-light-color);
+}
 .bg-sub-color {
   background-color: var(--bg-sub-color);
 }
 .main-font {
   font-family: var(--main-font);
+}
+.custom-input{
+      border-bottom-color: var(--auth-text-color);
+      border-bottom-width: 1px;
+}
+.custom-input:autofill{
+  background-color: red !important;
+}
+.text-auth{
+  color: var(--auth-text-color);
 }

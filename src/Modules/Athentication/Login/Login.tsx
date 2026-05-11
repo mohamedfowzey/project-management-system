@@ -1,13 +1,25 @@
+import { Validations } from "../../../Constants/Validations";
+import CustomInput from "../../Shared/CustomInput/CustomInput"
+import {useForm} from 'react-hook-form'
+export interface loginData{
+  email:string,
+  password:string
+}
 
 export default function Login() {
+  const {register,handleSubmit,formState:{errors}} = useForm<loginData>();
+  const onsubmit = (data:loginData)=>{
+    console.log(data);
+    
+  }
   return (
     <>
-    <div>Login</div>
-    <div>Login</div>
-    <div>Login</div>
-    <div>Login</div>
-    <div>Login</div>
-    <div>Login</div>
+    <form onSubmit={handleSubmit(onsubmit)}>
+    <CustomInput register = {register('email',Validations?.email)} errors={errors} />
+          {!! errors && <span className='text-xs'>{errors?.email?.message}</span>}
+    <CustomInput register = {register('password',Validations.password)} errors={errors} />
+          {!! errors && <span className='text-xs'>{errors?.password?.message}</span>}
+</form>
     </>
   )
 }

@@ -10,6 +10,12 @@ import ResetPassword from "./Modules/Athentication/ResetPassword/ResetPassword";
 import VerifyEmail from "./Modules/Athentication/VerifyEmail/VerifyEmail";
 import Home from "./Modules/Dashboard/Home/Home";
 import ForgetPassword from "./Modules/Athentication/ForgetPassword/ForgetPassword";
+import Projects from "./Modules/Dashboard/Projects/Projects";
+import ProjectDataForm from "./Modules/Dashboard/ProjectDataForm/ProjectDataForm";
+import Tasks from "./Modules/Dashboard/Tasks/Tasks";
+import TaskDataForm from "./Modules/Dashboard/TaskDataForm/TaskDataForm";
+import Users from "./Modules/Dashboard/Users/Users";
+import UserTasks from "./Modules/Dashboard/UserTasks/UserTasks";
 
 function App() {
   const routes = createBrowserRouter([
@@ -33,11 +39,14 @@ function App() {
       errorElement: <NotFound />,
       children: [
         { index: true, element: <Home /> },
-        // { path: "login", element: <Login /> },
-        // { path: "register", element: <Register /> },
-        // { path: "change-password", element: <ChangePassword /> },
-        // { path: "reset-password", element: <ResetPassword /> },
-        // { path: "verify-email", element: <VerifyEmail /> },
+        { path: "projects", element: <Projects /> },
+        { path: "add-project", element: <ProjectDataForm /> },
+        { path: "edit-project/:id", element: <ProjectDataForm /> },
+        { path: "tasks", element: <Tasks /> },
+        { path: "add-task", element: <TaskDataForm /> },
+        { path: "edit-task/:id", element: <TaskDataForm /> },
+        { path: "users", element: <Users /> },
+        { path: "user-tasks", element: <UserTasks /> },
       ],
     },
   ]);
