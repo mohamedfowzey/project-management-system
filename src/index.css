@@ -37,6 +37,9 @@
 .custom-input:autofill{
   background-color: red !important;
 }
+.custom-input-label{
+  color: var(--main-color);
+}
 .text-auth{
   color: var(--auth-text-color);
 }
