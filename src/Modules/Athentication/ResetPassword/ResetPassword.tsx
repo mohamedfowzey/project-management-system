@@ -27,6 +27,7 @@ export default function ResetPassword() {
       toast.success(response?.data?.message);
       navigate('/login')
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.response?.data?.message)
     }finally {
@@ -45,7 +46,7 @@ export default function ResetPassword() {
         <div className="relative z-0 w-full mb-5 group">
           <input type="email"
             className="block custom-input py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-            placeholder='' {...register('email', { required: " email is requerd" })} />
+            placeholder='' {...register('email', { required: " email is required" })} />
           <label htmlFor="floating_email" className="absolute text-sm text-main-color duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">E-mail</label>
           <div>
             {!!errors && <span className='text-xs text-red-600 '>{errors?.email?.message}</span>}
@@ -55,7 +56,7 @@ export default function ResetPassword() {
         <div className="relative z-0 w-full mb-5 group">
           <input type="password"
             className="block custom-input py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-            placeholder='' {...register('password', { required: " password is requerd" })} />
+            placeholder='' {...register('password', { required: " password is required" })} />
           <label htmlFor="floating_password" className="absolute text-sm text-main-color duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Password</label>
           <div>
             {!!errors && <span className='text-xs text-red-600 '>{errors?.password?.message}</span>}
@@ -65,7 +66,7 @@ export default function ResetPassword() {
         <div className="relative z-0 w-full mb-5 group">
           <input type="password"
             className="block custom-input py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-            placeholder='' {...register('confirmPassword', { required: " confirm Password is requerd" })} />
+            placeholder='' {...register('confirmPassword', { required: " confirm Password is required" })} />
           <label htmlFor="floating_confirmPassword" className="absolute text-sm text-main-color duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Confirm Password</label>
           <div>
             {!!errors && <span className='text-xs text-red-600 '>{errors?.confirmPassword?.message}</span>}
@@ -75,7 +76,7 @@ export default function ResetPassword() {
         <div className="relative z-0 w-full mb-5 group">
           <input type="text"
             className="block custom-input py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-            placeholder='' {...register('seed', { required: " OTP is requerd" })} />
+            placeholder='' {...register('seed', { required: " OTP is required" })} />
           <label htmlFor="floating_OTP" className="absolute text-sm text-main-color duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">OTP</label>
 
           <div>
