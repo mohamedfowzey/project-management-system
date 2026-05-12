@@ -1,5 +1,26 @@
 .auth-bg-image {
-  background-image: url("./assets/Images/Rectangle\ .png");
+  background-image: url("./assets/Images/authBg1.jpeg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100%;
+}
+.auth-bg-image2 {
+  background-image: url("./assets/Images/authBg2.jpeg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100%;
+}
+.auth-bg-image3 {
+  background-image: url("./assets/Images/authBg3.jpeg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100%;
+}
+.auth-bg-image4 {
+  background-image: url("./assets/Images/authBg4.jpeg");
   background-size: cover;
   background-position: center;
   height: 100vh;
