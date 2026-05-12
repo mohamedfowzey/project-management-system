@@ -40,6 +40,7 @@ function App() {
       errorElement: <NotFound />,
       children: [
         { index: true, element: <Home /> },
+        { path: "home", element: <Home /> },
         { path: "projects", element: <Projects /> },
         { path: "add-project", element: <ProjectDataForm /> },
         { path: "edit-project/:id", element: <ProjectDataForm /> },
