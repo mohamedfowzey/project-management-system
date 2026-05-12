@@ -6,6 +6,7 @@
 }
 :root {
   --main-color: rgba(239, 155, 40, 1);
+  --main-Bg-btn: rgba(239, 155, 40, 1);
   --bg-main-color: rgba(49, 89, 81, 0.9);
   --bg-main-light-color: rgba(49, 89, 81, 0.361);
   --bg-sub-color: #f3f4f6;
@@ -17,6 +18,11 @@
 }
 .text-main-color {
   color: var(--main-color);
+  
+}
+.main-Bg-btn {
+  background-color: var(--main-color);
+  /* cursor: pointer; */
 }
 .bg-main-color {
   background-color: var(--bg-main-color);
@@ -32,7 +38,7 @@
 }
 .custom-input{
       border-bottom-color: var(--auth-text-color);
-      border-bottom-width: 1px;
+      border-bottom-width: 0.3px ;
 }
 .custom-input:autofill{
   background-color: red !important;
