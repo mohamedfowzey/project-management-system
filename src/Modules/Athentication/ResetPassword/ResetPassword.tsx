@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
+import { Validations } from "../../../Constants/Validations";
 
 export interface forgetData {
   email: string;
@@ -19,6 +20,7 @@ export default function ResetPassword() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<forgetData>();
 
@@ -42,23 +44,21 @@ export default function ResetPassword() {
   return (
     <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
       <CustomInput
-        register={register("email", { required: "Email is required" })}
+        register={register("email", Validations.email)}
         HTMLtype="email"
         label="E-mail"
         error={errors.email?.message}
       />
 
       <CustomInput
-        register={register("password", { required: "Password is required" })}
+        register={register("password", Validations.password)}
         HTMLtype="password"
         label="New Password"
         error={errors.password?.message}
       />
 
       <CustomInput
-        register={register("confirmPassword", {
-          required: "Confirm Password is required",
-        })}
+        register={register("confirmPassword", {...Validations.confirmPassword,validate: (value) => value === watch("password") || "Passwords do not match"})}
         HTMLtype="password"
         label="Confirm Password"
         error={errors.confirmPassword?.message}

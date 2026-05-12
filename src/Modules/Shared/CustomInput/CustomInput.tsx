@@ -9,6 +9,7 @@ interface Props {
   error?: string; 
 }
 
+
 export default function CustomInput({ register, HTMLtype, label, error }: Props) {
   const [passVisible, setPassVisible] = useState(false);
   

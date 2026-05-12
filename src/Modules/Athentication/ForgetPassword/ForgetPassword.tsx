@@ -1,14 +1,16 @@
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, } from "react-router-dom";
 import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
+import { Validations } from "../../../Constants/Validations";
 
 export interface forgetData {
   email: string;
 }
+
 
 export default function ForgetPassword() {
   const [loading, setLoading] = useState(false);
@@ -29,7 +31,8 @@ export default function ForgetPassword() {
 
       toast.success(response?.data?.message);
       navigate("/reset-password");
-    } catch (error: any) {
+      
+    } catch (error:any) {
       toast.error(error.response?.data?.message);
     } finally {
       setLoading(false);
@@ -40,7 +43,7 @@ export default function ForgetPassword() {
     <>
       <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
         <CustomInput
-          register={register("email", { required: "Email is required" })}
+          register={register("email", Validations.email)}
           HTMLtype="email"
           label="E-mail"
           error={errors.email?.message}

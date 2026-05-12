@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import noUserImg from "../../../assets/Images/noDataUser.jpg";
+import { Validations } from "../../../Constants/Validations";
+import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
 export interface RegisterData {
   userName: string;
   email: string;
@@ -21,6 +23,7 @@ export default function Register() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<RegisterData>();
 
@@ -44,6 +47,7 @@ export default function Register() {
 
   return (
     <>
+    <CustomHeader title="register"/>
       <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
         <div className="text-center rounded-full w-24 h-24 mx-auto mb-8">
           <img
@@ -51,48 +55,43 @@ export default function Register() {
             src={noUserImg}
             alt="No User"
           />
+          <label htmlFor="imageProfile" className=""></label>
+          <input type="file" id="imageProfile" hidden/>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
-            register={register("userName", {
-              required: "User name is required",
-            })}
+            register={register("userName", Validations.userName
+            )}
             HTMLtype="text"
             label="User Name"
             error={errors.userName?.message}
           />
           <CustomInput
-            register={register("email", { required: "Email is required" })}
+            register={register("email", Validations.email)}
             HTMLtype="email"
             label="E-mail"
             error={errors.email?.message}
           />
           <CustomInput
-            register={register("country", { required: "Country is required" })}
+            register={register("country", Validations.country)}
             HTMLtype="text"
             label="Country"
             error={errors.country?.message}
           />
           <CustomInput
-            register={register("phoneNumber", {
-              required: "Phone number is required",
-            })}
+            register={register("phoneNumber", Validations.phoneNumber)}
             HTMLtype="text"
             label="Phone Number"
             error={errors.phoneNumber?.message}
           />
           <CustomInput
-            register={register("password", {
-              required: "Password is required",
-            })}
+            register={register("password", Validations.password)}
             HTMLtype="password"
             label="Password"
             error={errors.password?.message}
           />
           <CustomInput
-            register={register("confirmPassword", {
-              required: "Confirm Password is required",
-            })}
+            register={register("confirmPassword", {...Validations.confirmPassword,validate: (value) => value === watch("password") || "Passwords do not match"})}
             HTMLtype="password"
             label="Confirm Password"
             error={errors.confirmPassword?.message}

@@ -40,12 +40,23 @@
       border-bottom-color: var(--auth-text-color);
       border-bottom-width: 0.3px ;
 }
-.custom-input:autofill{
-  background-color: red !important;
+input{
+  caret-color: var(--main-color);
+  caret-shape;
 }
+
 .custom-input-label{
   color: var(--main-color);
 }
 .text-auth{
   color: var(--auth-text-color);
+}
+.auth-title{
+  font-size: xx-large;
+  color: var(--main-color);
+  letter-spacing: 4px;
+}
+.auth-title::first-letter{
+  text-transform:uppercase;
+  border-bottom:4px solid var(--main-color);
 }

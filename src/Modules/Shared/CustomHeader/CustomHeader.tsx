@@ -1,5 +1,9 @@
 import React from "react";
-
-export default function CustomHeader() {
-  return <div></div>;
+interface Props{
+  title:string
+}
+export default function CustomHeader({title}:Props) {
+  return (
+    <h1 className="auth-title">{title}</h1>
+  );
 }

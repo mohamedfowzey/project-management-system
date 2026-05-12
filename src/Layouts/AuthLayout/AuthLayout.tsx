@@ -32,6 +32,7 @@ export default function AuthLayout() {
           className={`bg-main-light-color w-full md:w-2/3 lg:w-1/2 xl:${getClassName()} rounded-lg shadow-lg py-28 px-14 overflow-scroll height-scroll-bar`}
         >
           <p>welcome to PMS</p>
+          
           <Outlet />
         </div>
       </div>

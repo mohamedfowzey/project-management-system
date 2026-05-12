@@ -84,6 +84,7 @@ export const Validations:Validations = {
   confirmPassword: {
     
       required: "Confirm Password is required",
+      
 
     },
     otp: { required: "otp is required" ,pattern:{value:/(\w|\d){4}/,message:'invalid otp'},maxLength:{value:4,message:'otp must be 4 characters'}},
