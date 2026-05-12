@@ -44,7 +44,6 @@ export default function Login() {
 
   return (
     <>
-      
       <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
         <CustomInput
           register={register("email", { required: "Email is required" })}
