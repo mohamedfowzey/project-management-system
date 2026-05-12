@@ -1,6 +1,8 @@
 import { Validations } from "../../../Constants/Validations";
 import CustomInput from "../../Shared/CustomInput/CustomInput"
 import {useForm} from 'react-hook-form'
+
+
 export interface loginData{
   email:string,
   password:string
@@ -12,6 +14,8 @@ export default function Login() {
     console.log(data);
     
   }
+
+  
   return (
     <>
     <form onSubmit={handleSubmit(onsubmit)}>
