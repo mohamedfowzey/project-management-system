@@ -42,7 +42,7 @@
 }
 input{
   caret-color: var(--main-color);
-  caret-shape;
+  caret-shape:block;
 }
 
 .custom-input-label{
