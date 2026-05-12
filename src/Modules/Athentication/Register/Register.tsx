@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
-
+import noUserImg from "../../../assets/Images/noDataUser.jpg";
 export interface RegisterData {
   userName: string;
   email: string;
@@ -45,6 +45,13 @@ export default function Register() {
   return (
     <>
       <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
+        <div className="text-center rounded-full w-24 h-24 mx-auto mb-8">
+          <img
+            className="mx-auto  w-24 h-24 rounded-full "
+            src={noUserImg}
+            alt="No User"
+          />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
             register={register("userName", {
@@ -90,6 +97,11 @@ export default function Register() {
             label="Confirm Password"
             error={errors.confirmPassword?.message}
           />
+        </div>
+        <div className="links flex justify-end my-3">
+          <Link className="text-muted text-decoration-none" to="/login">
+            Login Now?
+          </Link>
         </div>
         <CustomButton
           text="Save"
