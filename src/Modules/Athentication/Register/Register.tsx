@@ -29,7 +29,6 @@ export default function Register() {
         "https://upskilling-egypt.com:3003/api/v1/Users/Register",
         data,
       );
-      console.log(response);
       toast.success(response?.data?.message);
       navigate("/verify-email");
 

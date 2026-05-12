@@ -24,7 +24,6 @@ export default function VerifyEmail() {
         "https://upskilling-egypt.com:3003/api/v1/Users/verify",
         data,
       );
-      console.log(response);
       toast.success(response?.data?.message);
       navigate("/login");
 
