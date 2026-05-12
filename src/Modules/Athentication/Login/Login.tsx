@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../Contexts/AuthContext";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
@@ -58,6 +58,14 @@ export default function Login() {
           label="Password"
           error={errors.password?.message}
         />
+        <div className="links flex justify-between my-3">
+          <Link className="text-muted text-decoration-none" to="/register">
+            Register Now?
+          </Link>
+          <Link className="text-decoration-none" to="/forget-password">
+            Forget Password?
+          </Link>
+        </div>
         <CustomButton
           text="Login"
           loading={loading}

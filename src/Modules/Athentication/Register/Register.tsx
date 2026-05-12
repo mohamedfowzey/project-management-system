@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
@@ -90,6 +90,11 @@ export default function Register() {
             label="Confirm Password"
             error={errors.confirmPassword?.message}
           />
+        </div>
+        <div className="links flex justify-end my-3">
+          <Link className="text-muted text-decoration-none" to="/login">
+            Login Now?
+          </Link>
         </div>
         <CustomButton
           text="Save"
