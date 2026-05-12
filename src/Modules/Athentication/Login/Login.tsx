@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../../Contexts/AuthContext";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
+import { Validations } from "../../../Constants/Validations";
 
 export interface loginData {
   email: string;
@@ -47,13 +48,13 @@ export default function Login() {
     <>
       <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
         <CustomInput
-          register={register("email", { required: "Email is required" })}
+          register={register("email", Validations.email)}
           HTMLtype="email"
           label="E-mail"
           error={errors.email?.message}
         />
         <CustomInput
-          register={register("password", { required: "Password is required" })}
+          register={register("password", Validations.password)}
           HTMLtype="password"
           label="Password"
           error={errors.password?.message}
