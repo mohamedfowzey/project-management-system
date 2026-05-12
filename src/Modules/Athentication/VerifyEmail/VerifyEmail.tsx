@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
+import CustomButton from "../../Shared/CustomButton/CustomButton";
 
 export interface VerifyData {
   email: string;
@@ -51,20 +52,12 @@ export default function VerifyEmail() {
           label="OTP Verification"
           error={errors.code?.message}
         />
-        <button
-          type="submit"
-          disabled={loading}
-          className={`main-Bg-btn w-full py-2 rounded-full ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
-        >
-          {loading ? (
-            <>
-              {" "}
-              <span> loading...</span>
-            </>
-          ) : (
-            "Save"
-          )}
-        </button>{" "}
+        <CustomButton
+          text="Verify"
+          loading={loading}
+          disabled={false}
+          onClick={handleSubmit(onsubmit)}
+        />
       </form>
     </>
   );
