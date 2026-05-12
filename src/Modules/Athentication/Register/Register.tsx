@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import CustomInput from "../../Shared/CustomInput/CustomInput";
 
 export interface RegisterData {
   userName: string;
@@ -43,139 +44,51 @@ export default function Register() {
   return (
     <>
       <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
-        {/* <CustomInput name="email" register = {register('email',Validations?.email)} HTMLtype="email" />
-              {!! errors && <span className='text-xs text-red-600'>{errors?.email?.message}</span>} */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="text"
-              className="block custom-input py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-              placeholder=""
-              {...register("userName", { required: " User Name is required" })}
-            />
-            <label
-              htmlFor="floating_userName"
-              className="absolute text-sm text-main-color duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-            >
-              User Name
-            </label>
-            <div>
-              {!!errors && (
-                <span className="text-xs text-red-600 ">
-                  {errors?.userName?.message}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="email"
-              className="block custom-input py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-              placeholder=""
-              {...register("email", { required: " email is required" })}
-            />
-            <label
-              htmlFor="floating_email"
-              className="absolute text-sm text-main-color duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-            >
-              E-mail
-            </label>
-            <div>
-              {!!errors && (
-                <span className="text-xs text-red-600 ">
-                  {errors?.email?.message}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="text"
-              className="block custom-input py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-              placeholder=""
-              {...register("country", { required: " Country is required" })}
-            />
-            <label
-              htmlFor="floating_country"
-              className="absolute text-sm text-main-color duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-            >
-              Country
-            </label>
-            <div>
-              {!!errors && (
-                <span className="text-xs text-red-600 ">
-                  {errors?.country?.message}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="number"
-              className="block custom-input py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-              placeholder=""
-              {...register("phoneNumber", {
-                required: " Phone number is required",
-              })}
-            />
-            <label
-              htmlFor="floating_phoneNumber"
-              className="absolute text-sm text-main-color duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-            >
-              Phone Number
-            </label>
-            <div>
-              {!!errors && (
-                <span className="text-xs text-red-600 ">
-                  {errors?.phoneNumber?.message}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="password"
-              className="block custom-input py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-              placeholder=""
-              {...register("password", { required: " password is required" })}
-            />
-            <label
-              htmlFor="floating_password"
-              className="absolute text-sm text-main-color duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-            >
-              Password
-            </label>
-            <div>
-              {!!errors && (
-                <span className="text-xs text-red-600 ">
-                  {errors?.password?.message}
-                </span>
-              )}
-            </div>
-          </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="password"
-              className="block custom-input py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
-              placeholder=""
-              {...register("confirmPassword", {
-                required: " confirm Password is required",
-              })}
-            />
-            <label
-              htmlFor="floating_confirmPassword"
-              className="absolute text-sm text-main-color duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-fg-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
-            >
-              Confirm Password
-            </label>
-            <div>
-              {!!errors && (
-                <span className="text-xs text-red-600 ">
-                  {errors?.confirmPassword?.message}
-                </span>
-              )}
-            </div>
-          </div>
+          <CustomInput
+            register={register("userName", {
+              required: "User name is required",
+            })}
+            HTMLtype="text"
+            label="User Name"
+            error={errors.userName?.message}
+          />
+          <CustomInput
+            register={register("email", { required: "Email is required" })}
+            HTMLtype="email"
+            label="E-mail"
+            error={errors.email?.message}
+          />
+          <CustomInput
+            register={register("country", { required: "Country is required" })}
+            HTMLtype="text"
+            label="Country"
+            error={errors.country?.message}
+          />
+          <CustomInput
+            register={register("phoneNumber", {
+              required: "Phone number is required",
+            })}
+            HTMLtype="text"
+            label="Phone Number"
+            error={errors.phoneNumber?.message}
+          />
+          <CustomInput
+            register={register("password", {
+              required: "Password is required",
+            })}
+            HTMLtype="password"
+            label="Password"
+            error={errors.password?.message}
+          />
+          <CustomInput
+            register={register("confirmPassword", {
+              required: "Confirm Password is required",
+            })}
+            HTMLtype="password"
+            label="Confirm Password"
+            error={errors.confirmPassword?.message}
+          />
         </div>
         <button
           type="submit"
