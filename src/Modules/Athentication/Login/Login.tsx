@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../Contexts/AuthContext";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
+import CustomButton from "../../Shared/CustomButton/CustomButton";
 
 export interface loginData {
   email: string;
@@ -57,19 +58,12 @@ export default function Login() {
           label="Password"
           error={errors.password?.message}
         />
-        <button
-          type="submit"
-          disabled={loading}
-          className={`main-Bg-btn w-full py-2 rounded-full ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
-        >
-          {loading ? (
-            <>
-              <span> loading...</span>
-            </>
-          ) : (
-            "submit"
-          )}
-        </button>
+        <CustomButton
+          text="Login"
+          loading={loading}
+          disabled={false}
+          onClick={handleSubmit(onsubmit)}
+        />
       </form>
     </>
   );
