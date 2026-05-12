@@ -30,12 +30,10 @@ export default function ResetPassword() {
         data,
       );
 
-      toast.success(
-        response?.data?.message || "تم إعادة تعيين كلمة المرور بنجاح",
-      );
+      toast.success(response?.data?.message || "Password reset successfully");
       navigate("/login");
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "حدث خطأ ما");
+      toast.error(error.response?.data?.message || "Failed to reset password");
     } finally {
       setLoading(false);
     }
