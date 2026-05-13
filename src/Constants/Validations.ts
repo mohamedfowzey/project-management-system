@@ -48,7 +48,7 @@ interface Validations{
 export const Validations:Validations = {
     email:{
         required:'email is required',
-        pattern:{value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{1,}$/
+        pattern:{value:/^[^\s@]+@[^\s@]+\.[^\s@]+$/
 ,message:'invalid email'}
     },
    password: {

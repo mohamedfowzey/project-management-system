@@ -11,14 +11,13 @@
   --bg-main-light-color: rgba(49, 89, 81, 0.361);
   --bg-sub-color: #f3f4f6;
   --main-font: "Inter", sans-serif;
-  --auth-text-color:white;
-  font-family: var(--main-font)
+  --auth-text-color: white;
+  font-family: var(--main-font);
 }
 .dark {
 }
 .text-main-color {
   color: var(--main-color);
-  
 }
 .main-Bg-btn {
   background-color: var(--main-color);
@@ -36,46 +35,45 @@
 .main-font {
   font-family: var(--main-font);
 }
-.custom-input{
-      border-bottom-color: var(--auth-text-color);
-      border-bottom-width: 0.3px ;
+.custom-input {
+  border-bottom-color: var(--auth-text-color);
+  border-bottom-width: 0.3px;
 }
-input{
+input {
   caret-color: var(--main-color);
-  caret-shape:block;
+  caret-shape: block;
 }
-
 
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: white !important; 
-    transition: background-color 5000s ease-in-out 0s;
-    box-shadow: inset 0 0 0 0 white;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 0 0 white;
+  border-bottom: 2px solid var(--auth-text-color);
 }
-.custom-input-label{
+.custom-input-label {
   color: var(--main-color);
 }
-.text-auth{
+.text-auth {
   color: var(--auth-text-color);
 }
-.auth-title{
+.auth-title {
   /* font-size: xx-large; */
   color: var(--main-color);
   /* letter-spacing: 4px; */
   font-family: Inter;
-font-weight: 700;
-font-style: Bold;
-font-size: 32px;
-leading-trim: NONE;
-line-height: 46px;
-letter-spacing: -0.4px;
-margin-bottom: 30px;
-
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 32px;
+  leading-trim: NONE;
+  line-height: 46px;
+  letter-spacing: -0.4px;
+  margin-bottom: 30px;
 }
-.auth-title::first-letter{
-  text-transform:uppercase;
-  border-bottom:4px solid var(--main-color);
+.auth-title::first-letter {
+  text-transform: uppercase;
+  border-bottom: 4px solid var(--main-color);
 }

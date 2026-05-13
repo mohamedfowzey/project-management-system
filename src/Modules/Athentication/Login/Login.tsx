@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,7 +7,7 @@ import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import { Validations } from "../../../Constants/Validations";
 import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
-import { Loginn ,type LoginData } from "../../../api/modules/Auth";
+import { Loginn, type LoginData } from "../../../api/modules/Auth";
 
 export interface loginData {
   email: string;
@@ -59,7 +58,7 @@ export default function Login() {
           label="Password"
           error={errors.password?.message}
         />
-        <div className="links flex justify-between my-3">
+        <div className="links flex justify-between my-3 text-sm">
           <Link className="text-muted text-decoration-none" to="/register">
             Register Now?
           </Link>
@@ -71,7 +70,7 @@ export default function Login() {
           text="Login"
           loading={loading}
           disabled={false}
-        // onClick={handleSubmit(onsubmit)}
+          // onClick={handleSubmit(onsubmit)}
         />
       </form>
     </>
