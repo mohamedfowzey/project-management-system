@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,18 +9,12 @@ import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import { Registerr, type RegisterData } from "../../../api/modules/Auth";
 
-// export interface RegisterData {
-//   userName: string;
-//   email: string;
-//   country : string;
-//   phoneNumber : string;
-//   profileImage : File | null;
-//   password: string;
-//   confirmPassword : string;
-// }
+
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string>(noUserImg);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const {
     register,
@@ -28,6 +22,21 @@ export default function Register() {
     watch,
     formState: { errors },
   } = useForm<RegisterData>();
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setPreviewImage(event.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const onsubmit = async (data: RegisterData) => {
     setLoading(true);
@@ -40,9 +49,9 @@ export default function Register() {
     formData.append("password", data.password);
     formData.append("confirmPassword", data.confirmPassword);
 
-
-    if (data.profileImage && (data.profileImage as any).length > 0) {
-      formData.append("profileImage", (data.profileImage as any)[0]);
+    const profileFile = fileInputRef.current?.files?.[0];
+    if (profileFile) {
+      formData.append("profileImage", profileFile);
     }
 
     try {
@@ -57,18 +66,6 @@ export default function Register() {
     }
   };
 
-  // const onsubmit = async (data: RegisterData) => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await Registerr(data);
-  //     toast.success(response?.data?.message);
-  //     navigate("/verify-email");
-  //   } catch (error: any) {
-  //     toast.error(error.response?.data?.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
@@ -77,14 +74,23 @@ export default function Register() {
     <>
       <CustomHeader title="register" />
       <form onSubmit={handleSubmit(onsubmit)}>
-        <div className="text-center rounded-full w-24 h-24 mx-auto mb-4">
+        <div 
+          className="text-center rounded-full w-24 h-24 mx-auto mb-4 cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={handleImageClick}
+        >
           <img
-            className="mx-auto  w-24 h-24 rounded-full "
-            src={noUserImg}
-            alt="No User"
+            className="mx-auto w-24 h-24 rounded-full object-cover"
+            src={previewImage}
+            alt="Profile"
           />
-          <label htmlFor="imageProfile" className=""></label>
-          <input type="file" id="imageProfile" hidden {...register("profileImage")} />
+          <input
+            ref={fileInputRef}
+            type="file"
+            id="imageProfile"
+            hidden
+            accept="image/*"
+            onChange={handleImageChange}
+          />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <CustomInput

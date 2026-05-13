@@ -17,6 +17,7 @@ import TaskDataForm from "./Modules/Dashboard/TaskDataForm/TaskDataForm";
 import Users from "./Modules/Dashboard/Users/Users";
 import UserTasks from "./Modules/Dashboard/UserTasks/UserTasks";
 import { ToastContainer } from "react-toastify";
+import ProtectedRoutes from "./Modules/Shared/ProtectedRoutes/ProtectedRoutes";
 
 function App() {
   const routes = createBrowserRouter([
@@ -36,7 +37,11 @@ function App() {
     },
     {
       path: "dashboard",
-      element: <MasterLayout />,
+      element: (
+        <ProtectedRoutes>
+          <MasterLayout />
+        </ProtectedRoutes>
+      ),
       errorElement: <NotFound />,
       children: [
         { index: true, element: <Home /> },
@@ -55,12 +60,10 @@ function App() {
 
   return (
     <>
-    <ToastContainer/>
-    <RouterProvider router={routes} />
-    
+      <ToastContainer />
+      <RouterProvider router={routes} />
     </>
-  )
-   
+  );
 }
 
 export default App;
