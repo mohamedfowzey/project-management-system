@@ -1,20 +1,23 @@
 import { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
-import type { UseFormRegisterReturn } from 'react-hook-form';
+import { CheckCircle2, Eye, EyeOff } from 'lucide-react';
+import { useForm, type UseFormRegisterReturn } from 'react-hook-form';
 
 interface Props {
   register: UseFormRegisterReturn;
   HTMLtype: string;
   label: string; 
   error?: string; 
+  showSuccess?: boolean;
 }
 
 
-export default function CustomInput({ register, HTMLtype, label, error }: Props) {
+export default function CustomInput({ register, HTMLtype, label, error,showSuccess }: Props) {
   const [passVisible, setPassVisible] = useState(false);
   
   const isPassword = HTMLtype === 'password';
   const actualType = isPassword ? (passVisible ? 'text' : 'password') : HTMLtype;
+
+
 
   return (
     <div className="w-full mb-5">
@@ -28,6 +31,23 @@ export default function CustomInput({ register, HTMLtype, label, error }: Props)
           }`}
           placeholder=" "
         />
+        <div className="absolute right-0 top-2 flex items-center gap-2">
+          
+          {showSuccess && (
+            <CheckCircle2 size={25} className="text-blue-500  me-5  animate__animated animate__fadeIn" />
+          )}
+
+          {isPassword && (
+            <button
+              type="button" 
+              onClick={() => setPassVisible(!passVisible)}
+              className="text-body hover:text-brand transition-colors cursor-pointer"
+            >
+              {passVisible ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          )}
+        </div>
+      
         
         <label
           htmlFor={register.name}
@@ -36,7 +56,9 @@ export default function CustomInput({ register, HTMLtype, label, error }: Props)
           {label}
         </label>
 
-        {isPassword && (
+        
+
+        {/* {isPassword && (
           <button
             type="button" 
             onClick={() => setPassVisible(!passVisible)}
@@ -44,7 +66,8 @@ export default function CustomInput({ register, HTMLtype, label, error }: Props)
           >
             {passVisible ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
-        )}
+        )} */}
+
       </div>
       
       {error && <p className="mt-1 text-xs text-red-500">{error}</p>}

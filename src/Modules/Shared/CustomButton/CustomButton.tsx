@@ -17,7 +17,7 @@ export default function CustomButton({
         type="submit"
         disabled={loading || disabled}
         onClick={onClick}
-        className={`main-Bg-btn w-full py-2 rounded-full ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+        className={`main-Bg-btn w-full py-2 mt-4 rounded-full ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
       >
         {loading ? (
           <>

@@ -45,6 +45,16 @@ input{
   caret-shape:block;
 }
 
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: white !important; 
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 0 0 white;
+}
 .custom-input-label{
   color: var(--main-color);
 }
@@ -52,9 +62,18 @@ input{
   color: var(--auth-text-color);
 }
 .auth-title{
-  font-size: xx-large;
+  /* font-size: xx-large; */
   color: var(--main-color);
-  letter-spacing: 4px;
+  /* letter-spacing: 4px; */
+  font-family: Inter;
+font-weight: 700;
+font-style: Bold;
+font-size: 32px;
+leading-trim: NONE;
+line-height: 46px;
+letter-spacing: -0.4px;
+margin-bottom: 30px;
+
 }
 .auth-title::first-letter{
   text-transform:uppercase;

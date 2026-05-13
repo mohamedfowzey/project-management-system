@@ -7,6 +7,8 @@ import { AuthContext } from "../../../Contexts/AuthContext";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import { Validations } from "../../../Constants/Validations";
+import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
+import { Loginn ,type LoginData } from "../../../api/modules/Auth";
 
 export interface loginData {
   email: string;
@@ -24,15 +26,12 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<loginData>();
+  } = useForm<LoginData>();
 
-  const onsubmit = async (data: loginData) => {
+  const onsubmit = async (data: LoginData) => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        "https://upskilling-egypt.com:3003/api/v1/Users/Login",
-        data,
-      );
+      const response = await Loginn(data);
       localStorage.setItem("token", response.data.token);
       saveUserData();
       toast.success(response?.data?.message || "login successfully");
@@ -46,6 +45,7 @@ export default function Login() {
 
   return (
     <>
+      <CustomHeader title="Login" />
       <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
         <CustomInput
           register={register("email", Validations.email)}
@@ -71,7 +71,7 @@ export default function Login() {
           text="Login"
           loading={loading}
           disabled={false}
-          onClick={handleSubmit(onsubmit)}
+        // onClick={handleSubmit(onsubmit)}
         />
       </form>
     </>

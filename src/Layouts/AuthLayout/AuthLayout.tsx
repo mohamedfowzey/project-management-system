@@ -20,7 +20,7 @@ export default function AuthLayout() {
 
   return (
     <div className={`${getBgClass()} text-auth h-full px-5`}>
-      <div className="flex flex-col items-center justify-center h-dvh">
+      <div className="flex flex-col items-center justify-center h-dvh pb-3">
         <div className="mb-3">
           <img
             src={authLogo}
@@ -29,7 +29,7 @@ export default function AuthLayout() {
           />
         </div>
         <div
-          className={`bg-main-light-color w-full md:w-2/3 lg:w-1/2 xl:${getClassName()} rounded-lg shadow-lg py-28 px-14 overflow-scroll height-scroll-bar`}
+          className={`bg-main-light-color w-full md:w-2/3 lg:w-1/2 xl:${getClassName()} rounded-lg shadow-lg py-10 px-14 overflow-scroll height-scroll-bar`}
         >
           <p>welcome to PMS</p>
           

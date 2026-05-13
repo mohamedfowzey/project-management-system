@@ -6,10 +6,12 @@ import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import { Validations } from "../../../Constants/Validations";
+import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
+import { ForgetPasswordd,type ForgetPasswordData } from "../../../api/modules/Auth";
 
-export interface forgetData {
-  email: string;
-}
+// export interface forgetData {
+//   email: string;
+// }
 
 
 export default function ForgetPassword() {
@@ -19,20 +21,17 @@ export default function ForgetPassword() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<forgetData>();
+  } = useForm<ForgetPasswordData>();
 
-  const onsubmit = async (data: forgetData) => {
+  const onsubmit = async (data: ForgetPasswordData) => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        "https://upskilling-egypt.com:3003/api/v1/Users/Reset/Request",
-        data,
-      );
+      const response = await ForgetPasswordd(data);
 
       toast.success(response?.data?.message);
       navigate("/reset-password");
-      
-    } catch (error:any) {
+
+    } catch (error: any) {
       toast.error(error.response?.data?.message);
     } finally {
       setLoading(false);
@@ -41,6 +40,7 @@ export default function ForgetPassword() {
 
   return (
     <>
+      <CustomHeader title="Forget Password" />
       <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
         <CustomInput
           register={register("email", Validations.email)}
@@ -57,7 +57,7 @@ export default function ForgetPassword() {
           text="Verify"
           loading={loading}
           disabled={false}
-          onClick={handleSubmit(onsubmit)}
+        // onClick={handleSubmit(onsubmit)}
         />
       </form>
     </>

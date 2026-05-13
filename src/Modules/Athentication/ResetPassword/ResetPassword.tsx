@@ -6,13 +6,14 @@ import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import { Validations } from "../../../Constants/Validations";
+import { Resett, type ResetPasswordData } from "../../../api/modules/Auth";
 
-export interface forgetData {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  seed: string;
-}
+// export interface forgetData {
+//   email: string;
+//   password: string;
+//   confirmPassword: string;
+//   seed: string;
+// }
 
 export default function ResetPassword() {
   const [loading, setLoading] = useState(false);
@@ -22,15 +23,12 @@ export default function ResetPassword() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<forgetData>();
+  } = useForm<ResetPasswordData>();
 
-  const onsubmit = async (data: forgetData) => {
+  const onsubmit = async (data: ResetPasswordData) => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        "https://upskilling-egypt.com:3003/api/v1/Users/Reset",
-        data,
-      );
+      const response = await Resett(data);
 
       toast.success(response?.data?.message || "Password reset successfully");
       navigate("/login");
@@ -40,6 +38,9 @@ export default function ResetPassword() {
       setLoading(false);
     }
   };
+
+  const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
 
   return (
     <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
@@ -58,10 +59,14 @@ export default function ResetPassword() {
       />
 
       <CustomInput
-        register={register("confirmPassword", {...Validations.confirmPassword,validate: (value) => value === watch("password") || "Passwords do not match"})}
+        register={register("confirmPassword", {...Validations.confirmPassword, validate: (value) =>
+            value === password || "Passwords do not match"})}
         HTMLtype="password"
         label="Confirm Password"
         error={errors.confirmPassword?.message}
+        showSuccess={!!confirmPassword && password === confirmPassword}
+
+        
       />
 
       <CustomInput
@@ -75,7 +80,7 @@ export default function ResetPassword() {
         text="Save"
         loading={loading}
         disabled={false}
-        onClick={handleSubmit(onsubmit)}
+        // onClick={handleSubmit(onsubmit)}
       />
     </form>
   );

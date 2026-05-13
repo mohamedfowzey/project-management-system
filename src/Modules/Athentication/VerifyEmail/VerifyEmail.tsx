@@ -5,11 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
+import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
+import { Verifyy , type VerifyData} from "../../../api/modules/Auth";
 
-export interface VerifyData {
-  email: string;
-  code: string;
-}
+
 export default function VerifyEmail() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -22,10 +21,7 @@ export default function VerifyEmail() {
   const onsubmit = async (data: VerifyData) => {
     setLoading(true);
     try {
-      const response = await axios.put(
-        "https://upskilling-egypt.com:3003/api/v1/Users/verify",
-        data,
-      );
+      const response = await Verifyy(data);
       toast.success(response?.data?.message);
       navigate("/login");
 
@@ -39,6 +35,7 @@ export default function VerifyEmail() {
 
   return (
     <>
+    <CustomHeader title="Verify Email" /> 
       <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
         <CustomInput
           register={register("email", { required: "Email is required" })}
