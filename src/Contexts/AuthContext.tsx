@@ -29,7 +29,8 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
     const encoded = localStorage.getItem("token");
     if (encoded) {
       const decoded = jwtDecode<User>(encoded);
-      if (+decoded.exp > Date.now()) {
+      if (+decoded.exp > Math.trunc(Date.now()/1000)) {
+        
         setUserData(decoded);
       } else {
         logOut();
