@@ -1,12 +1,11 @@
-import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import CustomInput from "../../Shared/CustomInput/CustomInput";
+import { Verifyy, type VerifyData } from "../../../api/modules/Auth";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
-import { Verifyy , type VerifyData} from "../../../api/modules/Auth";
+import CustomInput from "../../Shared/CustomInput/CustomInput";
 
 
 export default function VerifyEmail() {
@@ -25,10 +24,7 @@ export default function VerifyEmail() {
       toast.success(response?.data?.message);
       navigate("/login");
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      toast.error(error.response?.data?.message);
-    } finally {
+    }  finally {
       setLoading(false);
     }
   };

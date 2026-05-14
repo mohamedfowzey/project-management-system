@@ -1,19 +1,12 @@
-import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import CustomInput from "../../Shared/CustomInput/CustomInput";
-import CustomButton from "../../Shared/CustomButton/CustomButton";
 import { Validations } from "../../../Constants/Validations";
 import { Resett, type ResetPasswordData } from "../../../api/modules/Auth";
+import CustomButton from "../../Shared/CustomButton/CustomButton";
+import CustomInput from "../../Shared/CustomInput/CustomInput";
 
-// export interface forgetData {
-//   email: string;
-//   password: string;
-//   confirmPassword: string;
-//   seed: string;
-// }
+
 
 export default function ResetPassword() {
   const [loading, setLoading] = useState(false);
@@ -28,13 +21,10 @@ export default function ResetPassword() {
   const onsubmit = async (data: ResetPasswordData) => {
     setLoading(true);
     try {
-      const response = await Resett(data);
+      await Resett(data);
 
-      toast.success(response?.data?.message || "Password reset successfully");
       navigate("/login");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to reset password");
-    } finally {
+    }  finally {
       setLoading(false);
     }
   };

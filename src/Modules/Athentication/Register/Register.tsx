@@ -1,14 +1,21 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { Registerr } from "../../../api/modules/Auth";
 import noUserImg from "../../../assets/Images/noDataUser.jpg";
 import { Validations } from "../../../Constants/Validations";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
-import { Registerr, type RegisterData } from "../../../api/modules/Auth";
-
+interface RegisterData {
+  userName: string;
+  email: string;
+  country : string;
+  phoneNumber : string;
+  profileImage : File | null;
+  password: string;
+  confirmPassword : string;
+}
 
 
 export default function Register() {
@@ -56,11 +63,8 @@ export default function Register() {
 
     try {
 
-      const response = await Registerr(formData as any);
-      toast.success(response?.data?.message || "Registration successful");
+      await Registerr(formData );
       navigate("/verify-email");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }

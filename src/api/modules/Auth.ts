@@ -4,15 +4,7 @@ export interface LoginData {
   email: string;
   password: string;
 }
-export interface RegisterData {
-  userName: string;
-  email: string;
-  country : string;
-  phoneNumber : string;
-  profileImage : File | null;
-  password: string;
-  confirmPassword : string;
-}
+
 export interface ForgetPasswordData {
   email: string;
 } 
@@ -36,7 +28,7 @@ export const Loginn = (data: LoginData) => {
   return axiosClient.post("/Users/Login", data);
 };
 
-export const Registerr = (data: RegisterData) => {
+export const Registerr = (data: FormData) => {
   return axiosClient.post("/Users/Register", data);
 };
 

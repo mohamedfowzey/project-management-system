@@ -1,8 +1,8 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const axiosClient = axios.create({
   baseURL: "https://upskilling-egypt.com:3003/api/v1",
-  timeout: 5000,
   headers: {
     Accept: "application/json",
   },
@@ -18,18 +18,18 @@ const axiosClient = axios.create({
   },
   (error) => {
     return Promise.reject(error);
+
   }
 );
 
 axiosClient.interceptors.response.use(
   (response) => {
+    toast.success('success')
     return response;
   },
   (error) => {
-     if (error.response && error.response.status === 401) {
-      localStorage.removeItem("token");
-    }
-    return Promise.reject(error);
+        toast.error(error.response.data.message || 'failed')
+
   }
 );
 

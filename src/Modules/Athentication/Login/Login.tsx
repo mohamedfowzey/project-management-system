@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { AuthContext } from "../../../Contexts/AuthContext";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
@@ -33,10 +32,7 @@ export default function Login() {
       const response = await Loginn(data);
       localStorage.setItem("token", response.data.token);
       saveUserData();
-      toast.success(response?.data?.message || "login successfully");
       navigate("/dashboard/home");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message);
     } finally {
       setLoading(false);
     }

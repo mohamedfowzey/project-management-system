@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, } from "react-router-dom";
-import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import { Validations } from "../../../Constants/Validations";
@@ -21,15 +20,10 @@ export default function ForgetPassword() {
   const onsubmit = async (data: ForgetPasswordData) => {
     setLoading(true);
     try {
-      const response = await ForgetPasswordd(data);
-      // axios.post('https://upskilling-egypt.com:3003/api/v1/Users/Reset/Request',data)
-
-      toast.success(response?.data?.message);
+      await ForgetPasswordd(data);
       navigate("/reset-password");
 
-    } catch (error: any) {
-      toast.error(error.response?.data?.message);
-    } finally {
+    }  finally {
       setLoading(false);
     }
   };
@@ -53,7 +47,6 @@ export default function ForgetPassword() {
           text="Verify"
           loading={loading}
           disabled={false}
-        // onClick={handleSubmit(onsubmit)}
         />
       </form>
     </>

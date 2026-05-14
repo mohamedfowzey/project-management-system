@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import { Validations } from "../../../Constants/Validations";
@@ -23,13 +22,9 @@ export default function ChangePassword() {
   const onsubmit = async (data: ChangePasswordData) => {
     setLoading(true);
     try {
-      const response = await changePasswordd(data);
-
-      toast.success(response?.data?.message || "Password changed successfully");
+       await changePasswordd(data);
       navigate("/login");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to change password");
-    } finally {
+    }  finally {
       setLoading(false);
     }
   };
