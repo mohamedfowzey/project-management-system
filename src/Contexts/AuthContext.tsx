@@ -1,6 +1,5 @@
 import { jwtDecode } from "jwt-decode";
 import { createContext, useEffect, useState, type ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 interface User {
   id: string;
@@ -40,7 +39,10 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
   };
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      saveUserData();
+      (()=>{
+
+        saveUserData();
+      })()
     }
   }, []);
   return (

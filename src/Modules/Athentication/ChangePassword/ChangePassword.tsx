@@ -8,11 +8,7 @@ import { Validations } from "../../../Constants/Validations";
 import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
 import { changePasswordd ,type ChangePasswordData } from "../../../api/modules/Auth";
 
-// export interface forgetData {
-//   oldPassword: string;
-//   newPassword: string;
-//   confirmNewPassword: string;
-// }
+
 
 export default function ChangePassword() {
   const [loading, setLoading] = useState(false);

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, } from "react-router-dom";
@@ -8,10 +7,6 @@ import CustomButton from "../../Shared/CustomButton/CustomButton";
 import { Validations } from "../../../Constants/Validations";
 import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
 import { ForgetPasswordd,type ForgetPasswordData } from "../../../api/modules/Auth";
-
-// export interface forgetData {
-//   email: string;
-// }
 
 
 export default function ForgetPassword() {
@@ -27,6 +22,7 @@ export default function ForgetPassword() {
     setLoading(true);
     try {
       const response = await ForgetPasswordd(data);
+      // axios.post('https://upskilling-egypt.com:3003/api/v1/Users/Reset/Request',data)
 
       toast.success(response?.data?.message);
       navigate("/reset-password");
