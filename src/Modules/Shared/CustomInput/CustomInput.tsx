@@ -1,6 +1,6 @@
+import { Check, Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
-import { CheckCircle2, Eye, EyeOff } from 'lucide-react';
-import { useForm, type UseFormRegisterReturn } from 'react-hook-form';
+import { type UseFormRegisterReturn } from 'react-hook-form';
 
 interface Props {
   register: UseFormRegisterReturn;
@@ -34,7 +34,7 @@ export default function CustomInput({ register, HTMLtype, label, error,showSucce
         <div className="absolute right-0 top-2 flex items-center gap-2">
           
           {showSuccess && (
-            <CheckCircle2 size={25} className="text-blue-500  me-5  animate__animated animate__fadeIn" />
+            <Check color="#09ff05" />
           )}
 
           {isPassword && (
