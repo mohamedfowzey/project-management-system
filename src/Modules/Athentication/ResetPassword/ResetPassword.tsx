@@ -60,7 +60,7 @@ export default function ResetPassword() {
       />
 
       <CustomInput
-        register={register("seed", { required: "OTP is required" })}
+        register={register("seed", Validations.otp)}
         HTMLtype="text"
         label="OTP Verification"
         error={errors.seed?.message}
@@ -70,7 +70,6 @@ export default function ResetPassword() {
         text="Save"
         loading={loading}
         disabled={false}
-        // onClick={handleSubmit(onsubmit)}
       />
     </form>
   );

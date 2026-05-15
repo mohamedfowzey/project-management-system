@@ -3,9 +3,6 @@ import { toast } from "react-toastify";
 
 const axiosClient = axios.create({
   baseURL: "https://upskilling-egypt.com:3003/api/v1",
-  headers: {
-    Accept: "application/json",
-  },
 });
 
  axiosClient.interceptors.request.use(
@@ -24,12 +21,12 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.response.use(
   (response) => {
-    toast.success('success')
+    toast.success(response.data.message||'success')
     return response;
   },
   (error) => {
         toast.error(error.response.data.message || 'failed')
-
+        return Promise.reject()
   }
 );
 

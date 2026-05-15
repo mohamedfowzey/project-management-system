@@ -4,6 +4,7 @@
   src: url(./assets/fonts/inter/Inter-VariableFont_opsz\,wght.ttf)
     format("truetype");
 }
+@custom-variant dark (&:where(.dark,.dark *));
 :root {
   --main-color: rgba(239, 155, 40, 1);
   --main-Bg-btn: rgba(239, 155, 40, 1);

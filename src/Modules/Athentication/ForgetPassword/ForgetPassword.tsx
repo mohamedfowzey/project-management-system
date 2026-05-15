@@ -19,13 +19,7 @@ export default function ForgetPassword() {
 
   const onsubmit = async (data: ForgetPasswordData) => {
     setLoading(true);
-    try {
-      await ForgetPasswordd(data);
-      navigate("/reset-password");
-
-    }  finally {
-      setLoading(false);
-    }
+    ForgetPasswordd(data).then(()=>navigate("/reset-password")).finally(()=>setLoading(false))
   };
 
   return (

@@ -61,13 +61,9 @@ export default function Register() {
       formData.append("profileImage", profileFile);
     }
 
-    try {
-
-      await Registerr(formData );
-      navigate("/verify-email");
-    } finally {
-      setLoading(false);
-    }
+    Registerr(formData )
+      .then(()=> navigate("/verify-email"))
+      .finally( ()=>setLoading(false))
   };
 
 

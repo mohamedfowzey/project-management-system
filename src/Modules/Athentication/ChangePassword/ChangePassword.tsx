@@ -21,12 +21,9 @@ export default function ChangePassword() {
 
   const onsubmit = async (data: ChangePasswordData) => {
     setLoading(true);
-    try {
-       await changePasswordd(data);
-      navigate("/login");
-    }  finally {
-      setLoading(false);
-    }
+    
+      changePasswordd(data).then(()=>navigate("/login")).finally(()=>setLoading(false))
+    
   };
 
   const password = watch("newPassword");

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { Verifyy, type VerifyData } from "../../../api/modules/Auth";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
@@ -19,14 +18,10 @@ export default function VerifyEmail() {
 
   const onsubmit = async (data: VerifyData) => {
     setLoading(true);
-    try {
-      const response = await Verifyy(data);
-      toast.success(response?.data?.message);
-      navigate("/login");
-
-    }  finally {
-      setLoading(false);
-    }
+    Verifyy(data)
+    .then(()=>navigate("/login"))
+    .finally(()=> setLoading(false))
+    
   };
 
   return (
