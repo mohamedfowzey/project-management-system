@@ -7,16 +7,16 @@ import { Validations } from "../../../Constants/Validations";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
+import { X } from "lucide-react";
 interface RegisterData {
   userName: string;
   email: string;
-  country : string;
-  phoneNumber : string;
-  profileImage : File | null;
+  country: string;
+  phoneNumber: string;
+  profileImage: File | null;
   password: string;
-  confirmPassword : string;
+  confirmPassword: string;
 }
-
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
@@ -61,11 +61,10 @@ export default function Register() {
       formData.append("profileImage", profileFile);
     }
 
-    Registerr(formData )
-      .then(()=> navigate("/verify-email"))
-      .finally( ()=>setLoading(false))
+    Registerr(formData)
+      .then(() => navigate("/verify-email"))
+      .finally(() => setLoading(false));
   };
-
 
   const password = watch("password");
   const confirmPassword = watch("confirmPassword");
@@ -74,8 +73,8 @@ export default function Register() {
     <>
       <CustomHeader title="register" />
       <form onSubmit={handleSubmit(onsubmit)}>
-        <div 
-          className="text-center rounded-full w-24 h-24 mx-auto mb-4 cursor-pointer hover:opacity-80 transition-opacity"
+        <div
+          className="text-center rounded-full w-24 h-24 mx-auto mb-4 cursor-pointer hover:opacity-80 transition-opacity relative"
           onClick={handleImageClick}
         >
           <img
@@ -91,11 +90,21 @@ export default function Register() {
             accept="image/*"
             onChange={handleImageChange}
           />
+          <button
+            type="button"
+            className="absolute top-0  left-full text-white rounded-full px-2 opacity-75 hover:opacity-100 transition-opacity cursor-pointer"
+            onClick={(e) => {
+              setPreviewImage(noUserImg);
+              fileInputRef.current!.value = "";
+              e.stopPropagation();
+            }}
+          >
+            <X className="text-main-color" opacity={1} strokeWidth={4} />
+          </button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <CustomInput
-            register={register("userName", Validations.userName
-            )}
+            register={register("userName", Validations.userName)}
             HTMLtype="text"
             label="User Name"
             error={errors.userName?.message}
@@ -126,14 +135,14 @@ export default function Register() {
           />
           <CustomInput
             register={register("confirmPassword", {
-              ...Validations.confirmPassword, validate: (value) =>
-                value === password || "Passwords do not match"
+              ...Validations.confirmPassword,
+              validate: (value) =>
+                value === password || "Passwords do not match",
             })}
             HTMLtype="password"
             label="Confirm Password"
             error={errors.confirmPassword?.message}
             showSuccess={!!confirmPassword && password === confirmPassword}
-
           />
         </div>
         <div className="links flex justify-end my-2">
@@ -145,7 +154,7 @@ export default function Register() {
           text="Save"
           loading={loading}
           disabled={false}
-        // onClick={handleSubmit(onsubmit)}
+          // onClick={handleSubmit(onsubmit)}
         />
       </form>
     </>
