@@ -39,3 +39,7 @@ export const getUsersById = (id: UserId) => {
 export const createUsers = (data: createUserData) => {
     return axiosClient.post("/Users", data);
 };
+
+export const getCurrentUser = () => {
+    return axiosClient.get("/Users/currentUser");
+}
