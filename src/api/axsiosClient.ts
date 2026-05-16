@@ -26,7 +26,7 @@ axiosClient.interceptors.response.use(
   },
   (error) => {
         toast.error(error.response.data.message || 'failed')
-        return Promise.reject()
+        return Promise.reject(error)
   }
 );
 

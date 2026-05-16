@@ -1,15 +1,19 @@
 import { jwtDecode } from "jwt-decode";
 import { createContext, useEffect, useState, type ReactNode } from "react";
 import { toast } from "react-toastify";
+import { getCurrentUser } from "../api/modules/user";
 interface User {
   id: string;
-  email: string;
-  name: string;
+  userEmail: string;
+  userName: string;
   exp: string;
+  imagePath?: string;
 }
 interface AuthContextType {
   userData: User | null;
-  saveUserData: () => void;
+  currentUserData: User | null;
+  isLoading: boolean;
+  saveUserData: () => Promise<void>;
   logOut: () => void;
 }
 
@@ -20,33 +24,48 @@ interface AuthContextProvProp {
 }
 export default function AuthContextProvider({ children }: AuthContextProvProp) {
   const [userData, setUserData] = useState<User | null>(null);
-  const logOut = ()=>{
-    localStorage.removeItem('token');
-    setUserData(null)
-  }
-  const saveUserData = () => {
+  const [currentUserData, setCurrentUserData] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const logOut = () => {
+    localStorage.removeItem("token");
+    setUserData(null);
+    setCurrentUserData(null);
+    setIsLoading(false);
+  };
+  const fetchCurrentUserProfile = async () => {
+    try {
+      const response = await getCurrentUser();
+      setCurrentUserData(response?.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const saveUserData = async () => {
     const encoded = localStorage.getItem("token");
     if (encoded) {
+      setIsLoading(true);
       const decoded = jwtDecode<User>(encoded);
-      if (+decoded.exp > Math.trunc(Date.now()/1000)) {
-        
+      if (+decoded.exp > Math.trunc(Date.now() / 1000)) {
         setUserData(decoded);
+        await fetchCurrentUserProfile();
       } else {
         logOut();
         toast.info("token expired! please login again");
       }
     }
+    setIsLoading(false);
   };
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      (()=>{
-
+      (() => {
         saveUserData();
-      })()
+      })();
     }
   }, []);
   return (
-    <AuthContext.Provider value={{ userData, saveUserData,logOut }}>
+    <AuthContext.Provider
+      value={{ userData, saveUserData, logOut, currentUserData, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );
