@@ -29,3 +29,12 @@
 .height-scroll-bar::-webkit-scrollbar {
   display: none;
 }
+.bg-header{
+  background-image: url("./assets/Images/bg-header.jpg");
+  background-position: center 40%;
+  background-size:100% 190%;
+  background-repeat: no-repeat;
+}
+.bg-layer-header{
+  background-color: rgba(49, 89, 81, 0.44) !important;
+}
