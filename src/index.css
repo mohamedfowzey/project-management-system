@@ -65,6 +65,14 @@ input:-webkit-autofill:active {
   border-bottom: 2px solid var(--auth-text-color);
   outline: none;
 }
+.noautofill:-webkit-autofill,
+.noautofill:-webkit-autofill:hover,
+.noautofill:-webkit-autofill:focus,
+.noautofill:-webkit-autofill:active {
+  
+  -webkit-text-fill-color: black !important;
+  
+}
 .custom-input-label {
   color: var(--main-color);
 }

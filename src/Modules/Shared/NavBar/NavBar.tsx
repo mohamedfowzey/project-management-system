@@ -127,7 +127,7 @@ export default function NavBar() {
         <label htmlFor="AcceptConditions" className="relative block h-8 w-14 rounded-full bg-gray-300 transition-colors [-webkit-tap-highlight-color:transparent] has-checked:main-bg-btn cursor-pointer dark:bg-gray-600 dark:has-checked:bg-green-600">
   <input type="checkbox" id="AcceptConditions" className="peer sr-only" onChange={toggleMood}/>
 
-  <span className="absolute inset-y-0 start-0 m-1 size-6 rounded-full bg-white transition-[inset-inline-start] peer-checked:start-6 dark:bg-gray-900" >{mood == 'dark' ? <Sun fill="black"/> :<Moon fill="black"/>}</span>
+  <span className="absolute inset-y-0 start-0 m-1 size-6 rounded-full bg-white transition-[inset-inline-start] peer-checked:start-[calc(100%-30px)] dark:bg-gray-900" >{mood == 'dark' ? <Sun fill="black"/> :<Moon fill="black"/>}</span>
 </label>
         </div>
       </nav>
