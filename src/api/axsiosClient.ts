@@ -21,7 +21,7 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.response.use(
   (response) => {
-    toast.success(response.data.message||'success')
+    toast.success(response.data.message)
     return response;
   },
   (error) => {
