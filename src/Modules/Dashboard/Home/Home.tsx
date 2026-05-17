@@ -6,11 +6,36 @@ import { getUserCount as getUserCountApi, type UserCountresponse } from "../../.
 import { AuthContext } from '../../../Contexts/AuthContext';
 
 
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+
+const StatCard = ({ icon: Icon, title, count, bgColor, iconBgColor, isLoading }: any) => {
+  if (isLoading) {
+    return (
+      <div className="bg-gray-100 rounded-xl shadow-sm p-4 flex flex-col justify-between animate-pulse ">
+        <div className="bg-gray-200 h-10 w-10 rounded-2xl mb-4"></div>
+        <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+        <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`${bgColor} rounded-xl shadow-sm p-4 flex flex-col justify-between `}>
+      <div className={`${iconBgColor} inline-block p-3 rounded-2xl w-fit`}>
+        <Icon strokeWidth={2} />
+      </div>
+      <h3 className="text-base font-bold my-1.5 text-gray-600">{title}</h3>
+      <p className="text-lg font-medium">{count}</p>
+    </div>
+  );
+};
 export default function Home() {
-  ChartJS.register(ArcElement, Tooltip, Legend);
-  
+
 
   const { userData } = useContext(AuthContext) || {};
+  const [loadingTasks, setLoadingTasks] = useState(true);
+  const [loadingUsers, setLoadingUsers] = useState(true);
 
   const [tasksCount, setTasksCount] = useState<ITasksCountResponse>({
     toDo: 0,
@@ -23,26 +48,28 @@ export default function Home() {
     deactivatedEmployeeCount: 0
   });
 
-
-
   const getTasksCount = async () => {
     try {
+      setLoadingTasks(true);
       const response = await getTasksCountApi();
       setTasksCount(response.data);
     } catch (error) {
       console.error("Failed to fetch tasks count:", error);
+    } finally {
+      setLoadingTasks(false);
     }
   }
   const getUserCount = async () => {
     try {
+      setLoadingUsers(true);
       const response = await getUserCountApi();
       setUsersCount(response.data);
     } catch (error) {
       console.error("Failed to fetch users count:", error);
+    } finally {
+      setLoadingUsers(false);
     }
   }
-
-  
 
   useEffect(() => {
     getTasksCount();
@@ -74,29 +101,30 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-violet-200 rounded-xl shadow-sm p-4 flex flex-col justify-between">
+            {/* <div className="bg-violet-200 rounded-xl shadow-sm p-4 flex flex-col justify-between">
               <div className="bg-violet-300 inline-block p-3 rounded-2xl w-fit">
                 <ListTodo strokeWidth={2} />
               </div>
               <h3 className="text-base font-bold my-1.5 text-gray-600">To Do</h3>
               <p className="text-lg font-medium">{tasksCount.toDo} </p>
-            </div>
+            </div> */}
+            <StatCard
+              isLoading={loadingTasks}
+              icon={ListTodo} title="To Do" count={tasksCount.toDo}
+              bgColor="bg-violet-200" iconBgColor="bg-violet-300"
+            />
 
-            <div className="bg-yellow-50 rounded-xl shadow-sm p-4 flex flex-col justify-between">
-              <div className="bg-yellow-200 inline-block p-3 rounded-2xl w-fit">
-                <CalendarClock strokeWidth={2} />
-              </div>
-              <h3 className="text-base font-bold my-1.5 text-gray-600">In Progress</h3>
-              <p className="text-lg font-medium">{tasksCount.inProgress} </p>
-            </div>
+            <StatCard
+              isLoading={loadingTasks}
+              icon={CalendarClock} title="In Progress" count={tasksCount.inProgress}
+              bgColor="bg-yellow-50" iconBgColor="bg-yellow-200"
+            />
 
-            <div className="bg-fuchsia-100 rounded-xl shadow-sm p-4 flex flex-col justify-between">
-              <div className="bg-fuchsia-200 inline-block p-3 rounded-2xl w-fit">
-                <CalendarCheck2 strokeWidth={2} />
-              </div>
-              <h3 className="text-base font-bold my-1.5 text-gray-600">Completed</h3>
-              <p className="text-lg font-medium">{tasksCount.done} </p>
-            </div>
+            <StatCard
+              isLoading={loadingTasks}
+              icon={CalendarCheck2} title="Completed" count={tasksCount.done}
+              bgColor="bg-fuchsia-100" iconBgColor="bg-fuchsia-200"
+            />
           </div>
         </div>
         {/* users counts */}
@@ -107,27 +135,29 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-violet-200 rounded-xl shadow-sm p-4 flex flex-col justify-between">
+
+            {/* <div className="bg-violet-200 rounded-xl shadow-sm p-4 flex flex-col justify-between">
               <div className="bg-violet-300 inline-block p-3 rounded-2xl w-fit">
                 <ShieldCheck />
               </div>
               <h3 className="text-base font-bold my-1.5 text-gray-600">Active</h3>
               <p className="text-lg font-medium">{usersCount.activatedEmployeeCount} </p>
-            </div>
+            </div> */}
+            <StatCard
+              isLoading={loadingUsers}
+              icon={ShieldCheck} title="Active" count={usersCount.activatedEmployeeCount}
+              bgColor="bg-fuchsia-100" iconBgColor="bg-violet-300"
+            />
 
-            <div className="bg-yellow-50 rounded-xl shadow-sm p-4 flex flex-col justify-between">
-              <div className="bg-yellow-200 inline-block p-3 rounded-2xl w-fit">
-                <ShieldOff strokeWidth={2} />
-              </div>
-              <h3 className="text-base font-bold my-1.5 text-gray-600">Inactive</h3>
-              <p className="text-lg font-medium">{usersCount.deactivatedEmployeeCount}  </p>
-            </div>
+            <StatCard
+              isLoading={loadingUsers}
+              icon={ShieldOff} title="Inactive" count={usersCount.deactivatedEmployeeCount}
+              bgColor="bg-yellow-50" iconBgColor="bg-yellow-200"
+            />
+
           </div>
         </div>
-
       </div>
-
-
 
     </div>
 
