@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, use, useEffect, useState, type ReactNode } from "react";
 import { toast } from "react-toastify";
 import { getCurrentUser } from "../api/modules/user";
 interface User {
@@ -13,6 +13,8 @@ interface AuthContextType {
   userData: User | null;
   currentUserData: User | null;
   isLoading: boolean;
+  mood:'light'|'dark'
+  toggleMood:()=>void;
   saveUserData: () => Promise<void>;
   logOut: () => void;
 }
@@ -26,6 +28,8 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
   const [userData, setUserData] = useState<User | null>(null);
   const [currentUserData, setCurrentUserData] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [mood,setMood] = useState<'light'|'dark'>('dark')
+  const toggleMood = ()=>{setMood(p=>p=='light'?'dark':'light')}
   const logOut = () => {
     localStorage.removeItem("token");
     setUserData(null);
@@ -64,7 +68,7 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
   }, []);
   return (
     <AuthContext.Provider
-      value={{ userData, saveUserData, logOut, currentUserData, isLoading }}
+      value={{ userData, saveUserData, logOut, currentUserData, isLoading, mood, toggleMood }}
     >
       {children}
     </AuthContext.Provider>

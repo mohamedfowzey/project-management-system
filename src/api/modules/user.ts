@@ -1,6 +1,6 @@
 import axiosClient from "../axsiosClient";
 
-interface getUserData {
+export interface getUserData {
     userName: string;
     email: string;
     country: string;
@@ -9,7 +9,7 @@ interface getUserData {
     pageNumber: number;
 
 }
-interface createUserData {
+export interface createUserData {
     userName: string;
     email: string;
     country: string;
@@ -19,8 +19,13 @@ interface createUserData {
     confirmPassword : string;
 
 }
-interface UserId {
+export interface UserId {
     id: number;
+}
+
+export interface UserCountresponse  {
+    activatedEmployeeCount: number; 
+    deactivatedEmployeeCount: number;
 }
 
 export const getUsers = (userData: getUserData) => {
@@ -42,4 +47,7 @@ export const createUsers = (data: createUserData) => {
 
 export const getCurrentUser = () => {
     return axiosClient.get("/Users/currentUser");
+}
+export const getUserCount = () => {
+    return axiosClient.get<UserCountresponse>("/Users/count");
 }
