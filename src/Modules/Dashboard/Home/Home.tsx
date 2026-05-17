@@ -1,6 +1,7 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { CalendarCheck2, CalendarClock, ListTodo, ShieldCheck, ShieldOff } from 'lucide-react';
 import { useContext, useEffect, useState } from 'react';
+import { Doughnut } from 'react-chartjs-2';
 import { getTasksCount as getTasksCountApi, type ITasksCountResponse } from "../../../api/modules/tasks";
 import { getUserCount as getUserCountApi, type UserCountresponse } from "../../../api/modules/user";
 import { AuthContext } from '../../../Contexts/AuthContext';
@@ -23,17 +24,17 @@ const StatCard = ({ icon: Icon, title, count, bgColor, iconBgColor, isLoading }:
   return (
     <div className={`${bgColor} rounded-xl shadow-sm p-4 flex flex-col justify-between `}>
       <div className={`${iconBgColor} inline-block p-3 rounded-2xl w-fit`}>
-        <Icon strokeWidth={2} />
+        <Icon className="text-black" strokeWidth={2} />
       </div>
       <h3 className="text-base font-bold my-1.5 text-gray-600">{title}</h3>
-      <p className="text-lg font-medium">{count}</p>
+      <p className="text-lg text-black font-medium">{count}</p>
     </div>
   );
 };
 export default function Home() {
 
 
-  const { userData } = useContext(AuthContext) || {};
+  const { userData, mood } = useContext(AuthContext) || {};
   const [loadingTasks, setLoadingTasks] = useState(true);
   const [loadingUsers, setLoadingUsers] = useState(true);
 
@@ -76,6 +77,60 @@ export default function Home() {
     getUserCount();
   }, []);
 
+  const chartTasksData = {
+    labels: ['To Do', 'In Progress', 'Completed'],
+    datasets: [
+      {
+        data: [tasksCount.toDo, tasksCount.inProgress, tasksCount.done],
+        backgroundColor: [
+          '#DDD6FF',
+          '#FEFCE8',
+          '#FAE8FF',
+        ],
+        borderWidth: 2,
+        borderColor: [
+          '#C4B4FF',
+          '#FFF085',
+          '#F6CFFF',
+        ],
+      },
+    ],
+  };
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'right' as const,
+        labels: {
+          color: mood === 'light' ? '#4B5563' : '#ffffff',
+          font: {
+            size: 14,
+          },
+        }
+      },
+    },
+  };
+
+  const chartUsersData = {
+    labels: ['Active', 'Inactive'],
+    datasets: [
+      {
+        data: [usersCount.activatedEmployeeCount, usersCount.deactivatedEmployeeCount],
+        backgroundColor: [
+          '#FAE8FF',
+          '#FEFCE8',
+        ],
+        borderWidth: 2,
+        borderColor: [
+          '#F6CFFF',
+          '#FFF085',
+
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="p-6">
       {/* header */}
@@ -94,10 +149,10 @@ export default function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         {/* tasks counts */}
 
-        <div className="bg-white rounded-xl shadow-md overflow-hidden p-6 flex flex-col justify-between">
+        <div className={` ${mood === 'light' ? 'bg-white' : 'bg-gray-800'} rounded-xl shadow-md overflow-hidden p-6 flex flex-col justify-between`}>
           <div className="mb-6 ps-4 border-s-4 border-solid border-amber-500">
             <h2 className="text-xl font-semibold">Tasks</h2>
-            <p className="text-gray-600 text-sm">Lorem ipsum dolor sit amet, consecteture</p>
+            <p className={` ${mood === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm`}>Lorem ipsum dolor sit amet, consecteture</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -125,13 +180,21 @@ export default function Home() {
               icon={CalendarCheck2} title="Completed" count={tasksCount.done}
               bgColor="bg-fuchsia-100" iconBgColor="bg-fuchsia-200"
             />
+
+          </div>
+          <div className="h-48 mt-5 relative flex justify-center items-center px-10">
+            {loadingTasks ? (
+              <div className="h-48 w-48 rounded-full border-[20px] border-gray-300 border-t-gray-200 animate-spin"></div>
+            ) : (
+              <Doughnut data={chartTasksData} options={chartOptions} />
+            )}
           </div>
         </div>
         {/* users counts */}
-        <div className="bg-white rounded-xl shadow-md overflow-hidden p-6 flex flex-col justify-between">
+        <div className={`${mood === 'light' ? 'bg-white' : 'bg-gray-800'} rounded-xl shadow-md overflow-hidden p-6 flex flex-col justify-between`}>
           <div className="mb-6 ps-4 border-s-4 border-solid border-amber-500">
             <h2 className="text-xl font-semibold">Users</h2>
-            <p className="text-gray-600 text-sm">Lorem ipsum dolor sit amet, consecteture</p>
+            <p className={` ${mood === 'light' ? 'text-gray-600' : 'text-gray-400'} text-sm`}>Lorem ipsum dolor sit amet, consecteture</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -146,7 +209,7 @@ export default function Home() {
             <StatCard
               isLoading={loadingUsers}
               icon={ShieldCheck} title="Active" count={usersCount.activatedEmployeeCount}
-              bgColor="bg-fuchsia-100" iconBgColor="bg-violet-300"
+              bgColor="bg-fuchsia-100" iconBgColor="bg-fuchsia-200"
             />
 
             <StatCard
@@ -155,6 +218,15 @@ export default function Home() {
               bgColor="bg-yellow-50" iconBgColor="bg-yellow-200"
             />
 
+          </div>
+          <div className="h-48 mt-5 relative flex justify-center items-start px-10">
+            {loadingUsers ? (
+              <div className="h-48 w-48  rounded-full border-[20px] border-gray-300 border-t-gray-200 animate-spin"></div>
+            ) : (
+
+              <Doughnut data={chartUsersData} options={chartOptions} />
+
+            )}
           </div>
         </div>
       </div>
