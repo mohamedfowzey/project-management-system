@@ -18,6 +18,9 @@ import Users from "./Modules/Dashboard/Users/Users";
 import UserTasks from "./Modules/Dashboard/UserTasks/UserTasks";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./Modules/Shared/ProtectedRoutes/ProtectedRoutes";
+import AOS from 'aos';
+import 'aos/dist/aos.css'; 
+import { useEffect } from 'react';
 
 function App() {
   const routes = createBrowserRouter([
@@ -57,6 +60,13 @@ function App() {
       ],
     },
   ]);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 600, 
+      once: false,    
+    });
+  }, []);
 
   return (
     <>

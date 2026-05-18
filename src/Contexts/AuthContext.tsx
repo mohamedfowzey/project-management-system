@@ -9,7 +9,7 @@ interface User {
   exp: string;
   imagePath?: string;
 }
-interface AuthContextType {
+export interface AuthContextType {
   userData: User | null;
   currentUserData: User | null;
   isLoading: boolean;

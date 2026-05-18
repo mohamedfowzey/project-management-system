@@ -1,8 +1,15 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ProjectsApi } from "../../../api";
-import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  FilePenLine,
+  Search,
+  Trash2,
+} from "lucide-react";
 
 interface Project {
   id: number;
@@ -10,13 +17,15 @@ interface Project {
   status: string;
   numUsers: number;
   numTasks: number;
-  dateCreated: string;
+  creationDate: string;
+  manager?: {
+    country: string;
+    phoneNumber: number;
+  };
 }
-
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [openMenu, setOpenMenu] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +37,7 @@ export default function Projects() {
   const fetchProjects = async () => {
     try {
       setLoading(true);
+
       const response = await ProjectsApi.getAllProjects({
         pageNumber: currentPage,
         pageSize: pageSize,
@@ -37,9 +47,8 @@ export default function Projects() {
 
       setProjects(response.data.data);
       setTotalResults(response.data.totalNumberOfRecords || 0);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch projects");
-      console.error("Error fetching projects:", err);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
     } finally {
       setLoading(false);
     }
@@ -84,7 +93,7 @@ export default function Projects() {
     : projects;
   useEffect(() => {
     fetchProjects();
-  }, [currentPage, pageSize, searchTerm]);
+  }, [searchTerm, currentPage, pageSize]);
 
   return (
     <>
@@ -97,7 +106,7 @@ export default function Projects() {
       </div>
     <div className="table-wrapper">
       <div className="search-filter-container">
-        <div className="search-wrapper">
+        <div className="search-wrapper  ">
           <span className="search-icon">
             <Search size={20} strokeWidth={1.75} />
           </span>
@@ -110,11 +119,8 @@ export default function Projects() {
           />
         </div>
       </div>
-
-      {error && <div style={{ color: "red", padding: "10px" }}>{error}</div>}
-
       {loading ? (
-        <div style={{ textAlign: "center", padding: "20px" }}>Loading...</div>
+        <div className=" text-center p-5">Loading...</div>
       ) : (
         <>
           <div className="table-container">
@@ -123,8 +129,8 @@ export default function Projects() {
                 <tr>
                   <th>Title</th>
                   <th>Status</th>
-                  <th>Num Users</th>
-                  <th>Num Tasks</th>
+                  <th>phone Number</th>
+                  <th>country</th>
                   <th>Date Created</th>
                   <th></th>
                 </tr>
@@ -133,13 +139,19 @@ export default function Projects() {
                 {filteredProjects.length > 0 ? (
                   filteredProjects.map((project) => (
                     <tr key={project?.id} className="table-row">
-                      <td>{project.title}</td>
+                      <td className=" dark:text-black ">{project.title}</td>
                       <td>
-                        <span className="status-badge">{project.status}</span>
+                        <span className="status-badge ">Public</span>
                       </td>
-                      <td>{project.numUsers}</td>
-                      <td>{project.numTasks}</td>
-                      <td>{project.dateCreated}</td>
+                      <td className=" dark:text-black ">
+                        {project.manager?.phoneNumber}
+                      </td>
+                      <td className=" dark:text-black ">
+                        {project?.manager?.country}
+                      </td>
+                      <td className=" dark:text-black ">
+                        {new Date(project.creationDate).toLocaleDateString()}
+                      </td>
                       <td className="actions-cell">
                         <div className="actions-wrapper">
                           <button
@@ -154,16 +166,34 @@ export default function Projects() {
                           </button>
                           {openMenu === project.id && (
                             <div className="actions-menu">
-                              <button className="action-btn view-btn">
+                              <button className="action-btn view-btn  dark:text-black ">
+                                <Eye
+                                  color="var(--bg-main-color)"
+                                  size={20}
+                                  strokeWidth={1.5}
+                                  absoluteStrokeWidth
+                                />{" "}
                                 View
                               </button>
-                              <button className="action-btn edit-btn" onClick={()=>navigate(`/dashboard/edit-project/${project?.id}`)}>
+                              <button className="action-btn edit-btn  dark:text-black" onClick={()=>navigate(`/dashboard/edit-project/${project?.id}`)}>
+                                <FilePenLine
+                                  color="var(--bg-main-color)"
+                                  size={20}
+                                  strokeWidth={1.5}
+                                  absoluteStrokeWidth
+                                />{" "}
                                 Edit
                               </button>
                               <button
-                                className="action-btn delete-btn"
+                                className="action-btn delete-btn dark:text-black"
                                 onClick={() => handleDelete(project.id)}
                               >
+                                <Trash2
+                                  color="var(--bg-main-color)"
+                                  size={20}
+                                  strokeWidth={1.5}
+                                  absoluteStrokeWidth
+                                />{" "}
                                 Delete
                               </button>
                             </div>
@@ -174,7 +204,7 @@ export default function Projects() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={6} style={{ textAlign: "center" }}>
+                    <td colSpan={6} className="text-center dark:text-black">
                       No projects found
                     </td>
                   </tr>
@@ -197,16 +227,28 @@ export default function Projects() {
                 <option value={20}>20</option>
               </select>
               <span>of {totalResults} Results</span>
-              <span>
+              <span className="ml-4">
                 Page {currentPage} of {Math.ceil(totalResults / pageSize)}
               </span>
             </div>
             <div className="pagination-controls">
-              <button className="page-btn" onClick={handlePrevPage}>
-                &lt;
+              <button
+                className="page-btn"
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft
+                  size={20}
+                  strokeWidth={1.5}
+                  absoluteStrokeWidth
+                />{" "}
               </button>
-              <button className="page-btn" onClick={handleNextPage}>
-                &gt;
+              <button
+                className="page-btn"
+                onClick={handleNextPage}
+                disabled={currentPage >= Math.ceil(totalResults / pageSize)}
+              >
+                <ChevronRight size={20} strokeWidth={1.5} absoluteStrokeWidth />
               </button>
             </div>
           </div>
