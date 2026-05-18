@@ -1,5 +1,7 @@
+import { useForm } from "react-hook-form";
 
 export default function ProjectDataForm() {
+  const {register,handleSubmit,formState:{errors}} = useForm()
   return (
     <>
       <div className="h-[calc(100vh-80px)] self-stretch flex justify-center items-center">
@@ -25,7 +27,7 @@ export default function ProjectDataForm() {
               className="mt-0.5 w-full rounded-2xl p-2 border-1 focus-visible:outline-0  border-gray-300 shadow-sm md:text-xl dark:shadow-sm shadow-gray-600 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
             ></textarea>
             <div className="flex justify-between">
-
+                
             </div>
           </div>{" "}
         </div>
