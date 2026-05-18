@@ -6,7 +6,7 @@ interface GetProjectsParams {
   search?: string;
 }
 
-interface CreateProjectData {
+export interface CreateProjectData {
   title: string;
   description?: string;
 }

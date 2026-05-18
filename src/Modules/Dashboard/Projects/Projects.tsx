@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { ProjectsApi } from "../../../api";
+import { useNavigate } from "react-router-dom";
+import CustomButton from "../../Shared/CustomButton/CustomButton";
 import {
   ChevronLeft,
   ChevronRight,
@@ -29,6 +31,8 @@ export default function Projects() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalResults, setTotalResults] = useState(0);
+
+  const navigate = useNavigate() 
 
   const fetchProjects = async () => {
     try {
@@ -92,6 +96,14 @@ export default function Projects() {
   }, [searchTerm, currentPage, pageSize]);
 
   return (
+    <>
+    <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
+        <h1>Projects</h1>
+        <div className="shrink mt-[-1rem]" onClick={()=>navigate('/dashboard/add-project')}>
+    
+        <CustomButton text=" + add project " />
+        </div>
+      </div>
     <div className="table-wrapper">
       <div className="search-filter-container">
         <div className="search-wrapper  ">
@@ -163,7 +175,7 @@ export default function Projects() {
                                 />{" "}
                                 View
                               </button>
-                              <button className="action-btn edit-btn  dark:text-black">
+                              <button className="action-btn edit-btn  dark:text-black" onClick={()=>navigate(`/dashboard/edit-project/${project?.id}`)}>
                                 <FilePenLine
                                   color="var(--bg-main-color)"
                                   size={20}
@@ -243,5 +255,6 @@ export default function Projects() {
         </>
       )}
     </div>
+    </>
   );
 }
