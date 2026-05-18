@@ -49,7 +49,7 @@ body{
   border-bottom-color: var(--auth-text-color);
   border-bottom-width: 0.3px;
 }
-input {
+input,textarea {
   caret-color: var(--main-color);
   caret-shape: block;
 }
