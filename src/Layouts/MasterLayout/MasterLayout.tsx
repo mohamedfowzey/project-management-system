@@ -6,6 +6,8 @@ import { AuthContext } from "../../Contexts/AuthContext";
 
 export default function MasterLayout() {
   const {mood} = useContext(AuthContext)
+  // const authContext = useContext(AuthContext);
+  // const mood = authContext?.mood;
   return (
     <>
       <div className={`flex flex-col min-h-screen ${mood} dark:bg-gray-900 dark:text-gray-50`}>
