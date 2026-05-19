@@ -320,7 +320,7 @@ tr:nth-last-child(2) .actions-menu,
   background-color: var(--bg-main-light-color);
   color: var(--bg-main-color);
 }
-.delete-btn:hover {
+.delete-btn:hover  ,.block-btn:hover {
   background-color: #d52c12e2;
   color: var(--auth-text-color);
 } /* Pagination */
