@@ -6,8 +6,8 @@ interface GetProjectsParams {
   search?: string;
 }
 
-interface CreateProjectData {
-  title: string;
+export interface CreateProjectData {
+  title: string ;
   description?: string;
 }
 
@@ -26,7 +26,7 @@ export const getAllProjects = (params?: GetProjectsParams) => {
   });
 };
 
-export const getProjectById = (id: number) => {
+export const getProjectById = (id: string) => {
   return axiosClient.get(`/Project/${id}`);
 };
 
@@ -54,7 +54,7 @@ export const createProject = (data: CreateProjectData) => {
   return axiosClient.post("/Project", data);
 };
 
-export const updateProject = (id: number, data: UpdateProjectData) => {
+export const updateProject = (id: number, data: CreateProjectData) => {
   return axiosClient.put(`/Project/${id}`, data);
 };
 

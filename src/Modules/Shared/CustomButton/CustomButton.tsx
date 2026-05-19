@@ -3,9 +3,11 @@ interface Props {
   loading?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  bg?:string
 }
 
 export default function CustomButton({
+  bg = 'main-Bg-btn',
   text,
   loading,
   disabled,
@@ -17,7 +19,7 @@ export default function CustomButton({
         type="submit"
         disabled={loading || disabled}
         onClick={onClick}
-        className={`main-Bg-btn w-full p-2 mt-4 rounded-full ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+        className={`${bg} text-white w-full p-2 px-4 mt-4 rounded-full ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
       >
         {loading ? (
           <>

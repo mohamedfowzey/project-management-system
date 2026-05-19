@@ -5,13 +5,9 @@ import { Doughnut } from 'react-chartjs-2';
 import { getTasksCount as getTasksCountApi, type ITasksCountResponse } from "../../../api/modules/tasks";
 import { getUserCount as getUserCountApi, type UserCountresponse } from "../../../api/modules/user";
 import { AuthContext } from '../../../Contexts/AuthContext';
-// import ProjectViewModal from '../../Shared/ProjectViewModal/ProjectViewModal';
-// import { Card, Button } from "flowbite-react";
-// import { HiChartPie, HiClipboardList } from "react-icons/hi";
-
+import NoData from '../../Shared/NoData/NoData';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
 
 const StatCard = ({ icon: Icon, title, count, bgColor, iconBgColor, isLoading }: any) => {
   if (isLoading) {
@@ -37,7 +33,7 @@ const StatCard = ({ icon: Icon, title, count, bgColor, iconBgColor, isLoading }:
 export default function Home() {
 
 
-  const { userData, mood } = useContext(AuthContext) || {};
+  const { userData ,mood} = useContext(AuthContext) || {};
   const [loadingTasks, setLoadingTasks] = useState(true);
   const [loadingUsers, setLoadingUsers] = useState(true);
 
@@ -110,6 +106,7 @@ export default function Home() {
           font: {
             size: 14,
           },
+          cursor: 'pointer',
         }
       },
     },
@@ -134,7 +131,11 @@ export default function Home() {
     ],
   };
 
+  const hasData = chartTasksData?.datasets[0]?.data?.some(val => val > 0);
+
   return (
+    <>
+    
     <div className="p-6">
       {/* header */}
       <div className="p-6 py-16 bg-header rounded-xl shadow-md text-white overflow-hidden relative ">
@@ -187,9 +188,11 @@ export default function Home() {
           </div>
           <div className="h-48 mt-5 relative flex justify-center items-center px-10">
             {loadingTasks ? (
-              <div className="h-48 w-48 rounded-full border-20 border-gray-300 border-t-gray-200 animate-spin"></div>
-            ) : (
+              <div className="h-48 w-48 rounded-full border-\[20px\] border-gray-300 border-t-gray-200 animate-spin"></div>
+            ) :hasData? (
               <Doughnut data={chartTasksData} options={chartOptions} />
+            ) : (
+              <NoData />
             )}
           </div>
         </div>
@@ -224,7 +227,7 @@ export default function Home() {
           </div>
           <div className="h-48 mt-5 relative flex justify-center items-start px-10">
             {loadingUsers ? (
-              <div className="h-48 w-48  rounded-full border-20 border-gray-300 border-t-gray-200 animate-spin"></div>
+              <div className="h-48 w-48  rounded-full border-\[20px\] border-gray-300 border-t-gray-200 animate-spin"></div>
             ) : (
 
               <Doughnut data={chartUsersData} options={chartOptions} />
@@ -233,16 +236,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      
-
-      
-
     </div>
-
-
-
+    </>
   )
-
-
 }
 
