@@ -14,6 +14,7 @@ import {
 import type { User } from "../../../api/modules/user";
 import type { Project } from "../../../api/modules/Projects";
 import NoData from "../../Shared/NoData/NoData";
+import TableSkeleton from "@/Modules/Shared/TableSkeleton/TableSkeleton";
 // "../../Modules/Shared/NoData/NoData";
 
 interface Task {
@@ -129,7 +130,7 @@ export default function Projects() {
           </div>
         </div>
         {loading ? (
-          <div className=" text-center p-5">Loading...</div>
+          <TableSkeleton />
         ) : (
           <>
             <div className="table-container">
