@@ -5,7 +5,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { getTasksCount as getTasksCountApi, type ITasksCountResponse } from "../../../api/modules/tasks";
 import { getUserCount as getUserCountApi, type UserCountresponse } from "../../../api/modules/user";
 import { AuthContext } from '../../../Contexts/AuthContext';
-import ProjectViewModal from '../../Shared/ProjectViewModal/ProjectViewModal';
+// import ProjectViewModal from '../../Shared/ProjectViewModal/ProjectViewModal';
 // import { Card, Button } from "flowbite-react";
 // import { HiChartPie, HiClipboardList } from "react-icons/hi";
 
