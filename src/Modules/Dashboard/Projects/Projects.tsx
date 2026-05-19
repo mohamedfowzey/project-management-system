@@ -3,6 +3,7 @@ import { ProjectsApi } from "../../../api";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import {
+  ArrowUpZA,
   ChevronLeft,
   ChevronRight,
   Eye,
@@ -11,6 +12,7 @@ import {
   Trash2,
 } from "lucide-react";
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
+import NoData from "../../Shared/NoData/NoData";
 
 interface Project {
   id: number;
@@ -33,7 +35,7 @@ export default function Projects() {
   const [pageSize, setPageSize] = useState(10);
   const [totalResults, setTotalResults] = useState(0);
 
-  const navigate = useNavigate() 
+  const navigate = useNavigate();
 
   const fetchProjects = async () => {
     try {
@@ -105,164 +107,192 @@ export default function Projects() {
 
   return (
     <>
-    <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
+      <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
         <h1>Projects</h1>
-        <div className="shrink mt-[-1rem]" onClick={()=>navigate('/dashboard/add-project')}>
-    
-        <CustomButton text=" + add project " />
+        <div
+          className="shrink "
+          onClick={() => navigate("/dashboard/add-project")}
+        >
+          <CustomButton text=" + add project " />
         </div>
       </div>
-    <div className="table-wrapper">
-      <div className="search-filter-container">
-        <div className="search-wrapper  ">
-          <span className="search-icon">
-            <Search size={20} strokeWidth={1.75} />
-          </span>
-          <input
-            type="text"
-            placeholder="Search By Title"
-            className="search-input dark:text-black "
-            value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
+      <div className="table-wrapper">
+        <div className="search-filter-container">
+          <div className="search-wrapper  ">
+            <span className="search-icon">
+              <Search size={20} strokeWidth={1.75} />
+            </span>
+            <input
+              type="text"
+              placeholder="Search By Title"
+              className="search-input dark:text-white"
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
-      {loading ? (
-        <TableSkeleton/>
-      ) : (
-        <>
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Status</th>
-                  <th>phone Number</th>
-                  <th>country</th>
-                  <th>Date Created</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProjects.length > 0 ? (
-                  filteredProjects.map((project) => (
-                    <tr key={project?.id} className="table-row">
-                      <td className=" dark:text-black ">{project.title}</td>
-                      <td>
-                        <span className="status-badge ">Public</span>
-                      </td>
-                      <td className=" dark:text-black ">
-                        {project.manager?.phoneNumber}
-                      </td>
-                      <td className=" dark:text-black ">
-                        {project?.manager?.country}
-                      </td>
-                      <td className=" dark:text-black ">
-                        {new Date(project.creationDate).toLocaleDateString()}
-                      </td>
-                      <td className="actions-cell">
-                        <div className="actions-wrapper">
-                          <button
-                            className="menu-btn"
-                            onClick={() =>
-                              setOpenMenu(
-                                openMenu === project.id ? null : project.id,
-                              )
-                            }
-                          >
-                            ⋮
-                          </button>
-                          {openMenu === project.id && (
-                            <div className="actions-menu">
-                              <button className="action-btn view-btn  dark:text-black ">
-                                <Eye
-                                  color="var(--bg-main-color)"
-                                  size={20}
-                                  strokeWidth={1.5}
-                                  absoluteStrokeWidth
-                                />{" "}
-                                View
-                              </button>
-                              <button className="action-btn edit-btn  dark:text-black" onClick={()=>navigate(`/dashboard/edit-project/${project?.id}`)}>
-                                <FilePenLine
-                                  color="var(--bg-main-color)"
-                                  size={20}
-                                  strokeWidth={1.5}
-                                  absoluteStrokeWidth
-                                />{" "}
-                                Edit
-                              </button>
-                              <button
-                                className="action-btn delete-btn dark:text-black"
-                                onClick={() => handleDelete(project.id)}
-                              >
-                                <Trash2
-                                  color="var(--bg-main-color)"
-                                  size={20}
-                                  strokeWidth={1.5}
-                                  absoluteStrokeWidth
-                                />{" "}
-                                Delete
-                              </button>
-                            </div>
-                          )}
-                        </div>
+        {loading ? (
+          <TableSkeleton />
+        ) : (
+          <>
+            <div className="table-container">
+              <table className="data-table">
+                <thead>
+                  <tr className="bg-emerald-800 text-white dark:bg-gray-700">
+                    <th className="flex gap-1 items-center ">
+                      Title{" "}
+                      <ArrowUpZA
+                        size={20}
+                        strokeWidth={1.5}
+                        absoluteStrokeWidth
+                      />
+                    </th>
+                    <th>Status</th>
+                    <th>phone Number</th>
+                    <th>country</th>
+                    <th>Date Created</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredProjects.length > 0 ? (
+                    filteredProjects.map((project) => (
+                      <tr
+                        key={project?.id}
+                        className="table-row dark:bg-taupe-900"
+                      >
+                        <td>{project.title}</td>
+                        <td>
+                          <span className="status-badge bg-emerald-800 text-white dark:bg-gray-700">
+                            Public
+                          </span>
+                        </td>
+                        <td>{project.manager?.phoneNumber}</td>
+                        <td>{project?.manager?.country}</td>
+                        <td>
+                          {new Date(project.creationDate).toLocaleDateString()}
+                        </td>
+                        <td className="actions-cell">
+                          <div className="actions-wrapper">
+                            <button
+                              className="menu-btn"
+                              onClick={() =>
+                                setOpenMenu(
+                                  openMenu === project.id ? null : project.id,
+                                )
+                              }
+                            >
+                              ⋮
+                            </button>
+                            {openMenu === project.id && (
+                              <div className="actions-menu bg-amber-50  dark:bg-gray-400 ">
+                                <button className="action-btn view-btn  dark:text-gray-700 ">
+                                  <Eye
+                                    color="var(--bg-main-color)"
+                                    size={20}
+                                    strokeWidth={1.5}
+                                    absoluteStrokeWidth
+                                  />{" "}
+                                  View
+                                </button>
+                                <button
+                                  className="action-btn edit-btn  dark:text-emerald-900"
+                                  onClick={() =>
+                                    navigate(
+                                      `/dashboard/edit-project/${project?.id}`,
+                                    )
+                                  }
+                                >
+                                  <FilePenLine
+                                    color="var(--bg-main-color)"
+                                    size={20}
+                                    strokeWidth={1.5}
+                                    absoluteStrokeWidth
+                                  />{" "}
+                                  Edit
+                                </button>
+                                <button
+                                  className="action-btn delete-btn dark:text-red-900 "
+                                  onClick={() => handleDelete(project.id)}
+                                >
+                                  <Trash2
+                                    size={20}
+                                    strokeWidth={1.5}
+                                    absoluteStrokeWidth
+                                  />{" "}
+                                  Delete
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={6} className="text-center dark:text-black">
+                        <NoData />
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={6} className="text-center dark:text-black">
-                      No projects found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                  )}
+                </tbody>
+              </table>
+            </div>
 
-          <div className="pagination ">
-            <div className="pagination-info">
-              <span>Showing</span>
-              <select
-                value={pageSize}
-                onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-                className="page-size-select"
-              >
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={15}>15</option>
-                <option value={20}>20</option>
-              </select>
-              <span>of {totalResults} Results</span>
-              <span className="ml-4">
-                Page {currentPage} of {Math.ceil(totalResults / pageSize)}
-              </span>
+            <div className="pagination ">
+              <div className="pagination-info">
+                <span>Showing</span>
+                <select
+                  value={pageSize}
+                  onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+                  className="page-size-select bg-white dark:bg-black "
+                >
+                  <option className=" dark:text-gray-300" value={5}>
+                    5
+                  </option>
+                  <option className=" dark:text-gray-300" value={10}>
+                    10
+                  </option>
+                  <option className=" dark:text-gray-300" value={15}>
+                    15
+                  </option>
+                  <option className=" dark:text-gray-300" value={20}>
+                    20
+                  </option>
+                </select>
+                <span>of {totalResults} Results</span>
+                <span className="ml-4">
+                  Page {currentPage} of {Math.ceil(totalResults / pageSize)}
+                </span>
+              </div>
+              <div className="pagination-controls">
+                <button
+                  className="page-btn"
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft
+                    size={20}
+                    strokeWidth={1.5}
+                    absoluteStrokeWidth
+                  />{" "}
+                </button>
+                <button
+                  className="page-btn dark:bg-cyan-900 dark:text-white"
+                  onClick={handleNextPage}
+                  disabled={currentPage >= Math.ceil(totalResults / pageSize)}
+                >
+                  <ChevronRight
+                    size={20}
+                    strokeWidth={1.5}
+                    absoluteStrokeWidth
+                  />
+                </button>
+              </div>
             </div>
-            <div className="pagination-controls">
-              <button
-                className="page-btn"
-                onClick={handlePrevPage}
-                disabled={currentPage === 1}
-              >
-                <ChevronLeft
-                  size={20}
-                  strokeWidth={1.5}
-                  absoluteStrokeWidth
-                />{" "}
-              </button>
-              <button
-                className="page-btn"
-                onClick={handleNextPage}
-                disabled={currentPage >= Math.ceil(totalResults / pageSize)}
-              >
-                <ChevronRight size={20} strokeWidth={1.5} absoluteStrokeWidth />
-              </button>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
     </>
   );
 }
