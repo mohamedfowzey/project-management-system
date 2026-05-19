@@ -14,6 +14,7 @@ import {
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 import NoData from "../../Shared/NoData/NoData";
 import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
+import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
 
 // interface Project {
 //   id: number;
@@ -54,6 +55,7 @@ export default function Projects() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalResults, setTotalResults] = useState(0);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const navigate = useNavigate();
 
@@ -77,22 +79,33 @@ export default function Projects() {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  // Delete Modal State
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const confirmDelete = async (id: number) => {
     try {
       await ProjectsApi.deleteProject(id);
       setProjects(projects.filter((p) => p.id !== id));
-      setOpenMenu(null);
+      setIsDeleteOpen(false); 
     } catch (err) {
       console.error("Error deleting project:", err);
     }
   };
 
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const handleOpenDelete = (project: Project) => {
+    setSelectedProject(project);
+    setIsDeleteOpen(true);
+    setOpenMenu(null);
+  };
+  
+  // View Modal State
   const [isOpen, setIsOpen] = useState(false);
+
   const handleView = (project: Project) => {
     setSelectedProject(project);
     setIsOpen(true);
   }
+
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -245,7 +258,7 @@ export default function Projects() {
                                 </button>
                                 <button
                                   className="action-btn delete-btn dark:text-red-900 "
-                                  onClick={() => handleDelete(project.id)}
+                                  onClick={() => handleOpenDelete(project)}
                                 >
                                   <Trash2
                                     size={20}
@@ -332,6 +345,16 @@ export default function Projects() {
           setIsOpen={setIsOpen}
         />
       )}
+
+      {selectedProject && (
+        <DeleteConfirm 
+          project={selectedProject}
+          isOpen={isDeleteOpen}
+          setIsOpen={setIsDeleteOpen}
+          onConfirmDelete={confirmDelete}
+        />
+      )}
+    
     </>
   );
 }
