@@ -6,9 +6,11 @@ import { AuthContext } from "../../Contexts/AuthContext";
 
 export default function MasterLayout() {
   const {mood} = useContext(AuthContext)
+  // const authContext = useContext(AuthContext);
+  // const mood = authContext?.mood;
   return (
     <>
-      <div className={`flex flex-col min-h-screen ${mood} dark:bg-gray-900 dark:text-gray-50`}>
+      <div className={`flex flex-col min-h-screen bg-gray-50 ${mood} dark:bg-gray-900 dark:text-gray-50`}>
         <div className="w-full">
           <NavBar />
         </div>
