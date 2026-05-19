@@ -13,11 +13,13 @@ import {
 } from "lucide-react";
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 import NoData from "../../Shared/NoData/NoData";
+import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
+import { toast } from "react-toastify";
 
 interface Project {
   id: number;
   title: string;
-  status:boolean;
+  status: boolean;
   numUsers: number;
   numTasks: number;
   creationDate: string;
@@ -61,6 +63,7 @@ export default function Projects() {
     try {
       await ProjectsApi.deleteProject(id);
       setProjects(projects.filter((p) => p.id !== id));
+      toast.success("Deleted Successfully");
       setOpenMenu(null);
     } catch (err) {
       console.error("Error deleting project:", err);
@@ -98,16 +101,15 @@ export default function Projects() {
 
   const filteredProjects = searchTerm
     ? projects.filter((project) =>
-      project.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
+        project.title.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
     : projects;
   useEffect(() => {
-    const delay = setTimeout(()=>{
-
+    const delay = setTimeout(() => {
       fetchProjects();
-    },500);
-    
-    return ()=> clearTimeout(delay)
+    }, 500);
+
+    return () => clearTimeout(delay);
   }, [searchTerm, currentPage, pageSize]);
 
   return (
@@ -216,17 +218,13 @@ export default function Projects() {
                                   />{" "}
                                   Edit
                                 </button>
-                                <button
-                                  className="action-btn delete-btn dark:text-red-900 "
-                                  onClick={() => handleDelete(project.id)}
-                                >
-                                  <Trash2
-                                    size={20}
-                                    strokeWidth={1.5}
-                                    absoluteStrokeWidth
-                                  />{" "}
-                                  Delete
-                                </button>
+                                <div className="action-btn delete-btn dark:text-red-900 p-0">
+                                  <DeleteConfirm
+                                    onDeleteConfirm={() =>
+                                      handleDelete(project.id)
+                                    }
+                                  />
+                                </div>
                               </div>
                             )}
                           </div>
@@ -301,4 +299,3 @@ export default function Projects() {
     </>
   );
 }
-
