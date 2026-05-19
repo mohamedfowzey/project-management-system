@@ -14,7 +14,7 @@ import {
 import type { User } from "../../../api/modules/user";
 import type { Project } from "../../../api/modules/Projects";
 import NoData from "../../Shared/NoData/NoData";
-import TableSkeleton from "@/Modules/Shared/TableSkeleton/TableSkeleton";
+import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 // "../../Modules/Shared/NoData/NoData";
 
 interface Task {
