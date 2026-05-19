@@ -99,6 +99,9 @@ body {
   background-color: var(--main-color);
   /* cursor: pointer; */
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 .bg-main-color {
   background-color: var(--bg-main-color);
 }

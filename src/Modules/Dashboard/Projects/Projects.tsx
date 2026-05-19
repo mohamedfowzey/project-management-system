@@ -15,7 +15,7 @@ import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 interface Project {
   id: number;
   title: string;
-  status: string;
+  status:boolean;
   numUsers: number;
   numTasks: number;
   creationDate: string;
@@ -65,6 +65,13 @@ export default function Projects() {
     }
   };
 
+  // const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const handleView = (project: Project) => {
+  //   setSelectedProject(project);
+  //   setIsOpen(true);
+  // }
+
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     setCurrentPage(1);
@@ -89,8 +96,8 @@ export default function Projects() {
 
   const filteredProjects = searchTerm
     ? projects.filter((project) =>
-        project.title.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
     : projects;
   useEffect(() => {
     fetchProjects();
@@ -259,3 +266,4 @@ export default function Projects() {
     </>
   );
 }
+
