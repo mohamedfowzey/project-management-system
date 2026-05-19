@@ -1,7 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
 @font-face {
   font-family: "Inter";
   src: url(./assets/fonts/inter/Inter-VariableFont_opsz\,wght.ttf)
