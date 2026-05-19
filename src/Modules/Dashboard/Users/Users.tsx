@@ -6,8 +6,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
-  FilePenLine,
   Search,
+  ShieldAlert,
 } from "lucide-react";
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 import NoData from "../../Shared/NoData/NoData";
@@ -172,12 +172,7 @@ export default function Users() {
                                   View
                                 </button>
                                 <button className="action-btn block-btn  dark:text-emerald-900">
-                                  <FilePenLine
-                                    color="var(--bg-main-color)"
-                                    size={20}
-                                    strokeWidth={1.5}
-                                    absoluteStrokeWidth
-                                  />{" "}
+                                  <ShieldAlert size={20} strokeWidth={1.5} absoluteStrokeWidth />
                                   Block
                                 </button>
                               </div>

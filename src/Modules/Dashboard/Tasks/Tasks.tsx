@@ -14,7 +14,7 @@ import {
 import type { User } from "../../../api/modules/user";
 import type { Project } from "../../../api/modules/Projects";
 import NoData from "../../Shared/NoData/NoData";
-import TableSkeleton from "@/Modules/Shared/TableSkeleton/TableSkeleton";
+import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 // "../../Modules/Shared/NoData/NoData";
 
 interface Task {
@@ -154,84 +154,86 @@ export default function Projects() {
                   </tr>
                 </thead>
                 <tbody>
-                  
                   {filteredProjects.length > 0 ? (
-                  filteredProjects.map((task) => (
-                    <tr key={task?.id} className="table-row dark:bg-taupe-900">
-                      <td className="">{task.title}</td>
-                      <td className="">{task?.description}</td>
-                      <td>
-                        <span className="status-badge bg-emerald-800 text-white dark:bg-gray-700">{task.status}</span>
-                      </td>
-                      <td className="">{task.employee?.userName}</td>
-                      <td className="">{task?.project?.title}</td>
-                      <td className="">
-                        {new Date(task.creationDate).toLocaleDateString()}
-                      </td>
-                      <td className="actions-cell">
-                        <div className="actions-wrapper">
-                          <button
-                            className="menu-btn"
-                            onClick={() =>
-                              setOpenMenu(
-                                openMenu === task.id ? null : task.id,
-                              )
-                            }
-                          >
-                            ⋮
-                          </button>
-                          {openMenu === task.id && (
-                            <div className="actions-menu  bg-amber-50  dark:bg-gray-400">
-                              <button className="action-btn view-btn  dark:text-gray-700 ">
-                                <Eye
-                                  color="var(--bg-main-color)"
-                                  size={20}
-                                  strokeWidth={1.5}
-                                  absoluteStrokeWidth
-                                />{" "}
-                                View
-                              </button>
-                              <button
-                                className="action-btn edit-btn dark:text-emerald-900"
-                                onClick={() =>
-                                  navigate(
-                                    `/dashboard/edit-task/${task?.id}`,
-                                  )
-                                }
-                              >
-                                <FilePenLine
-                                  color="var(--bg-main-color)"
-                                  size={20}
-                                  strokeWidth={1.5}
-                                  absoluteStrokeWidth
-                                />{" "}
-                                Edit
-                              </button>
-                              <button
-                                className="action-btn delete-btn dark:text-black"
-                                onClick={() => handleDelete(task.id)}
-                              >
-                                <Trash2
-                                  color="var(--bg-main-color)"
-                                  size={20}
-                                  strokeWidth={1.5}
-                                  absoluteStrokeWidth
-                                />{" "}
-                                Delete
-                              </button>
-                            </div>
-                          )}
-                        </div>
+                    filteredProjects.map((task) => (
+                      <tr
+                        key={task?.id}
+                        className="table-row dark:bg-taupe-900"
+                      >
+                        <td className="">{task.title}</td>
+                        <td className="">{task?.description}</td>
+                        <td>
+                          <span className="status-badge bg-emerald-800 text-white dark:bg-gray-700">
+                            {task.status}
+                          </span>
+                        </td>
+                        <td className="">{task.employee?.userName}</td>
+                        <td className="">{task?.project?.title}</td>
+                        <td className="">
+                          {new Date(task.creationDate).toLocaleDateString()}
+                        </td>
+                        <td className="actions-cell">
+                          <div className="actions-wrapper">
+                            <button
+                              className="menu-btn"
+                              onClick={() =>
+                                setOpenMenu(
+                                  openMenu === task.id ? null : task.id,
+                                )
+                              }
+                            >
+                              ⋮
+                            </button>
+                            {openMenu === task.id && (
+                              <div className="actions-menu  bg-amber-50  dark:bg-gray-400">
+                                <button className="action-btn view-btn  dark:text-gray-700 ">
+                                  <Eye
+                                    color="var(--bg-main-color)"
+                                    size={20}
+                                    strokeWidth={1.5}
+                                    absoluteStrokeWidth
+                                  />{" "}
+                                  View
+                                </button>
+                                <button
+                                  className="action-btn edit-btn dark:text-emerald-900"
+                                  onClick={() =>
+                                    navigate(`/dashboard/edit-task/${task?.id}`)
+                                  }
+                                >
+                                  <FilePenLine
+                                    color="var(--bg-main-color)"
+                                    size={20}
+                                    strokeWidth={1.5}
+                                    absoluteStrokeWidth
+                                  />{" "}
+                                  Edit
+                                </button>
+                                <button
+                                  className="action-btn delete-btn dark:text-black"
+                                  onClick={() => handleDelete(task.id)}
+                                >
+                                  <Trash2
+                                    color="var(--bg-main-color)"
+                                    size={20}
+                                    strokeWidth={1.5}
+                                    absoluteStrokeWidth
+                                  />{" "}
+                                  Delete
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={6} className="text-center dark:text-black">
+                        <NoData />
                       </td>
                     </tr>
-                  ))
-                  ) : (
-                                      <tr>
-                                        <td colSpan={6} className="text-center dark:text-black">
-                                          <NoData />
-                                        </td>
-                                      </tr>
-                                    )}
+                  )}
                 </tbody>
               </table>
             </div>
