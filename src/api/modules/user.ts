@@ -1,14 +1,30 @@
 import axiosClient from "../axsiosClient";
 
-export interface getUserData {
+export interface GetUsersParams {
+  pageSize?: number;
+  pageNumber?: number;
+  search?: string;
+}
+
+export interface User {
+  id: number;
   userName: string;
   email: string;
   country: string;
-  groups: [number];
-  pageSize: number;
-  pageNumber: number;
+  phoneNumber: string;
+  imagePath?: string;
+  isActivated: boolean;
+  creationDate: string;
+  modificationDate: string;
 }
-export interface createUserData {
+
+export interface UsersPaginatedResponse {
+  data: User[];            
+  totalNumberOfRecords: number;
+  pageNumber: number;
+  pageSize: number;
+
+}export interface createUserData {
   userName: string;
   email: string;
   country: string;
@@ -37,16 +53,14 @@ export interface UserCountresponse {
   deactivatedEmployeeCount: number;
 }
 
-export const getUsers = (userData?: getUserData) => {
-  return axiosClient.get("/Users", {
+export const getUsers = (params?: GetUsersParams) => {
+  return axiosClient.get<UsersPaginatedResponse>("/Users", {
     params: {
-      userName: userData?.userName,
-      pageNumber: userData?.pageNumber,
-      pageSize: userData?.pageSize,
+      pageNumber: params?.pageNumber,
+      pageSize: params?.pageSize,
     },
   });
-};
-export const getUsersById = (id: UserId) => {
+};export const getUsersById = (id: UserId) => {
   return axiosClient.get(`/Users/${id}`);
 };
 
