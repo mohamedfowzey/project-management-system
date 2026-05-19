@@ -10,11 +10,12 @@ export interface CreateProjectData {
   title: string ;
   description?: string;
 }
-
-interface UpdateProjectData {
-  title: string;
+export interface Project{
+  id:string
+   title: string ;
   description?: string;
 }
+
 
 export const getAllProjects = (params?: GetProjectsParams) => {
   return axiosClient.get("/Project", {

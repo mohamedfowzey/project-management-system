@@ -102,7 +102,12 @@ export default function Projects() {
     )
     : projects;
   useEffect(() => {
-    fetchProjects();
+    const delay = setTimeout(()=>{
+
+      fetchProjects();
+    },500);
+    
+    return ()=> clearTimeout(delay)
   }, [searchTerm, currentPage, pageSize]);
 
   return (

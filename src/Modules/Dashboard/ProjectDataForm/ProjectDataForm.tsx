@@ -49,15 +49,7 @@ export default function ProjectDataForm() {
   }, []);
   return (
     <>
-      {/* <div role="status" className="max-w-sm animate-pulse">
-    <div className="h-2.5 bg-neutral-quaternary rounded-full w-48 mb-4" />
-    <div className="h-2 bg-neutral-quaternary rounded-full max-w-[360px] mb-2.5" />
-    <div className="h-2 bg-neutral-quaternary rounded-full mb-2.5" />
-    <div className="h-2 bg-neutral-quaternary rounded-full max-w-[330px] mb-2.5" />
-    <div className="h-2 bg-neutral-quaternary rounded-full max-w-[300px] mb-2.5" />
-    <div className="h-2 bg-neutral-quaternary rounded-full max-w-[360px]" />
-    <span className="sr-only">Loading...</span>
-</div> */}
+     
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="h-[calc(100vh-80px)] self-stretch flex justify-center items-center">
           <div className="rounded-3xl bg-white dark:bg-gray-950 w-full md:w-[90%] lg:w-80 mx-auto py-10 px-5">
@@ -115,8 +107,8 @@ export default function ProjectDataForm() {
                     {errors.description.message}
                   </p>
                 )}
-
-                <div className="flex justify-end gap-2">
+              </div>
+              <div className="flex justify-end gap-2">
                   <button
                     type="button"
                     onClick={() => navigate("/dashboard/projects")}
@@ -128,7 +120,6 @@ export default function ProjectDataForm() {
                     <CustomButton text="save" loading={loading} />
                   </div>
                 </div>
-              </div>
             </>
           </div>
         </div>

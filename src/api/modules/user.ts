@@ -1,53 +1,62 @@
 import axiosClient from "../axsiosClient";
 
 export interface getUserData {
-    userName: string;
-    email: string;
-    country: string;
-    groups: [number];
-    pageSize: number;
-    pageNumber: number;
-
+  userName: string;
+  email: string;
+  country: string;
+  groups: [number];
+  pageSize: number;
+  pageNumber: number;
 }
 export interface createUserData {
-    userName: string;
-    email: string;
-    country: string;
-    pageNumber: number;
-    profileImage: File | null;
-    password : string;
-    confirmPassword : string;
-
+  userName: string;
+  email: string;
+  country: string;
+  pageNumber: number;
+  profileImage: File | null;
+  password: string;
+  confirmPassword: string;
+}
+export interface User {
+  country: string;
+  creationDate: string;
+  email: string;
+  id: number;
+  imagePath?: string;
+  isActivated: boolean;
+  modificationDate: string;
+  phoneNumber: string;
+  userName: string;
 }
 export interface UserId {
-    id: number;
+  id: number;
 }
 
-export interface UserCountresponse  {
-    activatedEmployeeCount: number; 
-    deactivatedEmployeeCount: number;
+export interface UserCountresponse {
+  activatedEmployeeCount: number;
+  deactivatedEmployeeCount: number;
 }
 
-export const getUsers = (userData: getUserData) => {
-    return axiosClient.get("/Users", {
-        params: {
-            userName: userData.userName,
-            pageNumber: userData.pageNumber,
-            pageSize: userData.pageSize,
-        },
-    });
+export const getUsers = (userData?: getUserData) => {
+  return axiosClient.get("/Users", {
+    params: {
+      userName: userData?.userName,
+      pageNumber: userData?.pageNumber,
+      pageSize: userData?.pageSize,
+    },
+  });
 };
 export const getUsersById = (id: UserId) => {
-    return axiosClient.get(`/Users/${id}`);
+  return axiosClient.get(`/Users/${id}`);
 };
 
 export const createUsers = (data: createUserData) => {
-    return axiosClient.post("/Users", data);
+  return axiosClient.post("/Users", data);
 };
 
 export const getCurrentUser = () => {
-    return axiosClient.get("/Users/currentUser");
-}
+  return axiosClient.get("/Users/currentUser");
+};
 export const getUserCount = () => {
-    return axiosClient.get<UserCountresponse>("/Users/count");
-}
+  return axiosClient.get<UserCountresponse>("/Users/count");
+};
