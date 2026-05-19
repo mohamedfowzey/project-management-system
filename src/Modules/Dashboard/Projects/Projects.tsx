@@ -13,17 +13,37 @@ import {
 } from "lucide-react";
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 import NoData from "../../Shared/NoData/NoData";
+import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
 
+// interface Project {
+//   id: number;
+//   title: string;
+//   status:boolean;
+//   numUsers: number;
+//   numTasks: number;
+//   creationDate: string;
+//   manager?: {
+//     country: string;
+//     phoneNumber: number;
+//   };
+// }
 interface Project {
   id: number;
   title: string;
-  status:boolean;
+  status: boolean;
   numUsers: number;
   numTasks: number;
+  dateCreated: string;
   creationDate: string;
-  manager?: {
+  modificationDate: string;
+  description: string;
+  manager: {
+    isActivated: boolean;
+    userName: string;
     country: string;
-    phoneNumber: number;
+    email: string;
+    phoneNumber: string;
+    imagPath: string;
   };
 }
 export default function Projects() {
@@ -67,12 +87,12 @@ export default function Projects() {
     }
   };
 
-  // const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  // const [isOpen, setIsOpen] = useState(false);
-  // const handleView = (project: Project) => {
-  //   setSelectedProject(project);
-  //   setIsOpen(true);
-  // }
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const handleView = (project: Project) => {
+    setSelectedProject(project);
+    setIsOpen(true);
+  }
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -102,12 +122,12 @@ export default function Projects() {
     )
     : projects;
   useEffect(() => {
-    const delay = setTimeout(()=>{
+    const delay = setTimeout(() => {
 
       fetchProjects();
-    },500);
-    
-    return ()=> clearTimeout(delay)
+    }, 500);
+
+    return () => clearTimeout(delay)
   }, [searchTerm, currentPage, pageSize]);
 
   return (
@@ -191,7 +211,14 @@ export default function Projects() {
                             </button>
                             {openMenu === project.id && (
                               <div className="actions-menu bg-amber-50  dark:bg-gray-400 ">
-                                <button className="action-btn view-btn  dark:text-gray-700 ">
+                                
+                                <button 
+                                onClick={() => {
+                                    handleView(project);
+                                    setIsOpen(true);
+                                    setOpenMenu(null);
+                                  }}
+                                className="action-btn view-btn  dark:text-gray-700 ">
                                   <Eye
                                     color="var(--bg-main-color)"
                                     size={20}
@@ -298,6 +325,13 @@ export default function Projects() {
           </>
         )}
       </div>
+
+      {selectedProject && (
+        <ProjectViewModal project={selectedProject}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+      )}
     </>
   );
 }
