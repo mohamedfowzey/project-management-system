@@ -7,9 +7,7 @@ import { getUserCount as getUserCountApi, type UserCountresponse } from "../../.
 import { AuthContext } from '../../../Contexts/AuthContext';
 import NoData from '../../Shared/NoData/NoData';
 
-
 ChartJS.register(ArcElement, Tooltip, Legend);
-
 
 const StatCard = ({ icon: Icon, title, count, bgColor, iconBgColor, isLoading }: any) => {
   if (isLoading) {
@@ -238,20 +236,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      
-
-      
-
     </div>
-
-    
     </>
-    
-
-
-
   )
-
-
 }
 
