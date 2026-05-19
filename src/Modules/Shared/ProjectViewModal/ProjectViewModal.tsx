@@ -105,14 +105,12 @@ export default function ProjectViewModal({ project, isOpen, setIsOpen }: Project
                     </div>
                   </div>
                 </div>
-
                 <div className="col-span-1 md:col-span-2 space-y-2">
                   <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Description</p>
                   <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-300 bg-slate-50 dark:bg-transparent p-3 rounded-lg border border-dashed border-gray-200 dark:border-gray-700">
                     {project?.description || "No description provided for this project."}
                   </p>
                 </div>
-
               </div>
 
               <div className="flex justify-end">
