@@ -1,0 +1,74 @@
+import { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../Contexts/AuthContext";
+import CustomInput from "../../Shared/CustomInput/CustomInput";
+import CustomButton from "../../Shared/CustomButton/CustomButton";
+import { Validations } from "../../../Constants/Validations";
+import CustomHeader from "../../Shared/CustomHeader/CustomHeader";
+import { Loginn, type LoginData } from "../../../api/modules/Auth";
+
+export interface loginData {
+  email: string;
+  password: string;
+}
+interface AuthContextType {
+  saveUserData: () => void;
+}
+export default function Login() {
+  const [loading, setLoading] = useState(false);
+  const { saveUserData } = useContext(AuthContext) as AuthContextType;
+
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginData>();
+
+  const onsubmit = async (data: LoginData) => {
+    setLoading(true);
+    try {
+      const response = await Loginn(data);
+      localStorage.setItem("token", response.data.token);
+      saveUserData();
+      navigate("/dashboard/home");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <CustomHeader title="Login" />
+      <form className="my-3.5" onSubmit={handleSubmit(onsubmit)}>
+        <CustomInput
+          register={register("email", Validations.email)}
+          HTMLtype="email"
+          label="E-mail"
+          error={errors.email?.message}
+        />
+        <CustomInput
+          register={register("password", Validations.password)}
+          HTMLtype="password"
+          label="Password"
+          error={errors.password?.message}
+        />
+        <div className="links flex justify-between my-3 text-sm">
+          <Link className="text-muted text-decoration-none" to="/register">
+            Register Now?
+          </Link>
+          <Link className="text-decoration-none" to="/forget-password">
+            Forget Password?
+          </Link>
+        </div>
+        <CustomButton
+          text="Login"
+          loading={loading}
+          disabled={false}
+          // onClick={handleSubmit(onsubmit)}
+        />
+      </form>
+    </>
+  );
+}
