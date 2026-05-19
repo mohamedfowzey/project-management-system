@@ -29,12 +29,33 @@
 .height-scroll-bar::-webkit-scrollbar {
   display: none;
 }
-.bg-header{
+.bg-header {
   background-image: url("./assets/Images/bg-header.jpg");
   background-position: center 40%;
-  background-size:100% 190%;
+  background-size: 100% 190%;
   background-repeat: no-repeat;
 }
-.bg-layer-header{
+.bg-layer-header {
   background-color: rgba(49, 89, 81, 0.44) !important;
+}
+.sidebar-container {
+  height: 100%;
+}
+
+.sidebar-container .ps-sidebar-root {
+  height: 100%;
+  border: none !important;
+}
+
+.sidebar-container .ps-sidebar-container {
+  background-color: rgba(14, 56, 47, 1) !important;
+}
+
+.sidebar-container .ps-menu-button {
+  color: #ffffff;
+}
+
+.sidebar-container .ps-menu-button:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff;
 }
