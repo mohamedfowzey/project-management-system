@@ -10,6 +10,7 @@ import {
   Search,
   Trash2,
 } from "lucide-react";
+import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 
 interface Project {
   id: number;
@@ -113,14 +114,14 @@ export default function Projects() {
           <input
             type="text"
             placeholder="Search By Title"
-            className="search-input"
+            className="search-input dark:text-black "
             value={searchTerm}
             onChange={(e) => handleSearch(e.target.value)}
           />
         </div>
       </div>
       {loading ? (
-        <div className=" text-center p-5">Loading...</div>
+        <TableSkeleton/>
       ) : (
         <>
           <div className="table-container">
@@ -213,7 +214,7 @@ export default function Projects() {
             </table>
           </div>
 
-          <div className="pagination">
+          <div className="pagination ">
             <div className="pagination-info">
               <span>Showing</span>
               <select
