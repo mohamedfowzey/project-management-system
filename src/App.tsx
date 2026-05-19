@@ -18,6 +18,7 @@ import Users from "./Modules/Dashboard/Users/Users";
 import UserTasks from "./Modules/Dashboard/UserTasks/UserTasks";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./Modules/Shared/ProtectedRoutes/ProtectedRoutes";
+// import 'flowbite';
 
 function App() {
   const routes = createBrowserRouter([

@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
 @font-face {
   font-family: "Inter";
   src: url(./assets/fonts/inter/Inter-VariableFont_opsz\,wght.ttf)
@@ -32,6 +37,9 @@ body{
 .main-Bg-btn {
   background-color: var(--main-color);
   /* cursor: pointer; */
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .bg-main-color {
   background-color: var(--bg-main-color);

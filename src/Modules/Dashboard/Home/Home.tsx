@@ -5,6 +5,9 @@ import { Doughnut } from 'react-chartjs-2';
 import { getTasksCount as getTasksCountApi, type ITasksCountResponse } from "../../../api/modules/tasks";
 import { getUserCount as getUserCountApi, type UserCountresponse } from "../../../api/modules/user";
 import { AuthContext } from '../../../Contexts/AuthContext';
+import ProjectViewModal from '../../Shared/ProjectViewModal/ProjectViewModal';
+// import { Card, Button } from "flowbite-react";
+// import { HiChartPie, HiClipboardList } from "react-icons/hi";
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -184,7 +187,7 @@ export default function Home() {
           </div>
           <div className="h-48 mt-5 relative flex justify-center items-center px-10">
             {loadingTasks ? (
-              <div className="h-48 w-48 rounded-full border-[20px] border-gray-300 border-t-gray-200 animate-spin"></div>
+              <div className="h-48 w-48 rounded-full border-20 border-gray-300 border-t-gray-200 animate-spin"></div>
             ) : (
               <Doughnut data={chartTasksData} options={chartOptions} />
             )}
@@ -221,7 +224,7 @@ export default function Home() {
           </div>
           <div className="h-48 mt-5 relative flex justify-center items-start px-10">
             {loadingUsers ? (
-              <div className="h-48 w-48  rounded-full border-[20px] border-gray-300 border-t-gray-200 animate-spin"></div>
+              <div className="h-48 w-48  rounded-full border-20 border-gray-300 border-t-gray-200 animate-spin"></div>
             ) : (
 
               <Doughnut data={chartUsersData} options={chartOptions} />
@@ -230,6 +233,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+      
+
+      
 
     </div>
 

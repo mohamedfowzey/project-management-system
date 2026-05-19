@@ -1,15 +1,46 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ProjectsApi } from "../../../api";
 import { Search } from "lucide-react";
+// import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
 
 interface Project {
   id: number;
   title: string;
-  status: string;
+  status:boolean;
   numUsers: number;
   numTasks: number;
   dateCreated: string;
+  creationDate: string;
+  modificationDate: string;
+  description: string;
+  manager: {
+    userName: string;
+    country: string;
+    email: string;
+    phoneNumber: string;
+    imagPath: string;
+  };
 }
+
+// interface Project {
+//   id: number;
+//   title: string;
+//   status: boolean;
+//   numUsers: number;
+//   numTasks: number;
+//   dateCreated: string;
+//   creationDate: string;
+//   modificationDate: string;
+//   description: string;
+//   manager: {
+//     isActivated: boolean;
+//     userName: string;
+//     country: string;
+//     email: string;
+//     phoneNumber: string;
+//     imagPath: string;
+//   };
+// }
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -51,6 +82,13 @@ export default function Projects() {
     }
   };
 
+  // const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const handleView = (project: Project) => {
+  //   setSelectedProject(project);
+  //   setIsOpen(true);
+  // }
+
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     setCurrentPage(1);
@@ -75,131 +113,151 @@ export default function Projects() {
 
   const filteredProjects = searchTerm
     ? projects.filter((project) =>
-        project.title.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
     : projects;
   useEffect(() => {
     fetchProjects();
   }, [currentPage, pageSize, searchTerm]);
 
   return (
-    <div className="table-wrapper">
-      <div className="search-filter-container">
-        <div className="search-wrapper">
-          <span className="search-icon">
-            <Search size={20} strokeWidth={1.75} />
-          </span>
-          <input
-            type="text"
-            placeholder="Search By Title"
-            className="search-input"
-            value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
+    <>
+
+      <div className="table-wrapper">
+        <div className="search-filter-container">
+          <div className="search-wrapper">
+            <span className="search-icon">
+              <Search size={20} strokeWidth={1.75} />
+            </span>
+            <input
+              type="text"
+              placeholder="Search By Title"
+              className="search-input"
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
 
-      {error && <div style={{ color: "red", padding: "10px" }}>{error}</div>}
+        {error && <div style={{ color: "red", padding: "10px" }}>{error}</div>}
 
-      {loading ? (
-        <div style={{ textAlign: "center", padding: "20px" }}>Loading...</div>
-      ) : (
-        <>
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Status</th>
-                  <th>Num Users</th>
-                  <th>Num Tasks</th>
-                  <th>Date Created</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProjects.length > 0 ? (
-                  filteredProjects.map((project) => (
-                    <tr key={project?.id} className="table-row">
-                      <td>{project.title}</td>
-                      <td>
-                        <span className="status-badge">{project.status}</span>
-                      </td>
-                      <td>{project.numUsers}</td>
-                      <td>{project.numTasks}</td>
-                      <td>{project.dateCreated}</td>
-                      <td className="actions-cell">
-                        <div className="actions-wrapper">
-                          <button
-                            className="menu-btn"
-                            onClick={() =>
-                              setOpenMenu(
-                                openMenu === project.id ? null : project.id,
-                              )
-                            }
-                          >
-                            ⋮
-                          </button>
-                          {openMenu === project.id && (
-                            <div className="actions-menu">
-                              <button className="action-btn view-btn">
-                                View
-                              </button>
-                              <button className="action-btn edit-btn">
-                                Edit
-                              </button>
-                              <button
-                                className="action-btn delete-btn"
-                                onClick={() => handleDelete(project.id)}
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          )}
-                        </div>
+        {loading ? (
+          <div style={{ textAlign: "center", padding: "20px" }}>Loading...</div>
+        ) : (
+          <>
+            <div className="table-container">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Num Users</th>
+                    <th>Num Tasks</th>
+                    <th>Date Created</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredProjects.length > 0 ? (
+                    filteredProjects.map((project) => (
+                      <tr key={project?.id} className="table-row">
+                        <td>{project.title}</td>
+                        <td>
+                          <span className="status-badge">{project.status}</span>
+                        </td>
+                        <td>{project.numUsers}</td>
+                        <td>{project.numTasks}</td>
+                        <td>{project.dateCreated}</td>
+                        <td className="actions-cell">
+                          <div className="actions-wrapper">
+                            <button
+                              className="menu-btn"
+                              onClick={() =>
+                                setOpenMenu(
+                                  openMenu === project.id ? null : project.id,
+                                )
+                              }
+                            >
+                              ⋮
+                            </button>
+                            {openMenu === project.id && (
+                              <div className="actions-menu">
+                                <button
+                                  // onClick={() => {
+                                  //   handleView(project);
+                                  //   setIsOpen(true);
+                                  //   setOpenMenu(null);
+                                  // }}
+                                  className="action-btn view-btn">
+                                  View
+                                </button>
+                                <button className="action-btn edit-btn">
+                                  Edit
+                                </button>
+                                <button
+                                  className="action-btn delete-btn"
+                                  onClick={() => handleDelete(project.id)}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={6} style={{ textAlign: "center" }}>
+                        No projects found
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={6} style={{ textAlign: "center" }}>
-                      No projects found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                  )}
+                </tbody>
+              </table>
+            </div>
 
-          <div className="pagination">
-            <div className="pagination-info">
-              <span>Showing</span>
-              <select
-                value={pageSize}
-                onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-                className="page-size-select"
-              >
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={15}>15</option>
-                <option value={20}>20</option>
-              </select>
-              <span>of {totalResults} Results</span>
-              <span>
-                Page {currentPage} of {Math.ceil(totalResults / pageSize)}
-              </span>
+            <div className="pagination">
+              <div className="pagination-info">
+                <span>Showing</span>
+                <select
+                  value={pageSize}
+                  onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+                  className="page-size-select"
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
+                </select>
+                <span>of {totalResults} Results</span>
+                <span>
+                  Page {currentPage} of {Math.ceil(totalResults / pageSize)}
+                </span>
+              </div>
+              <div className="pagination-controls">
+                <button className="page-btn" onClick={handlePrevPage}>
+                  &lt;
+                </button>
+                <button className="page-btn" onClick={handleNextPage}>
+                  &gt;
+                </button>
+              </div>
             </div>
-            <div className="pagination-controls">
-              <button className="page-btn" onClick={handlePrevPage}>
-                &lt;
-              </button>
-              <button className="page-btn" onClick={handleNextPage}>
-                &gt;
-              </button>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+
+      {/* {selectedProject && (
+        <ProjectViewModal project={selectedProject}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+      )} */}
+
+    </>
+
+
   );
 }
+
