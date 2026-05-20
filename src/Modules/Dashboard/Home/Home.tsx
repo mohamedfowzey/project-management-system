@@ -140,7 +140,7 @@ export default function Home() {
       {/* header */}
       <div className="p-6 py-16 bg-header rounded-xl shadow-md text-white overflow-hidden relative ">
         <div className="absolute inset-0 bg-layer-header "></div>
-        <div className="relative z-10">
+        <div className="relative ">
           <h1 className="text-3xl font-light my-3.5">
             Welcome <span className="text-main-color">{userData?.userName || "Upskilling"}</span>
           </h1>

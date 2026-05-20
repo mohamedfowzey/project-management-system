@@ -156,6 +156,7 @@ input:-webkit-autofill:active {
   line-height: 46px;
   letter-spacing: -0.4px;
   margin-bottom: 30px;
+  
 }
 .auth-title::first-letter {
   text-transform: uppercase;

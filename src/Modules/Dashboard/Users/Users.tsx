@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import CustomButton from "../../Shared/CustomButton/CustomButton";
+
 import {
   ArrowUpZA,
   ChevronLeft,
@@ -14,6 +13,7 @@ import NoData from "../../Shared/NoData/NoData";
 import { UsersApi } from "../../../api/index";
 import type { User } from "../../../api/modules/user";
 import UserViewModal from "../../Shared/UserViewModal/UserViewModal";
+import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
 
 export default function Users() {
   const [users, setUsers] = useState<User[]>([]);
@@ -27,7 +27,7 @@ export default function Users() {
   const [isBlockUserOpen, setIsBlockUserOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-  const navigate = useNavigate();
+
 
   const fetchUsers = async () => {
     try {
@@ -95,8 +95,8 @@ export default function Users() {
 
   const filteredUsers = searchTerm
     ? users.filter((user) =>
-        user.userName?.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+      user.userName?.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
     : users;
 
   useEffect(() => {
@@ -108,12 +108,12 @@ export default function Users() {
   }, [searchTerm, currentPage, pageSize]);
 
   // modal states views
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedUsers, setSelectedUsers] = useState<User | null>(null);
-      const handleView = (user: User) => {
-        setSelectedUsers(user);
-        setIsOpen(true);
-      }
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState<User | null>(null);
+  const handleView = (user: User) => {
+    setSelectedUsers(user);
+    setIsOpen(true);
+  }
 
   return (
     <>
@@ -167,15 +167,13 @@ export default function Users() {
                       >
                         <td>{user?.userName}</td>
                         <td>
-                          <span
-                            className={`status-badge text-white px-2 py-1 rounded ${
-                              user?.isActivated
-                                ? "bg-emerald-800 dark:bg-emerald-700"
-                                : "bg-red-600 dark:bg-red-700"
-                            }`}
-                          >
-                            {user?.isActivated ? "Active" : "Not Active"}
+                          <span className={`inline-flex items-center px-3 py-2 rounded-full text-xs font-bold ${user?.isActivated
+                            ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                            : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                            }`}>
+                            {user?.isActivated ? 'Activated' : 'Not Activated'}
                           </span>
+
                         </td>
                         <td>{user?.phoneNumber}</td>
                         <td>{user?.email}</td>
@@ -197,12 +195,12 @@ export default function Users() {
                             {openMenu === user.id && (
                               <div className="actions-menu bg-amber-50  dark:bg-gray-400 ">
                                 <button
-                                onClick={() => {
+                                  onClick={() => {
                                     handleView(user);
                                     setIsOpen(true);
                                     setOpenMenu(null);
                                   }}
-                                 className="action-btn view-btn  dark:text-gray-700 ">
+                                  className="action-btn view-btn  dark:text-gray-700 ">
                                   <Eye
                                     color="var(--bg-main-color)"
                                     size={20}
@@ -320,12 +318,12 @@ export default function Users() {
       </div>
 
       {selectedUsers && (
-                    <UserViewModal
-                      user={selectedUsers}
-                      isOpen={isOpen}
-                      setIsOpen={setIsOpen}
-                    />
-                  )}
+        <UserViewModal
+          user={selectedUsers}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+      )}
     </>
   );
 }

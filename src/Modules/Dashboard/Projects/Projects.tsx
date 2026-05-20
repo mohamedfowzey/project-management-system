@@ -119,8 +119,8 @@ export default function Projects() {
 
   const filteredProjects = searchTerm
     ? projects.filter((project) =>
-        project.title.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
     : projects;
 
   useEffect(() => {
@@ -164,7 +164,7 @@ export default function Projects() {
             <div className="table-container">
               <table className="data-table">
                 <thead>
-                  <tr className="bg-emerald-800 text-white dark:bg-gray-700">
+                  <tr className="bg-emerald-800  text-white dark:bg-gray-700">
                     <th className="flex gap-1 items-center ">
                       Title{" "}
                       <ArrowUpZA
@@ -189,8 +189,12 @@ export default function Projects() {
                       >
                         <td>{project.title}</td>
                         <td>
-                          <span className="status-badge bg-emerald-800 text-white dark:bg-gray-700">
-                            Public
+                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
+                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                            : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                            }`}>
+                            <span className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                            {project?.manager?.isActivated ? 'Active' : 'Inactive'}
                           </span>
                         </td>
                         <td>{project.manager?.phoneNumber}</td>

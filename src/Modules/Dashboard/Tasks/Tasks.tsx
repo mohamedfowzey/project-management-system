@@ -10,14 +10,19 @@ import {
 import NoData from "../../Shared/NoData/NoData";
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 import TaskViewModal from "../../Shared/TaskViewModal/TaskViewModal";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { TasksApi } from "../../../api";
+import CustomButton from "../../Shared/CustomButton/CustomButton";
+import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
 
 export interface Task {
   id: number;
   title: string;
   description: string;
   status: string;
-  creationDate:string;
-  modificationDate:string;
+  creationDate: string;
+  modificationDate: string;
   employee: {
     userName: string;
     email: string;
@@ -36,7 +41,7 @@ export interface Task {
       isActivated: boolean;
     };
   };
-  
+
 }
 
 export default function TasksList() {
@@ -80,10 +85,10 @@ export default function TasksList() {
   };
 
   const handleConfirmDelete = async () => {
-    if (!selectedTask) return;
+    if (!selectedTask || !selectedTask.id) return;
 
     try {
-      await TasksApi.deleteTask(selectedTask.id);
+      await TasksApi.deleteTask({ id: selectedTask.id });
 
       setTasks(tasks.filter((t) => t.id !== selectedTask.id));
       setIsDeleteOpen(false);
@@ -116,8 +121,8 @@ export default function TasksList() {
 
   const filteredTasks = searchTerm
     ? tasks.filter((task) =>
-        task.title.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+      task.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
     : tasks;
 
   useEffect(() => {
@@ -132,10 +137,10 @@ export default function TasksList() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTasks, setSelectedTasks] = useState<Task | null>(null);
-    const handleView = (task: Task) => {
-      setSelectedTasks(task);
-      setIsOpen(true);
-    }
+  const handleView = (task: Task) => {
+    setSelectedTasks(task);
+    setIsOpen(true);
+  }
 
   return (
     <>
@@ -197,9 +202,15 @@ export default function TasksList() {
                         <td>{task.title}</td>
                         <td>{task?.description}</td>
                         <td>
-                          <span className="status-badge bg-emerald-800 text-white dark:bg-gray-700">
-                            {task.status}
+                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${task?.status === 'ToDo'
+                            ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                            : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                            }`}>
+                            <span className={`w-2 h-2 rounded-full mr-2 ${task?.status === 'ToDo' ? 'bg-amber-500' : 'bg-green-500'}`}></span>
+                            {task?.status}
                           </span>
+
+
                         </td>
                         <td>{task.employee?.userName}</td>
                         <td>{task?.project?.title}</td>
@@ -221,12 +232,12 @@ export default function TasksList() {
                             {openMenu === task.id && (
                               <div className="actions-menu  bg-amber-50  dark:bg-gray-400">
                                 <button
-                                onClick={() => {
+                                  onClick={() => {
                                     handleView(task);
                                     setIsOpen(true);
                                     setOpenMenu(null);
                                   }}
-                                className="action-btn view-btn  dark:text-gray-700 ">
+                                  className="action-btn view-btn  dark:text-gray-700 ">
                                   <Eye
                                     color="var(--bg-main-color)"
                                     size={20}
@@ -351,12 +362,12 @@ export default function TasksList() {
       </div>
 
       {selectedTasks && (
-              <TaskViewModal
-                task={selectedTasks}
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-              />
-            )}
+        <TaskViewModal
+          task={selectedTasks}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+      )}
     </>
   );
 }
