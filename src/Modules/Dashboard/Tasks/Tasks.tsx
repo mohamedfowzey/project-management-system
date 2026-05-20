@@ -7,24 +7,36 @@ import {
   Search,
   Trash2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { TasksApi } from "../../../api";
-import type { Project } from "../../../api/modules/Projects";
-import type { User } from "../../../api/modules/user";
-import CustomButton from "../../Shared/CustomButton/CustomButton";
-import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
 import NoData from "../../Shared/NoData/NoData";
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
+import TaskViewModal from "../../Shared/TaskViewModal/TaskViewModal";
 
-interface Task {
+export interface Task {
   id: number;
   title: string;
   description: string;
   status: string;
-  employee: User;
-  project: Project;
-  creationDate: string;
+  creationDate:string;
+  modificationDate:string;
+  employee: {
+    userName: string;
+    email: string;
+    country: string;
+    phoneNumber: string;
+  };
+  project: {
+    id: number;
+    title: string;
+    description: string;
+    manager: {
+      userName: string;
+      email: string;
+      country: string;
+      phoneNumber: string;
+      isActivated: boolean;
+    };
+  };
+  
 }
 
 export default function TasksList() {
@@ -116,6 +128,15 @@ export default function TasksList() {
     return () => clearTimeout(delay);
   }, [searchTerm, currentPage, pageSize]);
 
+  // modal states views
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedTasks, setSelectedTasks] = useState<Task | null>(null);
+    const handleView = (task: Task) => {
+      setSelectedTasks(task);
+      setIsOpen(true);
+    }
+
   return (
     <>
       <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
@@ -198,8 +219,14 @@ export default function TasksList() {
                               ⋮
                             </button>
                             {openMenu === task.id && (
-                              <div className="actions-menu bg-amber-50 dark:bg-gray-400">
-                                <button className="action-btn view-btn dark:text-gray-700 ">
+                              <div className="actions-menu  bg-amber-50  dark:bg-gray-400">
+                                <button
+                                onClick={() => {
+                                    handleView(task);
+                                    setIsOpen(true);
+                                    setOpenMenu(null);
+                                  }}
+                                className="action-btn view-btn  dark:text-gray-700 ">
                                   <Eye
                                     color="var(--bg-main-color)"
                                     size={20}
@@ -322,6 +349,14 @@ export default function TasksList() {
           }
         />
       </div>
+
+      {selectedTasks && (
+              <TaskViewModal
+                task={selectedTasks}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+              />
+            )}
     </>
   );
 }
