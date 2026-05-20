@@ -73,7 +73,7 @@ export default function ProjectDataForm() {
     <>
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="h-[calc(100vh-80px)] self-stretch flex justify-center items-center">
-          <div className="rounded-3xl bg-white dark:bg-gray-950 w-full md:w-[90%] lg:w-80 mx-auto py-10 px-5">
+          <div className="rounded-3xl bg-white dark:bg-gray-950 w-full md:min-w-3/4 lg:w-80 mx-auto py-10 px-5">
             <span className="sr-only">Loading...</span>
             <>
               <div className="mb-4">
@@ -182,7 +182,7 @@ export default function ProjectDataForm() {
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
-                  onClick={() => navigate("/dashboard/projects")}
+                  onClick={() => navigate("/dashboard/tasks")}
                   className="text-sm rounded-full cursor-pointer mt-4 p-2 px-4 border border-gray-900 dark:border-gray-100"
                 >
                   cancle
