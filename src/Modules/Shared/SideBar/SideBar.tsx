@@ -30,7 +30,7 @@ export default function SideBar() {
       >
         {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
       </button>
-      <Sidebar collapsed={isCollapsed}>
+      <Sidebar collapsed={isCollapsed} className="text-white">
         <Menu>
           <MenuItem icon={<Users size={18} />} component={<Link to="users" />}>
             Users
