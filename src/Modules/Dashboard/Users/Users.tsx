@@ -109,14 +109,8 @@ export default function Users() {
 
   return (
     <>
-      <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
+      <div className="flex  mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
         <h1>Users</h1>
-        <div
-          className="shrink cursor-pointer"
-          onClick={() => navigate("/dashboard/add-user")}
-        >
-          <CustomButton text=" + add user " />
-        </div>
       </div>
       <div className="table-wrapper">
         <div className="search-filter-container">
