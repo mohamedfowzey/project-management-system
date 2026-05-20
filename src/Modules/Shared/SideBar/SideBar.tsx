@@ -22,7 +22,7 @@ export default function SideBar() {
         onClick={() => setIsCollapsed(!isCollapsed)}
         className="toggle-sidebar-btn absolute top-[1%] left-full z-50 flex h-16 w-8 items-center justify-center rounded-r-xl transition-all duration-300"
         style={{
-          backgroundColor: "rgba(239, 155, 40, 1)", // اللون البرتقالي من الديزاين
+          backgroundColor: "rgba(239, 155, 40, 1)",
           color: "white",
           cursor: "pointer",
           border: "none",
@@ -30,7 +30,7 @@ export default function SideBar() {
       >
         {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
       </button>
-      <Sidebar collapsed={isCollapsed}>
+      <Sidebar collapsed={isCollapsed} className="text-white">
         <Menu>
           <MenuItem icon={<Users size={18} />} component={<Link to="users" />}>
             Users

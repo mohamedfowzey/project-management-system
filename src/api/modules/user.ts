@@ -36,7 +36,7 @@ export interface User {
 }
 
 export interface UsersPaginatedResponse {
-  data: User[];            
+  data: User[];
   totalNumberOfRecords: number;
   pageNumber: number;
   pageSize: number;
@@ -66,6 +66,10 @@ export const getUsers = (params?: GetUsersParams) => {
 
 };export const getUsersById = (id: number | string) => {
   return axiosClient.get(`/Users/${id}`);
+};
+
+export const toggleActivatedEmployee = (id: UserId) => {
+  return axiosClient.put(`/Users/${id}`);
 };
 
 export const createUsers = (data: createUserData) => {

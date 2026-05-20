@@ -24,25 +24,50 @@ export default function Users() {
   const [pageSize, setPageSize] = useState(10);
   const [totalResults, setTotalResults] = useState(0);
 
+  const [isBlockUserOpen, setIsBlockUserOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
   const navigate = useNavigate();
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
-
       const response = await UsersApi.getUsers({
         pageNumber: currentPage,
         pageSize: pageSize,
       });
 
-      console.log("API Response:", response.data.data);
-
       setUsers(response?.data?.data || []);
       setTotalResults(response.data.totalNumberOfRecords || 0);
     } catch (error) {
-      console.error("Error fetching projects:", error);
+      console.error("Error fetching users:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleOpenBlockModal = (user: User) => {
+    setSelectedUser(user);
+    setIsBlockUserOpen(true);
+    setOpenMenu(null);
+  };
+
+  const handleConfirmToggleStatus = async () => {
+    if (!selectedUser) return;
+
+    try {
+      const response = await UsersApi.toggleActivatedEmployee(selectedUser.id);
+      const updatedStatus = response?.data?.isActivated;
+
+      setUsers((prevUsers) =>
+        prevUsers.map((u) =>
+          u.id === selectedUser.id ? { ...u, isActivated: updatedStatus } : u,
+        ),
+      );
+
+      setIsBlockUserOpen(false);
+    } catch (err) {
+      console.error("Error toggling user status:", err);
     }
   };
 
@@ -92,24 +117,18 @@ export default function Users() {
 
   return (
     <>
-      <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
+      <div className="flex  mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
         <h1>Users</h1>
-        <div
-          className="shrink "
-          onClick={() => navigate("/dashboard/add-user")}
-        >
-          <CustomButton text=" + add user " />
-        </div>
       </div>
       <div className="table-wrapper">
         <div className="search-filter-container">
-          <div className="search-wrapper  ">
+          <div className="search-wrapper">
             <span className="search-icon">
               <Search size={20} strokeWidth={1.75} />
             </span>
             <input
               type="text"
-              placeholder="Search By Title"
+              placeholder="Search By User Name"
               className="search-input dark:text-white"
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
@@ -148,7 +167,13 @@ export default function Users() {
                       >
                         <td>{user?.userName}</td>
                         <td>
-                          <span className="status-badge bg-emerald-800 text-white dark:bg-gray-700">
+                          <span
+                            className={`status-badge text-white px-2 py-1 rounded ${
+                              user?.isActivated
+                                ? "bg-emerald-800 dark:bg-emerald-700"
+                                : "bg-red-600 dark:bg-red-700"
+                            }`}
+                          >
                             {user?.isActivated ? "Active" : "Not Active"}
                           </span>
                         </td>
@@ -186,9 +211,16 @@ export default function Users() {
                                   />{" "}
                                   View
                                 </button>
-                                <button className="action-btn block-btn  dark:text-emerald-900">
-                                  <ShieldAlert size={20} strokeWidth={1.5} absoluteStrokeWidth />
-                                  Block
+                                <button
+                                  onClick={() => handleOpenBlockModal(user)}
+                                  className="action-btn block-btn dark:text-emerald-900"
+                                >
+                                  <ShieldAlert
+                                    size={20}
+                                    strokeWidth={1.5}
+                                    absoluteStrokeWidth
+                                  />{" "}
+                                  {user?.isActivated ? "Block" : "Activate"}
                                 </button>
                               </div>
                             )}
@@ -260,6 +292,31 @@ export default function Users() {
             </div>
           </>
         )}
+
+        <DeleteConfirm
+          isOpen={isBlockUserOpen}
+          setIsOpen={setIsBlockUserOpen}
+          title={selectedUser?.isActivated ? "Block User?" : "Activate User?"}
+          variant={selectedUser?.isActivated ? "danger" : "success"}
+          icon={ShieldAlert}
+          confirmText={
+            selectedUser?.isActivated ? "Yes, Block User" : "Yes, Activate User"
+          }
+          warningText={
+            selectedUser?.isActivated
+              ? "This user will lose access immediately"
+              : "This user will regain access immediately"
+          }
+          onConfirm={handleConfirmToggleStatus}
+          description={
+            <p>
+              You are about to change access for <br />
+              <span className="font-bold text-amber-600 dark:text-amber-400 text-lg">
+                {selectedUser?.userName}
+              </span>
+            </p>
+          }
+        />
       </div>
 
       {selectedUsers && (
