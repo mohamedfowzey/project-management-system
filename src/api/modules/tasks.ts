@@ -12,31 +12,40 @@ interface GetTaskssParams {
   search?: string;
 }
 
-export interface CreateTaskData{
+export interface CreateTaskData {
   title: string,
   description: string,
-  employeeId:string ,
+  employeeId: string,
   projectId: string
 }
+
+export interface DeleteTask {
+  id: string | number,
+}
+
 export const getTasksCount = () => {
   return axiosClient.get<ITasksCountResponse>("/Task/count");
 }
-export const getAllTasks = (params:GetTaskssParams) => {
+export const getAllTasks = (params: GetTaskssParams) => {
 
-  return axiosClient.get("/Task/manager",{
-    params:{
+  return axiosClient.get("/Task/manager", {
+    params: {
       pageNumber: params?.pageNumber || 1,
       pageSize: params?.pageSize || 10,
       search: params?.search || "",
     }
   });
 }
-export const CreateTask = (data:CreateTaskData)=>{
-  return axiosClient.post('Task',data);
+export const CreateTask = (data: CreateTaskData) => {
+  return axiosClient.post('Task', data);
 }
-export const updateTask = (id : number, data:CreateTaskData)=>{
-  return axiosClient.put(`Task/${id}`,data)
+export const updateTask = (id: number, data: CreateTaskData) => {
+  return axiosClient.put(`Task/${id}`, data)
 }
-export const getTaskById = (id : number)=>{
+export const getTaskById = (id: number) => {
   return axiosClient.get(`Task/${id}`)
 }
+
+export const deleteTask = (id: DeleteTask) => {
+  return axiosClient.delete(`/Task/${id}`);
+};

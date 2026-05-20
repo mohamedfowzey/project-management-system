@@ -1,24 +1,47 @@
-import { X, Trash2 } from 'lucide-react';
-import React from 'react';
+import { Trash2, X } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-interface Project {
-  id: number;
-  title: string;
-  manager: {
-    userName: string;
-  };
-}
-
-interface DeleteConfirmProps {
-  project: Project | null;
+interface GenericDeleteConfirmProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  onConfirmDelete: (id: number) => void;
+  onConfirm: () => void;
+  title: string;
+  description: React.ReactNode;
+  confirmText?: string;
+  warningText?: string;
+  icon?: LucideIcon;
+  variant?: "danger" | "warning";
 }
 
-export default function DeleteConfirm({ project, isOpen, setIsOpen, onConfirmDelete }: DeleteConfirmProps) {
-  
-  if (!isOpen || !project) return null;
+export default function DeleteConfirm({
+  isOpen,
+  setIsOpen,
+  onConfirm,
+  title,
+  description,
+  confirmText = "Yes, Proceed",
+  warningText = "This action cannot be undone",
+  icon: Icon = Trash2,
+  variant = "danger",
+}: GenericDeleteConfirmProps) {
+  if (!isOpen) return null;
+
+  const isDanger = variant === "danger";
+  const headerBg = isDanger
+    ? "bg-red-50 dark:bg-red-900/10"
+    : "bg-amber-50 dark:bg-amber-900/10";
+  const iconBg = isDanger
+    ? "bg-red-100 dark:bg-red-900/30"
+    : "bg-amber-100 dark:bg-amber-900/30";
+  const iconColor = isDanger
+    ? "text-red-600 dark:text-red-500"
+    : "text-amber-600 dark:text-amber-500";
+  const btnBg = isDanger
+    ? "bg-red-600 hover:bg-red-700 shadow-red-500/40"
+    : "bg-amber-600 hover:bg-amber-700 shadow-amber-500/40";
+  const warningColor = isDanger
+    ? "text-red-500/80 dark:text-red-400/70"
+    : "text-amber-500/80 dark:text-amber-400/70";
 
   return (
     <div
@@ -37,34 +60,41 @@ export default function DeleteConfirm({ project, isOpen, setIsOpen, onConfirmDel
           <X size={18} strokeWidth={2.5} />
         </button>
 
-        {/* Header - Danger Visual Layout */}
-        <div className="bg-red-50 dark:bg-red-900/10 p-8 flex flex-col items-center">
-          <div className="w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4 animate-pulse">
-            <Trash2 className="text-red-600 dark:text-red-500" size={40} />
+        <div className={`${headerBg} p-8 flex flex-col items-center`}>
+          <div
+            className={`${iconBg} w-20 h-20 rounded-full flex items-center justify-center mb-4 animate-pulse`}
+          >
+            <Icon className={iconColor} size={40} />
           </div>
-          <h2 className="text-xl font-black text-gray-900 dark:text-white">Delete Project?</h2>
+          <h2 className="text-xl font-black text-gray-900 dark:text-white">
+            {title}
+          </h2>
         </div>
 
-        {/* Message Body */}
         <div className="p-6 text-center">
-          <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-            You are about to delete the project <br />
-            <span className="font-bold text-red-600 dark:text-red-400 text-lg">"{project.title}"</span>
-          </p>
-          <p className="text-[10px] text-red-500/80 dark:text-red-400/70 mt-3 uppercase tracking-widest font-black">
-            This action cannot be undone
-          </p>
+          <div className="text-gray-600 dark:text-gray-400 leading-relaxed">
+            {description}
+          </div>
+          {warningText && (
+            <p
+              className={`${warningColor} text-[10px] mt-3 uppercase tracking-widest font-black`}
+            >
+              {warningText}
+            </p>
+          )}
         </div>
 
-        {/* Action Buttons */}
         <div className="p-6 pt-0 flex flex-col gap-3">
           <button
-            onClick={() => onConfirmDelete(project.id)}
-            className="w-full py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-red-500/40 active:scale-[0.98] cursor-pointer text-sm"
+            onClick={() => {
+              onConfirm();
+              setIsOpen(false);
+            }}
+            className={`w-full py-4 text-white font-bold rounded-2xl transition-all shadow-lg active:scale-[0.98] cursor-pointer text-sm ${btnBg}`}
           >
-            Yes, Delete Permanently
+            {confirmText}
           </button>
-          
+
           <button
             onClick={() => setIsOpen(false)}
             className="w-full py-3 bg-transparent text-gray-500 dark:text-gray-400 font-semibold hover:text-gray-700 dark:hover:text-white transition-colors cursor-pointer text-sm"

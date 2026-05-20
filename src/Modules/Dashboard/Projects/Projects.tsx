@@ -16,18 +16,6 @@ import NoData from "../../Shared/NoData/NoData";
 import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
 
-// interface Project {
-//   id: number;
-//   title: string;
-//   status:boolean;
-//   numUsers: number;
-//   numTasks: number;
-//   creationDate: string;
-//   manager?: {
-//     country: string;
-//     phoneNumber: number;
-//   };
-// }
 interface Project {
   id: number;
   title: string;
@@ -47,6 +35,7 @@ interface Project {
     imagPath: string;
   };
 }
+
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -86,7 +75,7 @@ export default function Projects() {
     try {
       await ProjectsApi.deleteProject(id);
       setProjects(projects.filter((p) => p.id !== id));
-      setIsDeleteOpen(false); 
+      setIsDeleteOpen(false);
     } catch (err) {
       console.error("Error deleting project:", err);
     }
@@ -97,15 +86,14 @@ export default function Projects() {
     setIsDeleteOpen(true);
     setOpenMenu(null);
   };
-  
+
   // View Modal State
   const [isOpen, setIsOpen] = useState(false);
 
   const handleView = (project: Project) => {
     setSelectedProject(project);
     setIsOpen(true);
-  }
-
+  };
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -131,16 +119,16 @@ export default function Projects() {
 
   const filteredProjects = searchTerm
     ? projects.filter((project) =>
-      project.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
+        project.title.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
     : projects;
+
   useEffect(() => {
     const delay = setTimeout(() => {
-
       fetchProjects();
     }, 500);
 
-    return () => clearTimeout(delay)
+    return () => clearTimeout(delay);
   }, [searchTerm, currentPage, pageSize]);
 
   return (
@@ -224,14 +212,14 @@ export default function Projects() {
                             </button>
                             {openMenu === project.id && (
                               <div className="actions-menu bg-amber-50  dark:bg-gray-400 ">
-                                
-                                <button 
-                                onClick={() => {
+                                <button
+                                  onClick={() => {
                                     handleView(project);
                                     setIsOpen(true);
                                     setOpenMenu(null);
                                   }}
-                                className="action-btn view-btn  dark:text-gray-700 ">
+                                  className="action-btn view-btn  dark:text-gray-700 "
+                                >
                                   <Eye
                                     color="var(--bg-main-color)"
                                     size={20}
@@ -340,22 +328,31 @@ export default function Projects() {
       </div>
 
       {selectedProject && (
-        <ProjectViewModal project={selectedProject}
+        <ProjectViewModal
+          project={selectedProject}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
         />
       )}
 
       {selectedProject && (
-        <DeleteConfirm 
-          project={selectedProject}
+        <DeleteConfirm
           isOpen={isDeleteOpen}
           setIsOpen={setIsDeleteOpen}
-          onConfirmDelete={confirmDelete}
+          onConfirm={() => confirmDelete(selectedProject.id)}
+          title="Delete Project?"
+          confirmText="Yes, Delete Permanently"
+          variant="danger"
+          description={
+            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+              You are about to delete the project <br />
+              <span className="font-bold text-red-600 dark:text-red-400 text-lg">
+                "{selectedProject.title}"
+              </span>
+            </p>
+          }
         />
       )}
-    
     </>
   );
 }
-
