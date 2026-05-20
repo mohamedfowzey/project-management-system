@@ -25,7 +25,7 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
             >
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="w-[95%] md:w-[70%] lg:w-[50%] bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-10 relative transition-all duration-300 scale-100"
+                className="w-[95%] md:w-[70%] lg:w-[50%] overflow-y-scroll scrollbar-track-gray-800 scrollbar- scrollbar-thumb-accent scrollbar-thin h-full bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-10 relative transition-all duration-300 scale-100"
               >
                 <button
                   onClick={() => setIsOpen(false)}

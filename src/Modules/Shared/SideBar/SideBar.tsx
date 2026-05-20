@@ -6,18 +6,27 @@ import {
   LogOut,
   ChevronRight,
   ChevronLeft,
+  Home,
 } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
 
 export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [smallScreen,setSmallScreen] = useState(false);
+  
   const auth = useContext(AuthContext);
+  useEffect(()=>{
+    window.addEventListener('resize',()=>{
+    setSmallScreen(window.innerWidth <= 768)
+  })
+  },[])
   if (!auth) return null;
   const { logOut } = auth;
   return (
-    <div className="sidebar-container relative h-full">
+    <div className="sidebar-container relative h-full ">
+      {smallScreen || 
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
         className="toggle-sidebar-btn absolute top-[1%] left-full z-50 flex h-16 w-8 items-center justify-center rounded-r-xl transition-all duration-300"
@@ -29,9 +38,12 @@ export default function SideBar() {
         }}
       >
         {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-      </button>
-      <Sidebar collapsed={isCollapsed} className="text-white">
+      </button>}
+      <Sidebar collapsed={smallScreen? true : isCollapsed} className="text-white">
         <Menu>
+          <MenuItem icon={<Home size={18} />} component={<Link to="/dashboard" />}>
+            home
+          </MenuItem>
           <MenuItem icon={<Users size={18} />} component={<Link to="users" />}>
             Users
           </MenuItem>

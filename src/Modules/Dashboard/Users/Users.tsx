@@ -58,7 +58,6 @@ export default function Users() {
     try {
       const response = await UsersApi.toggleActivatedEmployee(selectedUser.id);
       const updatedStatus = response?.data?.isActivated;
-
       setUsers((prevUsers) =>
         prevUsers.map((u) =>
           u.id === selectedUser.id ? { ...u, isActivated: updatedStatus } : u,

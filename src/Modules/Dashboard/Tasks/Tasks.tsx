@@ -67,13 +67,10 @@ export default function TasksList() {
         pageSize: pageSize,
         search: searchTerm,
       });
-      console.log("API Response:", response.data.data);
 
       setTasks(response.data.data || []);
       setTotalResults(response.data.totalNumberOfRecords || 0);
-    } catch (error) {
-      console.error("Error fetching tasks:", error);
-    } finally {
+    }  finally {
       setLoading(false);
     }
   };

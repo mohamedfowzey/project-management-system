@@ -15,7 +15,7 @@ export default function MasterLayout() {
           <NavBar />
         </div>
         <div className="flex flex-1 overflow-visible">
-          <div className="shrink-0 sticky top-20 h-[calc(100vh-80px)]">
+          <div className="shrink-0 sticky top-20 h-[calc(100vh-80px)] ">
             <SideBar />
           </div>
           <div className="flex-1 min-w-0 bg-gray-50 dark:bg-gray-900">
