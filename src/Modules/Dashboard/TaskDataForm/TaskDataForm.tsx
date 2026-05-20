@@ -131,13 +131,13 @@ export default function ProjectDataForm() {
               </div>
 
               <div className="mb-4">
+                {!!id ||(
+                   editing ? (<>
                 <span className="text-sm  font-medium text-gray-700 dark:text-gray-200">
-                  {" "}
                   project
                 </span>
-                {editing ? (
                   <div className="h-11 bg-gray-700 dark:bg-gray-400 rounded-2xl w-full mb-4 animate-pulse" />
-                ) : (
+                </>) : (
                   <select
                   {...register('projectId')}
                     className="block w-full px-3 py-2.5 border text-heading text-sm rounded-2xl focus-visible:outline-0 shadow-xs placeholder:text-body mb-4"
@@ -148,7 +148,7 @@ export default function ProjectDataForm() {
                       <option value={p?.id} className="bg-white dark:bg-gray-900 ">{p.title}</option>
                     ))}
                   </select>
-                )}
+                ))}
                 {!!errors.title && (
                   <p className="mt-1 text-xs text-red-500">
                     {errors.title.message}

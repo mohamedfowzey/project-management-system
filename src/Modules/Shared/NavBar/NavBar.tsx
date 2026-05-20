@@ -2,6 +2,7 @@ import {
   Bell,
   ChevronDown,
   LayoutDashboard,
+  Lock,
   LogOut,
   Moon,
   Sun,
@@ -116,6 +117,14 @@ export default function NavBar() {
                   >
                     <User className="w-4 h-4 text-gray-400" />
                     <span>User Profile</span>
+                  </Link>
+                  <Link
+                    to="/change-password"
+                    onClick={() => setIsDropdownOpen(false)}
+                    className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 dark:hover:text-gray-400 hover:bg-gray-50 hover:text-slate-900 dark:hover:bg-black transition-colors"
+                  >
+                    <Lock className="w-4 h-4 text-gray-400" />
+                    <span>Change Password</span>
                   </Link>
 
                   <hr className="border-gray-100 dark:border-gray-600 my-1" />

@@ -1,6 +1,5 @@
 import { Calendar, Clock, X } from 'lucide-react';
 import React from 'react'
-import { useState } from "react";
 
 interface Project {
   id: number;

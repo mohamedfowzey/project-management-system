@@ -24,7 +24,7 @@ export default function SideBar() {
       {smallScreen || 
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="toggle-sidebar-btn absolute top-[1%] left-full z-50 flex h-16 w-8 items-center justify-center rounded-r-xl transition-all duration-300"
+        className="toggle-sidebar-btn absolute top-[1%] left-full z-50 flex h-10 w-4 items-center justify-center rounded-r-xl transition-all duration-300"
         style={{
           backgroundColor: "rgba(239, 155, 40, 1)",
           color: "white",
