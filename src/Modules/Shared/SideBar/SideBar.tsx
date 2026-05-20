@@ -11,14 +11,14 @@ import {
 import { useContext, useState } from "react";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
+import DeleteConfirm from "../DeleteConfirm/DeleteConfirm";
 
 export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const {smallScreen}= useContext(AuthContext);
-  
+  const [isDeleteOpen,setIsDeleteOpen] = useState<boolean>(false)  
   const auth = useContext(AuthContext);
   if (!auth) return null;
-  const { logOut } = auth;
+  const { logOut, smallScreen } = auth;
   return (
     <div className="sidebar-container relative h-full ">
       {smallScreen || 
@@ -58,7 +58,7 @@ export default function SideBar() {
           </MenuItem>
 
           <MenuItem
-            onClick={() => logOut()}
+            onClick={() => setIsDeleteOpen(true)}
             icon={<LogOut size={18} />}
             style={{ marginTop: "20px" }}
           >
@@ -66,6 +66,15 @@ export default function SideBar() {
           </MenuItem>
         </Menu>
       </Sidebar>
+      <DeleteConfirm
+                isOpen={isDeleteOpen}
+                setIsOpen={setIsDeleteOpen}
+                onConfirm={logOut}
+                title="want to logout?"
+                confirmText="logout"
+                variant='danger'
+                description={''}
+              />
     </div>
   );
 }

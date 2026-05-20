@@ -85,7 +85,7 @@ export default function TasksList() {
     if (!selectedTask || !selectedTask.id) return;
 
     try {
-      await TasksApi.deleteTask({ id: selectedTask.id });
+      await TasksApi.deleteTask(selectedTask.id );
 
       setTasks(tasks.filter((t) => t.id !== selectedTask.id));
       setIsDeleteOpen(false);
@@ -343,10 +343,10 @@ export default function TasksList() {
         <DeleteConfirm
           isOpen={isDeleteOpen}
           setIsOpen={setIsDeleteOpen}
-          onConfirm={handleConfirmDelete} // لم نعد بحاجة لتمرير معاملات هنا لأنها تُقرأ تلقائياً بالداخل
+          onConfirm={handleConfirmDelete}
           title="Delete Task?"
           confirmText="Yes, Delete Permanently"
-          variant="danger"
+          variant='danger'
           description={
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               You are about to delete the task <br />

@@ -6,6 +6,7 @@ import { AuthContext } from "../../Contexts/AuthContext";
 
 export default function MasterLayout() {
   const {mood} = useContext(AuthContext)
+  
   // const authContext = useContext(AuthContext);
   // const mood = authContext?.mood;
   return (
@@ -23,6 +24,7 @@ export default function MasterLayout() {
           </div>
         </div>
       </div>
+       
     </>
   );
 }

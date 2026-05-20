@@ -29,12 +29,16 @@ export default function ProjectDataForm() {
   } = useForm<CreateTaskData>();
   const onsubmit = async (data: CreateTaskData) => {
     setLoading(true);
+    try{
     if (id) {
       await updateTask(Number(id), data);
     } else {
       await CreateTask(data);
     }
+  }finally{
+
     setLoading(false);
+  }
     navigate("/dashboard/tasks");
   };
   const getTask = async (id: string | undefined) => {
@@ -137,9 +141,9 @@ export default function ProjectDataForm() {
                   project
                 </span>
                   <div className="h-11 bg-gray-700 dark:bg-gray-400 rounded-2xl w-full mb-4 animate-pulse" />
-                </>) : (
+                </>) : (<>
                   <select
-                  {...register('projectId')}
+                  {...register('projectId',{required:'project is required'})}
                     className="block w-full px-3 py-2.5 border text-heading text-sm rounded-2xl focus-visible:outline-0 shadow-xs placeholder:text-body mb-4"
                   >
                     <option className="bg-white dark:bg-gray-900 " value={selectedProject?.id || ''}>{selectedProject?.title||'Choose a project'}</option>
@@ -148,12 +152,13 @@ export default function ProjectDataForm() {
                       <option value={p?.id} className="bg-white dark:bg-gray-900 ">{p.title}</option>
                     ))}
                   </select>
-                ))}
-                {!!errors.title && (
+                  
+                {!!errors.projectId && (
                   <p className="mt-1 text-xs text-red-500">
-                    {errors.title.message}
+                    {errors.projectId?.message}
                   </p>
                 )}
+               </> ))}
               </div>
               <div className="mb-4">
                 <span className="text-sm  font-medium text-gray-700 dark:text-gray-200">
@@ -162,9 +167,9 @@ export default function ProjectDataForm() {
                 </span>
                 {editing ? (
                   <div className="h-11 bg-gray-700 dark:bg-gray-400 rounded-2xl w-full mb-4 animate-pulse" />
-                ) : (
+                ) : (<>
                   <select
-                  {...register('employeeId')}
+                  {...register('employeeId',{required:'employee is required'})}
                     className="block w-full px-3 py-2.5 border text-heading text-sm rounded-2xl focus-visible:outline-0 shadow-xs placeholder:text-body mb-4"
                   >
                     <option className="bg-white dark:bg-gray-900 " value={selectedUser?.id || ''}>{selectedUser?.userName || 'Choose a User'}</option>
@@ -172,12 +177,13 @@ export default function ProjectDataForm() {
                       <option className="bg-white dark:bg-gray-900 " value={p?.id}>{p.userName}</option>
                     ))}
                   </select>
-                )}
-                {!!errors.title && (
+                  {!!errors.employeeId && (
                   <p className="mt-1 text-xs text-red-500">
-                    {errors.title.message}
+                    {errors.employeeId?.message}
                   </p>
+                )}</>
                 )}
+                
               </div>
               <div className="flex justify-end gap-2">
                 <button

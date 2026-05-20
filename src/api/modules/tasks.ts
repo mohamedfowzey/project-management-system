@@ -19,9 +19,7 @@ export interface CreateTaskData {
   projectId: string
 }
 
-export interface DeleteTask {
-  id: string | number,
-}
+
 
 export const getTasksCount = () => {
   return axiosClient.get<ITasksCountResponse>("/Task/count");
@@ -46,6 +44,6 @@ export const getTaskById = (id: number) => {
   return axiosClient.get(`Task/${id}`)
 }
 
-export const deleteTask = (id: DeleteTask) => {
+export const deleteTask = (id: number) => {
   return axiosClient.delete(`/Task/${id}`);
 };
