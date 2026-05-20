@@ -13,6 +13,7 @@ export interface AuthContextType {
   userData: User | null;
   currentUserData: User | null;
   isLoading: boolean;
+  smallScreen:boolean;
   mood:'light'|'dark'
   toggleMood:()=>void;
   saveUserData: () => Promise<void>;
@@ -27,6 +28,7 @@ interface AuthContextProvProp {
 export default function AuthContextProvider({ children }: AuthContextProvProp) {
   const [userData, setUserData] = useState<User | null>(null);
   const [currentUserData, setCurrentUserData] = useState<User | null>(null);
+  const [smallScreen,setSmallScreen] = useState<boolean>(window.innerWidth <= 768)
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [mood,setMood] = useState<'light'|'dark'>('dark')
   const toggleMood = ()=>{setMood(p=>p=='light'?'dark':'light')}
@@ -59,16 +61,23 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
     }
     setIsLoading(false);
   };
+  useEffect(()=>{
+     window.addEventListener('resize',()=>{
+      setSmallScreen(window.innerWidth <= 768)
+     })
+  },[])
   useEffect(() => {
+    
     if (localStorage.getItem("token")) {
       (() => {
         saveUserData();
       })();
     }
+    
   }, []);
   return (
     <AuthContext.Provider
-      value={{ userData, saveUserData, logOut, currentUserData, isLoading, mood, toggleMood }}
+      value={{ userData, saveUserData, logOut, currentUserData, isLoading, mood, toggleMood, smallScreen }}
     >
       {children}
     </AuthContext.Provider>

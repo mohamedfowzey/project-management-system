@@ -8,20 +8,15 @@ import {
   ChevronLeft,
   Home,
 } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
 
 export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [smallScreen,setSmallScreen] = useState(false);
+  const {smallScreen}= useContext(AuthContext);
   
   const auth = useContext(AuthContext);
-  useEffect(()=>{
-    window.addEventListener('resize',()=>{
-    setSmallScreen(window.innerWidth <= 768)
-  })
-  },[])
   if (!auth) return null;
   const { logOut } = auth;
   return (
