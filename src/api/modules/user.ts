@@ -19,7 +19,7 @@ export interface User {
 }
 
 export interface UsersPaginatedResponse {
-  data: User[];            
+  data: User[];
   totalNumberOfRecords: number;
   pageNumber: number;
   pageSize: number;
@@ -60,8 +60,13 @@ export const getUsers = (params?: GetUsersParams) => {
       pageSize: params?.pageSize,
     },
   });
-};export const getUsersById = (id: UserId) => {
+};
+export const getUsersById = (id: UserId) => {
   return axiosClient.get(`/Users/${id}`);
+};
+
+export const toggleActivatedEmployee = (id: UserId) => {
+  return axiosClient.put(`/Users/${id}`);
 };
 
 export const createUsers = (data: createUserData) => {

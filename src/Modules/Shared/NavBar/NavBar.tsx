@@ -4,15 +4,13 @@ import {
   LayoutDashboard,
   LogOut,
   Moon,
-  MoonIcon,
-  MoonStar,
   Sun,
   User,
 } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../../assets/Images/masterLogo.png";
 import Darklogo from "../../../assets/Images/favicon.png";
+import logo from "../../../assets/Images/masterLogo.png";
 import { AuthContext } from "../../../Contexts/AuthContext";
 
 export default function NavBar() {

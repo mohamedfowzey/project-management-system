@@ -1,7 +1,3 @@
-import { useState, useEffect } from "react";
-import { ProjectsApi, Tasks } from "../../../api";
-import { useNavigate } from "react-router-dom";
-import CustomButton from "../../Shared/CustomButton/CustomButton";
 import {
   ArrowUpZA,
   ChevronLeft,
@@ -11,11 +7,15 @@ import {
   Search,
   Trash2,
 } from "lucide-react";
-import type { User } from "../../../api/modules/user";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { TasksApi } from "../../../api";
 import type { Project } from "../../../api/modules/Projects";
+import type { User } from "../../../api/modules/user";
+import CustomButton from "../../Shared/CustomButton/CustomButton";
+import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
 import NoData from "../../Shared/NoData/NoData";
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
-// "../../Modules/Shared/NoData/NoData";
 
 interface Task {
   id: number;
@@ -26,9 +26,9 @@ interface Task {
   project: Project;
   creationDate: string;
 }
-// https://upskilling-egypt.com:3003/api/v1/Task/manager
-export default function Projects() {
-  const [projects, setProjects] = useState<Task[]>([]);
+
+export default function TasksList() {
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [openMenu, setOpenMenu] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,35 +36,47 @@ export default function Projects() {
   const [pageSize, setPageSize] = useState(10);
   const [totalResults, setTotalResults] = useState(0);
 
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
   const navigate = useNavigate();
 
-  const fetchProjects = async () => {
+  const fetchTasks = async () => {
     try {
       setLoading(true);
 
-      const response = await Tasks.getAllTasks({
+      const response = await TasksApi.getAllTasks({
         pageNumber: currentPage,
         pageSize: pageSize,
         search: searchTerm,
       });
       console.log("API Response:", response.data.data);
 
-      setProjects(response.data.data);
+      setTasks(response.data.data || []);
       setTotalResults(response.data.totalNumberOfRecords || 0);
     } catch (error) {
-      console.error("Error fetching projects:", error);
+      console.error("Error fetching tasks:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleOpenDelete = (task: Task) => {
+    setSelectedTask(task);
+    setIsDeleteOpen(true);
+    setOpenMenu(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedTask) return;
+
     try {
-      await ProjectsApi.deleteProject(id);
-      setProjects(projects.filter((p) => p.id !== id));
-      setOpenMenu(null);
+      await TasksApi.deleteTask(selectedTask.id);
+
+      setTasks(tasks.filter((t) => t.id !== selectedTask.id));
+      setIsDeleteOpen(false);
     } catch (err) {
-      console.error("Error deleting project:", err);
+      console.error("Error deleting task:", err);
     }
   };
 
@@ -90,14 +102,15 @@ export default function Projects() {
     setCurrentPage(1);
   };
 
-  const filteredProjects = searchTerm
-    ? projects.filter((project) =>
-        project.title.toLowerCase().includes(searchTerm.toLowerCase()),
+  const filteredTasks = searchTerm
+    ? tasks.filter((task) =>
+        task.title.toLowerCase().includes(searchTerm.toLowerCase()),
       )
-    : projects;
+    : tasks;
+
   useEffect(() => {
     const delay = setTimeout(() => {
-      fetchProjects();
+      fetchTasks();
     }, 500);
 
     return () => clearTimeout(delay);
@@ -108,7 +121,7 @@ export default function Projects() {
       <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
         <h1>Tasks</h1>
         <div
-          className="shrink mt-[-1rem]"
+          className="shrink cursor-pointer"
           onClick={() => navigate("/dashboard/add-task")}
         >
           <CustomButton text=" + add Task " />
@@ -116,14 +129,14 @@ export default function Projects() {
       </div>
       <div className="table-wrapper">
         <div className="search-filter-container">
-          <div className="search-wrapper  ">
+          <div className="search-wrapper">
             <span className="search-icon">
               <Search size={20} strokeWidth={1.75} />
             </span>
             <input
               type="text"
               placeholder="Search By Title"
-              className="search-input"
+              className="search-input dark:text-white"
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
             />
@@ -154,22 +167,22 @@ export default function Projects() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredProjects.length > 0 ? (
-                    filteredProjects.map((task) => (
+                  {filteredTasks.length > 0 ? (
+                    filteredTasks.map((task) => (
                       <tr
                         key={task?.id}
                         className="table-row dark:bg-taupe-900"
                       >
-                        <td className="">{task.title}</td>
-                        <td className="">{task?.description}</td>
+                        <td>{task.title}</td>
+                        <td>{task?.description}</td>
                         <td>
                           <span className="status-badge bg-emerald-800 text-white dark:bg-gray-700">
                             {task.status}
                           </span>
                         </td>
-                        <td className="">{task.employee?.userName}</td>
-                        <td className="">{task?.project?.title}</td>
-                        <td className="">
+                        <td>{task.employee?.userName}</td>
+                        <td>{task?.project?.title}</td>
+                        <td>
                           {new Date(task.creationDate).toLocaleDateString()}
                         </td>
                         <td className="actions-cell">
@@ -185,8 +198,8 @@ export default function Projects() {
                               ⋮
                             </button>
                             {openMenu === task.id && (
-                              <div className="actions-menu  bg-amber-50  dark:bg-gray-400">
-                                <button className="action-btn view-btn  dark:text-gray-700 ">
+                              <div className="actions-menu bg-amber-50 dark:bg-gray-400">
+                                <button className="action-btn view-btn dark:text-gray-700 ">
                                   <Eye
                                     color="var(--bg-main-color)"
                                     size={20}
@@ -211,7 +224,7 @@ export default function Projects() {
                                 </button>
                                 <button
                                   className="action-btn delete-btn dark:text-black"
-                                  onClick={() => handleDelete(task.id)}
+                                  onClick={() => handleOpenDelete(task)}
                                 >
                                   <Trash2
                                     color="var(--bg-main-color)"
@@ -229,7 +242,7 @@ export default function Projects() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={6} className="text-center dark:text-black">
+                      <td colSpan={7} className="text-center dark:text-black">
                         <NoData />
                       </td>
                     </tr>
@@ -277,7 +290,7 @@ export default function Projects() {
                   />{" "}
                 </button>
                 <button
-                  className="page-btn"
+                  className="page-btn dark:bg-cyan-900 dark:text-white"
                   onClick={handleNextPage}
                   disabled={currentPage >= Math.ceil(totalResults / pageSize)}
                 >
@@ -291,6 +304,23 @@ export default function Projects() {
             </div>
           </>
         )}
+
+        <DeleteConfirm
+          isOpen={isDeleteOpen}
+          setIsOpen={setIsDeleteOpen}
+          onConfirm={handleConfirmDelete} // لم نعد بحاجة لتمرير معاملات هنا لأنها تُقرأ تلقائياً بالداخل
+          title="Delete Task?"
+          confirmText="Yes, Delete Permanently"
+          variant="danger"
+          description={
+            <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+              You are about to delete the task <br />
+              <span className="font-bold text-red-600 dark:text-red-400 text-lg">
+                "{selectedTask?.title}"
+              </span>
+            </p>
+          }
+        />
       </div>
     </>
   );
