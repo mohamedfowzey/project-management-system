@@ -6,16 +6,33 @@ export interface GetUsersParams {
   search?: string;
 }
 
+export interface Project {
+  id: number;
+  title: string;
+  description: string;
+  creationDate: string;
+  modificationDate: string;
+}
+
+export interface Task {
+  id: number;
+  title: string;
+  description: string;
+  status: string; 
+  creationDate: string;
+  modificationDate: string;
+  project: Project;
+}
+
 export interface User {
   id: number;
   userName: string;
   email: string;
   country: string;
   phoneNumber: string;
-  imagePath?: string;
   isActivated: boolean;
-  creationDate: string;
-  modificationDate: string;
+  imagePath?: string; 
+  task: Task[];      
 }
 
 export interface UsersPaginatedResponse {
@@ -33,20 +50,6 @@ export interface UsersPaginatedResponse {
   password: string;
   confirmPassword: string;
 }
-export interface User {
-  country: string;
-  creationDate: string;
-  email: string;
-  id: number;
-  imagePath?: string;
-  isActivated: boolean;
-  modificationDate: string;
-  phoneNumber: string;
-  userName: string;
-}
-export interface UserId {
-  id: number;
-}
 
 export interface UserCountresponse {
   activatedEmployeeCount: number;
@@ -54,13 +57,14 @@ export interface UserCountresponse {
 }
 
 export const getUsers = (params?: GetUsersParams) => {
-  return axiosClient.get<UsersPaginatedResponse>("/Users", {
+  return axiosClient.get<UsersPaginatedResponse>("/Users/Manager", {
     params: {
-      pageNumber: params?.pageNumber,
-      pageSize: params?.pageSize,
+      pageNumber: params?.pageNumber || 1,
+      pageSize: params?.pageSize || 10,
     },
   });
-};export const getUsersById = (id: UserId) => {
+
+};export const getUsersById = (id: number | string) => {
   return axiosClient.get(`/Users/${id}`);
 };
 

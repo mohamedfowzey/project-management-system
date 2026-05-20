@@ -13,6 +13,7 @@ import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 import NoData from "../../Shared/NoData/NoData";
 import { UsersApi } from "../../../api/index";
 import type { User } from "../../../api/modules/user";
+import UserViewModal from "../../Shared/UserViewModal/UserViewModal";
 
 export default function Users() {
   const [users, setUsers] = useState<User[]>([]);
@@ -81,6 +82,14 @@ export default function Users() {
     return () => clearTimeout(delay);
   }, [searchTerm, currentPage, pageSize]);
 
+  // modal states views
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedUsers, setSelectedUsers] = useState<User | null>(null);
+      const handleView = (user: User) => {
+        setSelectedUsers(user);
+        setIsOpen(true);
+      }
+
   return (
     <>
       <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
@@ -146,7 +155,7 @@ export default function Users() {
                         <td>{user?.phoneNumber}</td>
                         <td>{user?.email}</td>
                         <td>
-                          {new Date(user.creationDate).toLocaleDateString()}
+                          {user?.task && new Date(user?.task[0]?.creationDate).toLocaleDateString()}
                         </td>
                         <td className="actions-cell">
                           <div className="actions-wrapper">
@@ -162,7 +171,13 @@ export default function Users() {
                             </button>
                             {openMenu === user.id && (
                               <div className="actions-menu bg-amber-50  dark:bg-gray-400 ">
-                                <button className="action-btn view-btn  dark:text-gray-700 ">
+                                <button
+                                onClick={() => {
+                                    handleView(user);
+                                    setIsOpen(true);
+                                    setOpenMenu(null);
+                                  }}
+                                 className="action-btn view-btn  dark:text-gray-700 ">
                                   <Eye
                                     color="var(--bg-main-color)"
                                     size={20}
@@ -246,6 +261,14 @@ export default function Users() {
           </>
         )}
       </div>
+
+      {selectedUsers && (
+                    <UserViewModal
+                      user={selectedUsers}
+                      isOpen={isOpen}
+                      setIsOpen={setIsOpen}
+                    />
+                  )}
     </>
   );
 }
