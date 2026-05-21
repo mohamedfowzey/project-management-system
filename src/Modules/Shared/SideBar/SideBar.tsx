@@ -6,11 +6,13 @@ import {
   LogOut,
   ChevronRight,
   ChevronLeft,
-  Home,
+  LayoutDashboard,
+  ListTodo,
+  ShieldAlert,
 } from "lucide-react";
 import { useContext, useState } from "react";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import DeleteConfirm from "../DeleteConfirm/DeleteConfirm";
 
 export default function SideBar() {
@@ -18,63 +20,86 @@ export default function SideBar() {
   const [isDeleteOpen,setIsDeleteOpen] = useState<boolean>(false)  
   const auth = useContext(AuthContext);
   if (!auth) return null;
-  const { logOut, smallScreen } = auth;
+
+
+  const location = useLocation();
+
+
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   return (
-    <div className="sidebar-container relative h-full ">
-      {smallScreen || 
-      <button
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        className="toggle-sidebar-btn absolute top-[1%] left-full z-50 flex h-10 w-4 items-center justify-center rounded-r-xl transition-all duration-300"
-        style={{
-          backgroundColor: "rgba(239, 155, 40, 1)",
-          color: "white",
-          cursor: "pointer",
-          border: "none",
-        }}
-      >
-        {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-      </button>}
-      <Sidebar collapsed={smallScreen? true : isCollapsed} className="text-white">
-        <Menu>
-          <MenuItem icon={<Home size={18} />} component={<Link to="/dashboard" />}>
-            home
-          </MenuItem>
-          <MenuItem icon={<Users size={18} />} component={<Link to="users" />}>
-            Users
-          </MenuItem>
+    <>
 
-          <MenuItem
-            icon={<Briefcase size={18} />}
-            component={<Link to="projects" />}
-          >
-            Projects
-          </MenuItem>
+      <div className="sidebar-container relative h-full">
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="toggle-sidebar-btn absolute top-[1%] right-0 z-50 flex h-14 w-7 items-center justify-center rounded-l-xl transition-all duration-300"
+          style={{
+            backgroundColor: "rgba(239, 155, 40, 1)",
+            color: "white",
+            cursor: "pointer",
+            border: "none",
+          }}
+        >
+          {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+        </button>
+        <Sidebar collapsed={isCollapsed} className="text-white ">
+          <Menu className="mt-20">
+            <MenuItem icon={<Users size={22} />} component={<Link to="users"
+              className={location.pathname === '/dashboard/users' ? 'active-link' : ''}
+            />}>
+              Users
+            </MenuItem>
 
-          <MenuItem
-            icon={<SquareCheck size={18} />}
-            component={<Link to="tasks" />}
-          >
-            Tasks
-          </MenuItem>
+            <MenuItem
+              icon={<LayoutDashboard size={22} />}
+              component={<Link to="projects"
+                className={location.pathname === '/dashboard/projects' ? 'active-link' : ''}
+              />}
+            >
+              Projects
+            </MenuItem>
 
-          <MenuItem
-            onClick={() => setIsDeleteOpen(true)}
-            icon={<LogOut size={18} />}
-            style={{ marginTop: "20px" }}
-          >
-            Logout
-          </MenuItem>
-        </Menu>
-      </Sidebar>
-      <DeleteConfirm
-                isOpen={isDeleteOpen}
-                setIsOpen={setIsDeleteOpen}
-                onConfirm={logOut}
-                title="want to logout?"
-                confirmText="logout"
-                variant='danger'
-                description={''}
-              />
-    </div>
+            <MenuItem
+              icon={<ListTodo size={22} />}
+              component={<Link to="tasks"
+                className={location.pathname === '/dashboard/tasks' ? 'active-link' : ''}
+              />}
+            >
+              Tasks
+            </MenuItem>
+
+            <MenuItem
+              onClick={() => setIsLogoutOpen(true)}
+              icon={<LogOut size={18} />}
+              style={{ marginTop: "20px" }}
+            >
+              Logout
+            </MenuItem>
+          </Menu>
+        </Sidebar>
+      </div>
+      <DeleteConfirm      
+        isOpen={isLogoutOpen}
+        setIsOpen={setIsLogoutOpen}
+        title="Confirm Logout"
+        variant="danger"
+        icon={ShieldAlert} 
+        confirmText="Yes, Logout"
+        warningText="You will need to login again to access the dashboard."
+        onConfirm={handleLogout}
+        description={
+          <p>
+            Are you sure you want to end your session?
+          </p>
+        }
+      />
+    </>
   );
 }
