@@ -115,10 +115,12 @@ export default function Users() {
     setIsOpen(true);
   }
 
+  
+
   return (
     <>
-      <div className="flex  mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
-        <h1>Users</h1>
+      <div className="flex   mb-10 py-6 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
+        <h1 className="text-3xl font-semibold">Users</h1>
       </div>
       <div className="table-wrapper">
         <div className="search-filter-container">

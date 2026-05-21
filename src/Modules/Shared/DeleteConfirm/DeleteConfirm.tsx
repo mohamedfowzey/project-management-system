@@ -1,16 +1,18 @@
 import { Trash2, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react"; 
+import ModalOverlay from "../ModalOverlay/ModalOverlay"; 
 
 interface GenericDeleteConfirmProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   onConfirm: () => void;
   title: string;
-  description: React.ReactNode;
+  description: ReactNode; 
   confirmText?: string;
   warningText?: string;
   icon?: LucideIcon;
-  variant?: "danger" | "warning";
+  variant?: "danger" | "warning" | "success"; 
 }
 
 export default function DeleteConfirm({
@@ -26,31 +28,45 @@ export default function DeleteConfirm({
 }: GenericDeleteConfirmProps) {
   if (!isOpen) return null;
 
+ 
   const isDanger = variant === "danger";
+  const isSuccess = variant === "success";
+
   const headerBg = isDanger
     ? "bg-red-50 dark:bg-red-900/10"
+    : isSuccess
+    ? "bg-emerald-50 dark:bg-emerald-900/10"
     : "bg-amber-50 dark:bg-amber-900/10";
+
   const iconBg = isDanger
     ? "bg-red-100 dark:bg-red-900/30"
+    : isSuccess
+    ? "bg-emerald-100 dark:bg-emerald-900/30"
     : "bg-amber-100 dark:bg-amber-900/30";
+
   const iconColor = isDanger
     ? "text-red-600 dark:text-red-500"
+    : isSuccess
+    ? "text-emerald-600 dark:text-emerald-500"
     : "text-amber-600 dark:text-amber-500";
+
   const btnBg = isDanger
-    ? "bg-red-600 hover:bg-red-700 shadow-red-500/40"
+    ? "bg-red-700 hover:bg-red-600 shadow-red-600/40"
+    : isSuccess
+    ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/40"
     : "bg-amber-600 hover:bg-amber-700 shadow-amber-500/40";
+
   const warningColor = isDanger
     ? "text-red-500/80 dark:text-red-400/70"
+    : isSuccess
+    ? "text-emerald-500/80 dark:text-emerald-400/70"
     : "text-amber-500/80 dark:text-amber-400/70";
 
   return (
-    <div
-      onClick={() => setIsOpen(false)}
-      className="fixed inset-0 flex items-center justify-center bg-black/60 z-[100] backdrop-blur-[2px] px-4 transition-opacity"
-    >
+    <ModalOverlay>
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-100 relative"
+        className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-100 relative "
       >
         {/* Close Button X */}
         <button
@@ -62,11 +78,11 @@ export default function DeleteConfirm({
 
         <div className={`${headerBg} p-8 flex flex-col items-center`}>
           <div
-            className={`${iconBg} w-20 h-20 rounded-full flex items-center justify-center mb-4 animate-pulse`}
+            className={`${iconBg} w-20 h-20 rounded-full flex items-center justify-center mb-4 animate-bounce transition-all  ease-in`}
           >
             <Icon className={iconColor} size={40} />
           </div>
-          <h2 className="text-xl font-black text-gray-900 dark:text-white">
+          <h2 className="text-xl font-black text-gray-900 dark:text-white text-center">
             {title}
           </h2>
         </div>
@@ -103,6 +119,6 @@ export default function DeleteConfirm({
           </button>
         </div>
       </div>
-    </div>
+    </ModalOverlay>
   );
 }

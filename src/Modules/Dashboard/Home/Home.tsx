@@ -192,7 +192,11 @@ export default function Home() {
             ) :hasData? (
               <Doughnut data={chartTasksData} options={chartOptions} />
             ) : (
-              <NoData />
+              <div className='pt-7   '>
+
+                <NoData />
+                
+              </div>
             )}
           </div>
         </div>
@@ -227,11 +231,17 @@ export default function Home() {
           </div>
           <div className="h-48 mt-5 relative flex justify-center items-start px-10">
             {loadingUsers ? (
-              <div className="h-48 w-48  rounded-full border-\[20px\] border-gray-300 border-t-gray-200 animate-spin"></div>
-            ) : (
+              <div className="h-48 w-48   rounded-full border-\[20px\] border-gray-300 border-t-gray-200 animate-spin"></div>
+            ) :hasData? (
 
               <Doughnut data={chartUsersData} options={chartOptions} />
 
+            ) : (
+              <div className='mt-2  '>
+
+                <NoData />
+                
+              </div>
             )}
           </div>
         </div>
