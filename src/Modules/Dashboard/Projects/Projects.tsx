@@ -173,9 +173,8 @@ export default function Projects() {
                         absoluteStrokeWidth
                       />
                     </th>
+                    <th>description</th>
                     <th>Status</th>
-                    <th>phone Number</th>
-                    <th>country</th>
                     <th>Date Created</th>
                     <th></th>
                   </tr>
@@ -188,6 +187,7 @@ export default function Projects() {
                         className="table-row dark:bg-taupe-900"
                       >
                         <td>{project.title}</td>
+                        <td>{project.description}</td>
                         <td>
                           <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
                             ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
@@ -197,8 +197,6 @@ export default function Projects() {
                             {project?.manager?.isActivated ? 'Active' : 'Inactive'}
                           </span>
                         </td>
-                        <td>{project.manager?.phoneNumber}</td>
-                        <td>{project?.manager?.country}</td>
                         <td>
                           {new Date(project.creationDate).toLocaleDateString()}
                         </td>

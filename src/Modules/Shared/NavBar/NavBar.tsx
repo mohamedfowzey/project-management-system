@@ -2,6 +2,7 @@ import {
   Bell,
   ChevronDown,
   LayoutDashboard,
+  Lock,
   LogOut,
   Moon,
   Sun,
@@ -11,6 +12,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import Darklogo from "../../../assets/Images/favicon.png";
 import logo from "../../../assets/Images/masterLogo.png";
+import smallLogo from '../../../assets/Images/favicon copy.png'
 import { AuthContext } from "../../../Contexts/AuthContext";
 
 export default function NavBar() {
@@ -19,16 +21,16 @@ export default function NavBar() {
 
   const auth = useContext(AuthContext);
   if (!auth) return null;
-  const { userData, logOut, currentUserData, isLoading, mood, toggleMood } =
+  const { userData, logOut, currentUserData, isLoading, mood, toggleMood, smallScreen } =
     auth;
   return (
     <>
       <nav className="bg-white dark:bg-gray-950 border-b dark:border-gray-600 border-gray-200 px-6 py-3 flex items-center justify-between w-full h-20 drop-shadow-sm relative z-50">
         <div className="flex items-center space-x-3">
           <img
-            src={mood == "light" ? logo : Darklogo}
+            src={smallScreen?smallLogo: mood == "light" ? logo : Darklogo}
             alt="PMS Logo"
-            className="h-14 md:h-16 max-w-45 object-contain"
+            className="h-8 sm:h-10 md:h-16 max-w-45 object-contain"
           />
         </div>
 
@@ -115,6 +117,14 @@ export default function NavBar() {
                   >
                     <User className="w-4 h-4 text-gray-400" />
                     <span>User Profile</span>
+                  </Link>
+                  <Link
+                    to="/change-password"
+                    onClick={() => setIsDropdownOpen(false)}
+                    className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 dark:hover:text-gray-400 hover:bg-gray-50 hover:text-slate-900 dark:hover:bg-black transition-colors"
+                  >
+                    <Lock className="w-4 h-4 text-gray-400" />
+                    <span>Change Password</span>
                   </Link>
 
                   <hr className="border-gray-100 dark:border-gray-600 my-1" />

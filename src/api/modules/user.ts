@@ -68,7 +68,7 @@ export const getUsers = (params?: GetUsersParams) => {
   return axiosClient.get(`/Users/${id}`);
 };
 
-export const toggleActivatedEmployee = (id: UserId) => {
+export const toggleActivatedEmployee = (id: number) => {
   return axiosClient.put(`/Users/${id}`);
 };
 

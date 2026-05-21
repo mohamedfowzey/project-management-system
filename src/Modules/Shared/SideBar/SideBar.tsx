@@ -17,6 +17,7 @@ import DeleteConfirm from "../DeleteConfirm/DeleteConfirm";
 
 export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isDeleteOpen,setIsDeleteOpen] = useState<boolean>(false)  
   const auth = useContext(AuthContext);
   if (!auth) return null;
 
