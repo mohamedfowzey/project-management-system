@@ -41,7 +41,6 @@ export interface Task {
       isActivated: boolean;
     };
   };
-
 }
 
 export default function TasksList() {
@@ -70,7 +69,7 @@ export default function TasksList() {
 
       setTasks(response.data.data || []);
       setTotalResults(response.data.totalNumberOfRecords || 0);
-    }  finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -85,7 +84,7 @@ export default function TasksList() {
     if (!selectedTask || !selectedTask.id) return;
 
     try {
-      await TasksApi.deleteTask(selectedTask.id );
+      await TasksApi.deleteTask(selectedTask.id);
 
       setTasks(tasks.filter((t) => t.id !== selectedTask.id));
       setIsDeleteOpen(false);
@@ -118,8 +117,8 @@ export default function TasksList() {
 
   const filteredTasks = searchTerm
     ? tasks.filter((task) =>
-      task.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
+        task.title.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
     : tasks;
 
   useEffect(() => {
@@ -137,7 +136,7 @@ export default function TasksList() {
   const handleView = (task: Task) => {
     setSelectedTasks(task);
     setIsOpen(true);
-  }
+  };
 
   return (
     <>
@@ -170,8 +169,8 @@ export default function TasksList() {
         ) : (
           <>
             <div className="table-container">
-              <table className="data-table">
-                <thead>
+              <table className="data-table w-full">
+                <thead className="hidden md:table-header-group">
                   <tr className="bg-emerald-800 text-white dark:bg-gray-700">
                     <th className="flex gap-1 items-center ">
                       Title{" "}
@@ -189,32 +188,134 @@ export default function TasksList() {
                     <th></th>
                   </tr>
                 </thead>
-                <tbody>
+
+                <tbody className="block md:table-row-group">
                   {filteredTasks.length > 0 ? (
                     filteredTasks.map((task) => (
                       <tr
                         key={task?.id}
-                        className="table-row dark:bg-taupe-900"
+                        className="
+              block md:table-row
+              mb-4 md:mb-0
+              rounded-2xl
+              border border-gray-200 dark:border-gray-700
+              bg-white dark:bg-gray-900
+              shadow-sm
+              p-4 md:p-0
+            "
                       >
-                        <td>{task.title}</td>
-                        <td>{task?.description}</td>
-                        <td>
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${task?.status === 'ToDo'
-                            ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
-                            : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                            }`}>
-                            <span className={`w-2 h-2 rounded-full mr-2 ${task?.status === 'ToDo' ? 'bg-amber-500' : 'bg-green-500'}`}></span>
+                        <td
+                          data-label="Title"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
+                          {task.title}
+                        </td>
+
+                        <td
+                          data-label="Description"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
+                          {task?.description}
+                        </td>
+
+                        <td
+                          data-label="Status"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
+                              task?.status === "ToDo"
+                                ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                                : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                            }`}
+                          >
+                            <span
+                              className={`w-2 h-2 rounded-full mr-2 ${
+                                task?.status === "ToDo"
+                                  ? "bg-amber-500"
+                                  : "bg-green-500"
+                              }`}
+                            ></span>
                             {task?.status}
                           </span>
-
-
                         </td>
-                        <td>{task.employee?.userName}</td>
-                        <td>{task?.project?.title}</td>
-                        <td>
+
+                        <td
+                          data-label="User"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
+                          {task.employee?.userName}
+                        </td>
+
+                        <td
+                          data-label="Project"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
+                          {task?.project?.title}
+                        </td>
+
+                        <td
+                          data-label="Date"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
                           {new Date(task.creationDate).toLocaleDateString()}
                         </td>
-                        <td className="actions-cell">
+
+                        <td
+                          className="
+                flex justify-end
+                md:table-cell
+                pt-4 md:pt-0
+              "
+                        >
                           <div className="actions-wrapper">
                             <button
                               className="menu-btn"
@@ -226,23 +327,26 @@ export default function TasksList() {
                             >
                               ⋮
                             </button>
+
                             {openMenu === task.id && (
-                              <div className="actions-menu  bg-amber-50  dark:bg-gray-400">
+                              <div className="actions-menu bg-amber-50 dark:bg-gray-400">
                                 <button
                                   onClick={() => {
                                     handleView(task);
                                     setIsOpen(true);
                                     setOpenMenu(null);
                                   }}
-                                  className="action-btn view-btn  dark:text-gray-700 ">
+                                  className="action-btn view-btn dark:text-gray-700 "
+                                >
                                   <Eye
                                     color="var(--bg-main-color)"
                                     size={20}
                                     strokeWidth={1.5}
                                     absoluteStrokeWidth
-                                  />{" "}
+                                  />
                                   View
                                 </button>
+
                                 <button
                                   className="action-btn edit-btn dark:text-emerald-900"
                                   onClick={() =>
@@ -254,9 +358,10 @@ export default function TasksList() {
                                     size={20}
                                     strokeWidth={1.5}
                                     absoluteStrokeWidth
-                                  />{" "}
+                                  />
                                   Edit
                                 </button>
+
                                 <button
                                   className="action-btn delete-btn dark:text-black"
                                   onClick={() => handleOpenDelete(task)}
@@ -266,7 +371,7 @@ export default function TasksList() {
                                     size={20}
                                     strokeWidth={1.5}
                                     absoluteStrokeWidth
-                                  />{" "}
+                                  />
                                   Delete
                                 </button>
                               </div>
@@ -346,7 +451,7 @@ export default function TasksList() {
           onConfirm={handleConfirmDelete}
           title="Delete Task?"
           confirmText="Yes, Delete Permanently"
-          variant='danger'
+          variant="danger"
           description={
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
               You are about to delete the task <br />

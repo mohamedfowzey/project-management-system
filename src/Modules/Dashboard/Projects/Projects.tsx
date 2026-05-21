@@ -119,8 +119,8 @@ export default function Projects() {
 
   const filteredProjects = searchTerm
     ? projects.filter((project) =>
-      project.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
+        project.title.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
     : projects;
 
   useEffect(() => {
@@ -162,9 +162,10 @@ export default function Projects() {
         ) : (
           <>
             <div className="table-container">
-              <table className="data-table">
+              {/* Desktop Table */}
+              <table className="data-table hidden md:table">
                 <thead>
-                  <tr className="bg-emerald-800  text-white dark:bg-gray-700">
+                  <tr className="bg-emerald-800 text-white dark:bg-gray-700">
                     <th className="flex gap-1 items-center ">
                       Title{" "}
                       <ArrowUpZA
@@ -173,12 +174,14 @@ export default function Projects() {
                         absoluteStrokeWidth
                       />
                     </th>
+
                     <th>description</th>
                     <th>Status</th>
                     <th>Date Created</th>
                     <th></th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {filteredProjects.length > 0 ? (
                     filteredProjects.map((project) => (
@@ -187,19 +190,35 @@ export default function Projects() {
                         className="table-row dark:bg-taupe-900"
                       >
                         <td>{project.title}</td>
+
                         <td>{project.description}</td>
+
                         <td>
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
-                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                            : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                            }`}>
-                            <span className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated ? 'bg-green-500' : 'bg-red-500'}`}></span>
-                            {project?.manager?.isActivated ? 'Active' : 'Inactive'}
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
+                              project?.manager?.isActivated
+                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                            }`}
+                          >
+                            <span
+                              className={`w-2 h-2 rounded-full mr-2 ${
+                                project?.manager?.isActivated
+                                  ? "bg-green-500"
+                                  : "bg-red-500"
+                              }`}
+                            ></span>
+
+                            {project?.manager?.isActivated
+                              ? "Active"
+                              : "Inactive"}
                           </span>
                         </td>
+
                         <td>
                           {new Date(project.creationDate).toLocaleDateString()}
                         </td>
+
                         <td className="actions-cell">
                           <div className="actions-wrapper">
                             <button
@@ -212,15 +231,16 @@ export default function Projects() {
                             >
                               ⋮
                             </button>
+
                             {openMenu === project.id && (
-                              <div className="actions-menu bg-amber-50  dark:bg-gray-400 ">
+                              <div className="actions-menu bg-amber-50 dark:bg-gray-400">
                                 <button
                                   onClick={() => {
                                     handleView(project);
                                     setIsOpen(true);
                                     setOpenMenu(null);
                                   }}
-                                  className="action-btn view-btn  dark:text-gray-700 "
+                                  className="action-btn view-btn dark:text-gray-700"
                                 >
                                   <Eye
                                     color="var(--bg-main-color)"
@@ -230,8 +250,9 @@ export default function Projects() {
                                   />{" "}
                                   View
                                 </button>
+
                                 <button
-                                  className="action-btn edit-btn  dark:text-emerald-900"
+                                  className="action-btn edit-btn dark:text-emerald-900"
                                   onClick={() =>
                                     navigate(
                                       `/dashboard/edit-project/${project?.id}`,
@@ -246,8 +267,9 @@ export default function Projects() {
                                   />{" "}
                                   Edit
                                 </button>
+
                                 <button
-                                  className="action-btn delete-btn dark:text-red-900 "
+                                  className="action-btn delete-btn dark:text-red-900"
                                   onClick={() => handleOpenDelete(project)}
                                 >
                                   <Trash2
@@ -272,6 +294,121 @@ export default function Projects() {
                   )}
                 </tbody>
               </table>
+
+              {/* Mobile Cards */}
+              <div className="grid gap-4 md:hidden">
+                {filteredProjects.length > 0 ? (
+                  filteredProjects.map((project) => (
+                    <div
+                      key={project.id}
+                      className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm p-4 space-y-4"
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <h2 className="text-lg font-semibold break-words">
+                            {project.title}
+                          </h2>
+
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 break-words">
+                            {project.description}
+                          </p>
+                        </div>
+
+                        <div className="relative ml-3">
+                          <button
+                            className="menu-btn"
+                            onClick={() =>
+                              setOpenMenu(
+                                openMenu === project.id ? null : project.id,
+                              )
+                            }
+                          >
+                            ⋮
+                          </button>
+
+                          {openMenu === project.id && (
+                            <div className="actions-menu bg-amber-50 dark:bg-gray-400 right-0">
+                              <button
+                                onClick={() => {
+                                  handleView(project);
+                                  setIsOpen(true);
+                                  setOpenMenu(null);
+                                }}
+                                className="action-btn view-btn dark:text-gray-700"
+                              >
+                                <Eye
+                                  color="var(--bg-main-color)"
+                                  size={20}
+                                  strokeWidth={1.5}
+                                  absoluteStrokeWidth
+                                />{" "}
+                                View
+                              </button>
+
+                              <button
+                                className="action-btn edit-btn dark:text-emerald-900"
+                                onClick={() =>
+                                  navigate(
+                                    `/dashboard/edit-project/${project?.id}`,
+                                  )
+                                }
+                              >
+                                <FilePenLine
+                                  color="var(--bg-main-color)"
+                                  size={20}
+                                  strokeWidth={1.5}
+                                  absoluteStrokeWidth
+                                />{" "}
+                                Edit
+                              </button>
+
+                              <button
+                                className="action-btn delete-btn dark:text-red-900"
+                                onClick={() => handleOpenDelete(project)}
+                              >
+                                <Trash2
+                                  size={20}
+                                  strokeWidth={1.5}
+                                  absoluteStrokeWidth
+                                />{" "}
+                                Delete
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-3 flex-wrap">
+                        <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
+                            project?.manager?.isActivated
+                              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                              : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                          }`}
+                        >
+                          <span
+                            className={`w-2 h-2 rounded-full mr-2 ${
+                              project?.manager?.isActivated
+                                ? "bg-green-500"
+                                : "bg-red-500"
+                            }`}
+                          ></span>
+
+                          {project?.manager?.isActivated
+                            ? "Active"
+                            : "Inactive"}
+                        </span>
+
+                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                          {new Date(project.creationDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <NoData />
+                )}
+              </div>
             </div>
 
             <div className="pagination ">

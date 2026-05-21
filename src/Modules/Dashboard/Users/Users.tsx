@@ -27,8 +27,6 @@ export default function Users() {
   const [isBlockUserOpen, setIsBlockUserOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-
-
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -94,8 +92,8 @@ export default function Users() {
 
   const filteredUsers = searchTerm
     ? users.filter((user) =>
-      user.userName?.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
+        user.userName?.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
     : users;
 
   useEffect(() => {
@@ -112,9 +110,7 @@ export default function Users() {
   const handleView = (user: User) => {
     setSelectedUsers(user);
     setIsOpen(true);
-  }
-
-  
+  };
 
   return (
     <>
@@ -141,8 +137,8 @@ export default function Users() {
         ) : (
           <>
             <div className="table-container">
-              <table className="data-table">
-                <thead>
+              <table className="data-table w-full">
+                <thead className="hidden md:table-header-group">
                   <tr className="bg-emerald-800 text-white dark:bg-gray-700">
                     <th className="flex gap-1 items-center ">
                       User Name{" "}
@@ -159,29 +155,116 @@ export default function Users() {
                     <th></th>
                   </tr>
                 </thead>
-                <tbody>
+
+                <tbody className="block md:table-row-group">
                   {filteredUsers.length > 0 ? (
                     filteredUsers.map((user) => (
                       <tr
                         key={user?.id}
-                        className="table-row dark:bg-taupe-900"
+                        className="
+              block md:table-row
+              mb-4 md:mb-0
+              rounded-2xl
+              border border-gray-200 dark:border-gray-700
+              bg-white dark:bg-gray-900
+              shadow-sm
+              p-4 md:p-0
+            "
                       >
-                        <td>{user?.userName}</td>
-                        <td>
-                          <span className={`inline-flex items-center px-3 py-2 rounded-full text-xs font-bold ${user?.isActivated
-                            ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                            : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-                            }`}>
-                            {user?.isActivated ? 'Activated' : 'Not Activated'}
-                          </span>
+                        <td
+                          data-label="User Name"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
+                          {user?.userName}
+                        </td>
 
+                        <td
+                          data-label="Status"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
+                          <span
+                            className={`inline-flex items-center px-3 py-2 rounded-full text-xs font-bold ${
+                              user?.isActivated
+                                ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                                : "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400"
+                            }`}
+                          >
+                            {user?.isActivated ? "Activated" : "Not Activated"}
+                          </span>
                         </td>
-                        <td>{user?.phoneNumber}</td>
-                        <td>{user?.email}</td>
-                        <td>
-                          {user?.task && new Date(user?.task[0]?.creationDate).toLocaleDateString()}
+
+                        <td
+                          data-label="Phone"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
+                          {user?.phoneNumber}
                         </td>
-                        <td className="actions-cell">
+
+                        <td
+                          data-label="Email"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                break-all
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
+                          {user?.email}
+                        </td>
+
+                        <td
+                          data-label="Date"
+                          className="
+                flex justify-between items-center
+                md:table-cell
+                py-2 md:py-4
+                before:content-[attr(data-label)]
+                before:font-bold
+                before:text-gray-500
+                md:before:content-none
+              "
+                        >
+                          {user?.task &&
+                            new Date(
+                              user?.task[0]?.creationDate,
+                            ).toLocaleDateString()}
+                        </td>
+
+                        <td
+                          className="
+                flex justify-end
+                md:table-cell
+                pt-4 md:pt-0
+              "
+                        >
                           <div className="actions-wrapper">
                             <button
                               className="menu-btn"
@@ -193,15 +276,17 @@ export default function Users() {
                             >
                               ⋮
                             </button>
+
                             {openMenu === user.id && (
-                              <div className="actions-menu bg-amber-50  dark:bg-gray-400 ">
+                              <div className="actions-menu bg-amber-50 dark:bg-gray-400">
                                 <button
                                   onClick={() => {
                                     handleView(user);
                                     setIsOpen(true);
                                     setOpenMenu(null);
                                   }}
-                                  className="action-btn view-btn  dark:text-gray-700 ">
+                                  className="action-btn view-btn dark:text-gray-700"
+                                >
                                   <Eye
                                     color="var(--bg-main-color)"
                                     size={20}
@@ -210,6 +295,7 @@ export default function Users() {
                                   />{" "}
                                   View
                                 </button>
+
                                 <button
                                   onClick={() => handleOpenBlockModal(user)}
                                   className="action-btn block-btn dark:text-emerald-900"
@@ -229,7 +315,7 @@ export default function Users() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={6} className="text-center dark:text-black">
+                      <td colSpan={6}   className="text-center  dark:text-black">
                         <NoData />
                       </td>
                     </tr>
