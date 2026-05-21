@@ -19,7 +19,6 @@ export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDeleteOpen,setIsDeleteOpen] = useState<boolean>(false)  
   const auth = useContext(AuthContext);
-  if (!auth) return null;
 
 
   const location = useLocation();
@@ -49,7 +48,7 @@ export default function SideBar() {
         >
           {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
         </button>
-        <Sidebar collapsed={isCollapsed} className="text-white ">
+        <Sidebar collapsed={auth?.smallScreen? true : isCollapsed} className="text-white ">
           <Menu className="mt-20">
             <MenuItem icon={<Users size={22} />} component={<Link to="users"
               className={location.pathname === '/dashboard/users' ? 'active-link' : ''}
