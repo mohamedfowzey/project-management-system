@@ -18,9 +18,9 @@ import Users from "./Modules/Dashboard/Users/Users";
 import UserTasks from "./Modules/Dashboard/UserTasks/UserTasks";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./Modules/Shared/ProtectedRoutes/ProtectedRoutes";
-// import AOS from "aos";
-// import "aos/dist/aos.css";
-import { useEffect } from "react";
+import OnlyAdminsRoute from "./Modules/Shared/OnlyAdmins/OnlyAdminsRoute";
+import OnlyUsersRoute from "./Modules/Shared/OnlyUsers/OnlyUsersRoute";
+
 
 function App() {
   const routes = createBrowserRouter([
@@ -49,14 +49,14 @@ function App() {
       children: [
         { index: true, element: <Home /> },
         { path: "home", element: <Home /> },
-        { path: "projects", element: <Projects /> },
-        { path: "add-project", element: <ProjectDataForm /> },
-        { path: "edit-project/:id", element: <ProjectDataForm /> },
-        { path: "tasks", element: <Tasks /> },
-        { path: "add-task", element: <TaskDataForm /> },
-        { path: "edit-task/:id", element: <TaskDataForm /> },
-        { path: "users", element: <Users /> },
-        { path: "user-tasks", element: <UserTasks /> },
+        { path: "projects", element: <OnlyAdminsRoute><Projects /> </OnlyAdminsRoute> },
+        { path: "add-project", element: <OnlyAdminsRoute><ProjectDataForm /> </OnlyAdminsRoute> },
+        { path: "edit-project/:id", element: <OnlyAdminsRoute><ProjectDataForm /> </OnlyAdminsRoute> },
+        { path: "tasks", element: <OnlyAdminsRoute><Tasks /> </OnlyAdminsRoute> },
+        { path: "add-task", element: <OnlyAdminsRoute><TaskDataForm /> </OnlyAdminsRoute> },
+        { path: "edit-task/:id", element: <OnlyAdminsRoute><TaskDataForm /> </OnlyAdminsRoute> },
+        { path: "users", element: <OnlyAdminsRoute><Users /> </OnlyAdminsRoute> },
+        { path: "user-tasks", element: <OnlyUsersRoute><UserTasks /> </OnlyUsersRoute> },
       ],
     },
   ]);

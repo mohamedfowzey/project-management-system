@@ -6,6 +6,7 @@ import { getTasksCount as getTasksCountApi, type ITasksCountResponse } from "../
 import { getUserCount as getUserCountApi, type UserCountresponse } from "../../../api/modules/user";
 import { AuthContext } from '../../../Contexts/AuthContext';
 import NoData from '../../Shared/NoData/NoData';
+import OnlyAdmins from '../../Shared/OnlyAdmins/OnlyAdmins';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -73,7 +74,10 @@ export default function Home() {
 
   useEffect(() => {
     getTasksCount();
-    getUserCount();
+    if(userData?.userGroup == 'Manager'){
+
+      getUserCount();
+    }
   }, []);
 
   const chartTasksData = {
@@ -160,13 +164,7 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {/* <div className="bg-violet-200 rounded-xl shadow-sm p-4 flex flex-col justify-between">
-              <div className="bg-violet-300 inline-block p-3 rounded-2xl w-fit">
-                <ListTodo strokeWidth={2} />
-              </div>
-              <h3 className="text-base font-bold my-1.5 text-gray-600">To Do</h3>
-              <p className="text-lg font-medium">{tasksCount.toDo} </p>
-            </div> */}
+          
             <StatCard
               isLoading={loadingTasks}
               icon={ListTodo} title="To Do" count={tasksCount.toDo}
@@ -201,6 +199,8 @@ export default function Home() {
           </div>
         </div>
         {/* users counts */}
+        <OnlyAdmins>
+
         <div className={`${mood === 'light' ? 'bg-white' : 'bg-gray-800'} rounded-xl shadow-md overflow-hidden p-6 flex flex-col justify-between`}>
           <div className="mb-6 ps-4 border-s-4 border-solid border-amber-500">
             <h2 className="text-xl font-semibold">Users</h2>
@@ -245,6 +245,8 @@ export default function Home() {
             )}
           </div>
         </div>
+                </OnlyAdmins>
+
       </div>
     </div>
     </>

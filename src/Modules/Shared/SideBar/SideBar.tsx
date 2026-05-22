@@ -15,6 +15,7 @@ import { useContext, useState } from "react";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DeleteConfirm from "../DeleteConfirm/DeleteConfirm";
+import OnlyAdmins from "../OnlyAdmins/OnlyAdmins";
 
 export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -56,18 +57,21 @@ export default function SideBar() {
             />}>
               Dashboard
             </MenuItem>
+            <OnlyAdmins>
+
             <MenuItem icon={<Users size={22} />} component={<Link to="users"
               className={location.pathname === '/dashboard/users' ? 'active-link' : ''}
-            />}>
+              />}>
               Users
             </MenuItem>
+              
 
             <MenuItem
               icon={<LayoutDashboard size={22} />}
               component={<Link to="projects"
                 className={location.pathname === '/dashboard/projects' ? 'active-link' : ''}
-              />}
-            >
+                />}
+                >
               Projects
             </MenuItem>
 
@@ -75,9 +79,18 @@ export default function SideBar() {
               icon={<ListTodo size={22} />}
               component={<Link to="tasks"
                 className={location.pathname === '/dashboard/tasks' ? 'active-link' : ''}
+                />}
+                >
+              Tasks
+            </MenuItem>
+              </OnlyAdmins>
+            <MenuItem
+              icon={<ListTodo size={22} />}
+              component={<Link to="user-tasks"
+                className={location.pathname === '/dashboard/user-tasks' ? 'active-link' : ''}
               />}
             >
-              Tasks
+              My Tasks
             </MenuItem>
 
             <MenuItem
