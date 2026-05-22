@@ -1,13 +1,14 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext, use, useEffect, useState, type ReactNode } from "react";
+import { createContext,  useEffect, useState, type ReactNode } from "react";
 import { toast } from "react-toastify";
 import { getCurrentUser } from "../api/modules/user";
 interface User {
   id: string;
   userEmail: string;
   userName: string;
-  exp: string;
+  exp: string;  
   imagePath?: string;
+  userGroup: string;
 }
 export interface AuthContextType {
   userData: User | null;
@@ -52,6 +53,8 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
       setIsLoading(true);
       const decoded = jwtDecode<User>(encoded);
       if (+decoded.exp > Math.trunc(Date.now() / 1000)) {
+        console.log(decoded);
+                
         setUserData(decoded);
         await fetchCurrentUserProfile();
       } else {
