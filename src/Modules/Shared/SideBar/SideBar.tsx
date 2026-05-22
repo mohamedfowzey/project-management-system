@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   ListTodo,
   ShieldAlert,
+  Home,
 } from "lucide-react";
 import { useContext, useState } from "react";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
@@ -50,6 +51,11 @@ export default function SideBar() {
         </button>
         <Sidebar collapsed={auth?.smallScreen? true : isCollapsed} className="text-white ">
           <Menu className="mt-20">
+            <MenuItem icon={<Home size={22} />} component={<Link to="/dashboard"
+              className={location.pathname === '/dashboard' ? 'active-link' : ''}
+            />}>
+              Dashboard
+            </MenuItem>
             <MenuItem icon={<Users size={22} />} component={<Link to="users"
               className={location.pathname === '/dashboard/users' ? 'active-link' : ''}
             />}>
