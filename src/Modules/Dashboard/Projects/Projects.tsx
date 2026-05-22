@@ -15,6 +15,7 @@ import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 import NoData from "../../Shared/NoData/NoData";
 import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
+import AppChatBot from "../../Shared/AppChatBot/AppChatBot";
 
 interface Project {
   id: number;
@@ -492,6 +493,7 @@ export default function Projects() {
           }
         />
       )}
+      <AppChatBot/>
     </>
   );
 }
