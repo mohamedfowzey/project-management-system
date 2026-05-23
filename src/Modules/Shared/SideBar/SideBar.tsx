@@ -16,27 +16,24 @@ import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DeleteConfirm from "../DeleteConfirm/DeleteConfirm";
 import OnlyAdmins from "../OnlyAdmins/OnlyAdmins";
+import OnlyUsers from "../OnlyUsers/OnlyUsers";
 
 export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isDeleteOpen,setIsDeleteOpen] = useState<boolean>(false)  
+  const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
   const auth = useContext(AuthContext);
 
-
   const location = useLocation();
-
 
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
 
   const navigate = useNavigate();
   const handleLogout = () => {
-
     localStorage.removeItem("token");
     navigate("/login");
   };
   return (
     <>
-
       <div className="sidebar-container relative h-full">
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
@@ -50,49 +47,90 @@ export default function SideBar() {
         >
           {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
         </button>
-        <Sidebar collapsed={auth?.smallScreen? true : isCollapsed} className="text-white ">
+        <Sidebar
+          collapsed={auth?.smallScreen ? true : isCollapsed}
+          className="text-white "
+        >
           <Menu className="mt-20">
-            <MenuItem icon={<Home size={22} />} component={<Link to="/dashboard"
-              className={location.pathname === '/dashboard' ? 'active-link' : ''}
-            />}>
+            <MenuItem
+              icon={<Home size={22} />}
+              component={
+                <Link
+                  to="/dashboard"
+                  className={
+                    location.pathname === "/dashboard" ? "active-link" : ""
+                  }
+                />
+              }
+            >
               Dashboard
             </MenuItem>
             <OnlyAdmins>
+              <MenuItem
+                icon={<Users size={22} />}
+                component={
+                  <Link
+                    to="users"
+                    className={
+                      location.pathname === "/dashboard/users"
+                        ? "active-link"
+                        : ""
+                    }
+                  />
+                }
+              >
+                Users
+              </MenuItem>
 
-            <MenuItem icon={<Users size={22} />} component={<Link to="users"
-              className={location.pathname === '/dashboard/users' ? 'active-link' : ''}
-              />}>
-              Users
-            </MenuItem>
-              
+              <MenuItem
+                icon={<LayoutDashboard size={22} />}
+                component={
+                  <Link
+                    to="projects"
+                    className={
+                      location.pathname === "/dashboard/projects"
+                        ? "active-link"
+                        : ""
+                    }
+                  />
+                }
+              >
+                Projects
+              </MenuItem>
 
-            <MenuItem
-              icon={<LayoutDashboard size={22} />}
-              component={<Link to="projects"
-                className={location.pathname === '/dashboard/projects' ? 'active-link' : ''}
-                />}
-                >
-              Projects
-            </MenuItem>
-
-            <MenuItem
-              icon={<ListTodo size={22} />}
-              component={<Link to="tasks"
-                className={location.pathname === '/dashboard/tasks' ? 'active-link' : ''}
-                />}
-                >
-              Tasks
-            </MenuItem>
-              </OnlyAdmins>
-            <MenuItem
-              icon={<ListTodo size={22} />}
-              component={<Link to="user-tasks"
-                className={location.pathname === '/dashboard/user-tasks' ? 'active-link' : ''}
-              />}
-            >
-              My Tasks
-            </MenuItem>
-
+              <MenuItem
+                icon={<ListTodo size={22} />}
+                component={
+                  <Link
+                    to="tasks"
+                    className={
+                      location.pathname === "/dashboard/tasks"
+                        ? "active-link"
+                        : ""
+                    }
+                  />
+                }
+              >
+                Tasks
+              </MenuItem>
+            </OnlyAdmins>
+            <OnlyUsers>
+              <MenuItem
+                icon={<ListTodo size={22} />}
+                component={
+                  <Link
+                    to="user-tasks"
+                    className={
+                      location.pathname === "/dashboard/user-tasks"
+                        ? "active-link"
+                        : ""
+                    }
+                  />
+                }
+              >
+                My Tasks
+              </MenuItem>
+            </OnlyUsers>
             <MenuItem
               onClick={() => setIsLogoutOpen(true)}
               icon={<LogOut size={18} />}
@@ -103,20 +141,16 @@ export default function SideBar() {
           </Menu>
         </Sidebar>
       </div>
-      <DeleteConfirm      
+      <DeleteConfirm
         isOpen={isLogoutOpen}
         setIsOpen={setIsLogoutOpen}
         title="Confirm Logout"
         variant="danger"
-        icon={ShieldAlert} 
+        icon={ShieldAlert}
         confirmText="Yes, Logout"
         warningText="You will need to login again to access the dashboard."
         onConfirm={handleLogout}
-        description={
-          <p>
-            Are you sure you want to end your session?
-          </p>
-        }
+        description={<p>Are you sure you want to end your session?</p>}
       />
     </>
   );
