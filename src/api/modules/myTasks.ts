@@ -10,3 +10,8 @@ export const getMyTasks = (params: getMyTasks) => {
     params: params
   });
 }
+export const updateTaskStatus = (id: string, status: string) => {
+  return axiosClient.put(`Task/${id}/change-status`, {
+    status: status
+  });
+}

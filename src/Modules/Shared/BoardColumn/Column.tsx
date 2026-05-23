@@ -7,7 +7,7 @@ export default function Column({ column , tasks }: { column: Column, tasks?: Tas
         id: column.id,
     });
   return (
-    <div ref={setNodeRef} className='w-1/3 bg-ternary p-4 rounded-2xl h-full'>
+    <div ref={setNodeRef} className='w-1/3 min-w-60 bg-ternary p-4 rounded-2xl h-full'>
       <h2 className='text-white font-bold text-lg mb-2'>{column.title}</h2>
       {tasks?.map((task) => (
         <TaskCard key={task.id} task={task}/>

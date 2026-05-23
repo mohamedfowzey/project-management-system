@@ -26,7 +26,7 @@ export default function CustomInput({ register, HTMLtype, label, error,showSucce
           {...register}
           type={actualType}
           id={register.name} 
-          className={`block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer ${
+          className={`block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-1 appearance-none focus:outline-none focus:ring-0 peer ${
             error ? 'border-red-500 focus:border-red-500' : 'border-default-medium focus:border-brand'
           }`}
           placeholder=" "
@@ -58,15 +58,7 @@ export default function CustomInput({ register, HTMLtype, label, error,showSucce
 
         
 
-        {/* {isPassword && (
-          <button
-            type="button" 
-            onClick={() => setPassVisible(!passVisible)}
-            className="absolute right-0 top-3 text-body hover:text-brand transition-colors cursor-pointer"
-          >
-            {passVisible ? <EyeOff size={20} /> : <Eye size={20} />}
-          </button>
-        )} */}
+      
 
       </div>
       

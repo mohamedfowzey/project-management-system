@@ -111,12 +111,12 @@ export default function NavBar() {
                   </Link>
 
                   <Link
-                    to="/profile"
+                    to="edit-profile"
                     onClick={() => setIsDropdownOpen(false)}
                     className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 dark:hover:text-gray-400 hover:bg-gray-50 hover:text-slate-900 dark:hover:bg-black transition-colors"
                   >
                     <User className="w-4 h-4 text-gray-400" />
-                    <span>User Profile</span>
+                    <span>Edit Profile</span>
                   </Link>
                   <Link
                     to="/change-password"

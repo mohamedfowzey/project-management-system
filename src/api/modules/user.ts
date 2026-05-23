@@ -79,6 +79,9 @@ export const createUsers = (data: createUserData) => {
 export const getCurrentUser = () => {
   return axiosClient.get("/Users/currentUser");
 };
+export const updateCurrentUser = (data: FormData) => {
+  return axiosClient.put("/Users", data);
+};
 export const getUserCount = () => {
   return axiosClient.get<UserCountresponse>("/Users/count");
 };
