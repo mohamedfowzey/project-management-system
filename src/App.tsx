@@ -20,6 +20,7 @@ import { ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./Modules/Shared/ProtectedRoutes/ProtectedRoutes";
 import OnlyAdminsRoute from "./Modules/Shared/OnlyAdmins/OnlyAdminsRoute";
 import OnlyUsersRoute from "./Modules/Shared/OnlyUsers/OnlyUsersRoute";
+import EditProfile from "./Modules/Dashboard/EditProfile/editProfile";
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         { index: true, element: <Home /> },
         { path: "home", element: <Home /> },
         { path: "projects", element: <Projects /> },
+        { path: "edit-profile", element: <EditProfile /> },
         { path: "add-project", element: <OnlyAdminsRoute><ProjectDataForm /> </OnlyAdminsRoute> },
         { path: "edit-project/:id", element: <OnlyAdminsRoute><ProjectDataForm /> </OnlyAdminsRoute> },
         { path: "tasks", element: <OnlyAdminsRoute><Tasks /> </OnlyAdminsRoute> },

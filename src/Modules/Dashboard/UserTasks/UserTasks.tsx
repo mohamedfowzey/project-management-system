@@ -2,7 +2,7 @@
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import { useEffect, useState } from 'react';
 import Column from '../../Shared/BoardColumn/Column';
-import { getMyTasks } from '../../../api/modules/myTasks';
+import { getMyTasks, updateTaskStatus } from '../../../api/modules/myTasks';
 
 export interface Task {
   id: string;
@@ -25,9 +25,12 @@ export default function UserTasks() {
     if (!over) {
       return;
     }
-    console.log('active',active, 'over',over);
     const taskId = active.id as string;
     const newcolumnId = over.id as string;
+    updateTaskStatus(taskId, newcolumnId).then((res) => {
+      console.log(res);
+      
+    })
     setTasksState((prev) => {
        return prev?.map((task) => {
         if (task.id === taskId) {
@@ -36,9 +39,9 @@ export default function UserTasks() {
         return task;
       });
     })
+
   };
   useEffect(() => {
-    console.log('getting tasks');
     
     getMyTasks({ pageNumber: 1, pageSize: 10000 }).then((response) => {
       console.log(response?.data?.data);
@@ -52,7 +55,7 @@ export default function UserTasks() {
           <div className="py-6 ps-8 bg-white dark:bg-neutral-700 shrink">
             <h1 className="text-3xl font-semibold" >Task Board</h1>
           </div>
-          <div className='flex gap-4 p-4 grow text-white'>
+          <div className='flex gap-4 p-4 grow text-white w-full overflow-x-auto scrollbar-none'>
         <DndContext onDragEnd={onDragEnd}>
             {columnsState?.map((column) => (
               <Column key={column.id} column={column} tasks={tasksState?.filter((task) => task.status === column.id)} />

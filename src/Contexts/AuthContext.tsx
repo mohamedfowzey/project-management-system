@@ -10,9 +10,16 @@ interface User {
   imagePath?: string;
   userGroup: string;
 }
+interface Profile {
+  userName:string;
+  email:string;
+  country:string;
+  phoneNumber:string;
+  imagePath?:string;
+}
 export interface AuthContextType {
   userData: User | null;
-  currentUserData: User | null;
+  currentUserData: Profile | null;
   isLoading: boolean;
   smallScreen:boolean;
   mood:'light'|'dark'
@@ -28,7 +35,7 @@ interface AuthContextProvProp {
 }
 export default function AuthContextProvider({ children }: AuthContextProvProp) {
   const [userData, setUserData] = useState<User | null>(null);
-  const [currentUserData, setCurrentUserData] = useState<User | null>(null);
+  const [currentUserData, setCurrentUserData] = useState<Profile | null>(null);
   const [smallScreen,setSmallScreen] = useState<boolean>(window.innerWidth <= 768)
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [mood,setMood] = useState<'light'|'dark'>('dark')
@@ -43,6 +50,7 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
     try {
       const response = await getCurrentUser();
       setCurrentUserData(response?.data);
+      
     } catch (error) {
       console.error(error);
     }
@@ -53,7 +61,6 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
       setIsLoading(true);
       const decoded = jwtDecode<User>(encoded);
       if (+decoded.exp > Math.trunc(Date.now() / 1000)) {
-        console.log(decoded);
                 
         setUserData(decoded);
         await fetchCurrentUserProfile();

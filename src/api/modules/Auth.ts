@@ -24,6 +24,12 @@ export interface ChangePasswordData {
   confirmNewPassword: string;
 }
 
+export interface UpdateProfileData {
+  userName: string;
+  userEmail: string;
+  userPhone: string;
+}
+
 export const Loginn = (data: LoginData) => {
   return axiosClient.post("/Users/Login", data);
 };
