@@ -40,7 +40,7 @@ export default function ProjectViewModal({ project, isOpen, setIsOpen }: Project
             <div
 
               onClick={(e) => e.stopPropagation()}
-              className="w-[95%] md:w-[70%] lg:w-[50%] bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-10 relative transition-all duration-300 scale-100  overflow-y-scroll scrollbar-track-gray-800 scrollbar- scrollbar-thumb-accent scrollbar-thin h-full"
+              className="w-[95%] md:w-[70%] lg:w-[50%] bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-10 relative transition-all duration-300 scale-100  overflow-y-scroll scrollbar-track-gray-800 scrollbar- scrollbar-thumb-accent scrollbar-thin max-h-full"
             >
               <button
                 onClick={() => setIsOpen(false)}

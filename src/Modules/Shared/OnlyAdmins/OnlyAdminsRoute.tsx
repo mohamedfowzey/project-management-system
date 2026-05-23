@@ -1,5 +1,3 @@
-import React, { useContext } from 'react'
-import { AuthContext } from '../../../Contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
