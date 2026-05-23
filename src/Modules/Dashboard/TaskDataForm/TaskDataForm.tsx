@@ -10,7 +10,8 @@ import {
   type CreateTaskData,
 } from "../../../api/modules/tasks";
 import { getAllProjects, type Project } from "../../../api/modules/Projects";
-import { getUsers, type User } from "../../../api/modules/user";
+import { getUsers, type User, type UsersPaginatedResponse } from "../../../api/modules/user";
+import axiosClient from "../../../api/axsiosClient";
 
 export default function ProjectDataForm() {
   const { id } = useParams();
@@ -60,8 +61,12 @@ export default function ProjectDataForm() {
     setProjects(response.data.data);
   };
   const getAllUsers = async () => {
-    const response = await getUsers();
-    
+    const response = await axiosClient.get<UsersPaginatedResponse>("/Users", {
+      params: {
+        pageNumber: 1,
+        pageSize: 10000000,
+      },
+    });
     setEmployees(response.data.data);
   };
   useEffect(() => {
@@ -150,7 +155,7 @@ export default function ProjectDataForm() {
                     <option className="bg-white dark:bg-gray-900 " value={selectedProject?.id || ''}>{selectedProject?.title||'Choose a project'}</option>
 
                     {projects?.map((p) => (
-                      <option value={p?.id} className="bg-white dark:bg-gray-900 ">{p.title}</option>
+                      <option key={p?.id} value={p?.id} className="bg-white dark:bg-gray-900 ">{p.title}</option>
                     ))}
                   </select>
                   
@@ -175,7 +180,7 @@ export default function ProjectDataForm() {
                   >
                     <option className="bg-white dark:bg-gray-900 " value={selectedUser?.id || ''}>{selectedUser?.userName || 'Choose a User'}</option>
                     {employees?.map((p) => (
-                      <option className="bg-white dark:bg-gray-900 " value={p?.id}>{p.userName}</option>
+                      <option key={p?.id} className="bg-white dark:bg-gray-900 " value={p?.id}>{p.userName}</option>
                     ))}
                   </select>
                   {!!errors.employeeId && (

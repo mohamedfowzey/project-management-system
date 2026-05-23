@@ -57,7 +57,7 @@ export interface UserCountresponse {
 }
 
 export const getUsers = (params?: GetUsersParams) => {
-  return axiosClient.get<UsersPaginatedResponse>("/Users", {
+  return axiosClient.get<UsersPaginatedResponse>("/Users/Manager", {
     params: {
       pageNumber: params?.pageNumber || 1,
       pageSize: params?.pageSize || 10000000,
