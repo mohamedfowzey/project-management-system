@@ -7,7 +7,7 @@ import { getMyTasks } from '../../../api/modules/myTasks';
 export interface Task {
   id: string;
   title: string;
-  columnId: string;
+  status: string;
 }
 export interface Column {
   id: string;
@@ -16,9 +16,9 @@ export interface Column {
 export default function UserTasks() {
   const [tasksState, setTasksState] = useState<Task[]|undefined>(undefined);
   const [columnsState, setColumnsState] = useState<Column[]>([
-    { id: 'todo', title: 'To Do' },
-    { id: 'inprogress', title: 'In Progress' },
-    { id: 'done', title: 'Done' },
+    { id: 'ToDo', title: 'To Do' },
+    { id: 'InProgress', title: 'In Progress' },
+    { id: 'Done', title: 'Done' },
   ]);
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -31,15 +31,19 @@ export default function UserTasks() {
     setTasksState((prev) => {
        return prev?.map((task) => {
         if (task.id === taskId) {
-          return { ...task, columnId: newcolumnId };
+          return { ...task, status: newcolumnId };
         }
         return task;
       });
     })
   };
   useEffect(() => {
+    console.log('getting tasks');
+    
     getMyTasks({ pageNumber: 1, pageSize: 10000 }).then((response) => {
-      console.log(response.data?.data);
+      console.log(response?.data?.data);
+      
+      setTasksState(response.data?.data);
     })
     
   }, [])
@@ -48,7 +52,7 @@ export default function UserTasks() {
         <DndContext onDragEnd={onDragEnd}>
           <div className='flex gap-4 p-4 h-[calc(100vh-80px)]'>
             {columnsState?.map((column) => (
-              <Column key={column.id} column={column} tasks={tasksState?.filter((task) => task.columnId === column.id)} />
+              <Column key={column.id} column={column} tasks={tasksState?.filter((task) => task.status === column.id)} />
             ))}
           </div>
         </DndContext>
