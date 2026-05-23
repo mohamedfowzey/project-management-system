@@ -51,7 +51,7 @@ export default function DeleteConfirm({
     : "text-amber-600 dark:text-amber-500";
 
   const btnBg = isDanger
-    ? "bg-red-700 hover:bg-red-600 shadow-red-600/40"
+    ? "bg-red-800 hover:bg-red-700 "
     : isSuccess
     ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/40"
     : "bg-amber-600 hover:bg-amber-700 shadow-amber-500/40";
@@ -78,7 +78,7 @@ export default function DeleteConfirm({
 
         <div className={`${headerBg} p-8 flex flex-col items-center`}>
           <div
-            className={`${iconBg} w-20 h-20 rounded-full flex items-center justify-center mb-4 animate-bounce transition-all  ease-in`}
+            className={`${iconBg} w-20 h-20 rounded-full flex items-center justify-center mb-4  transition-all  ease-in`}
           >
             <Icon className={iconColor} size={40} />
           </div>

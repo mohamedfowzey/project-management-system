@@ -91,15 +91,8 @@ export default function UserViewModal({ user, isOpen, setIsOpen }: UsersViewModa
                       <span className="text-gray-600 dark:text-gray-400">{user?.phoneNumber || 'N/A'}</span>
                     </p>
                   </div>
-                  {/* Contact & Phone Number */}
-                  <div className="space-y-1">
-                    <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">User Contact</p>
-                    <p className="text-sm">
-                      <span className="font-bold uppercase text-gray-700 dark:text-gray-300">{user?.country || 'N/A'}</span>
-                      <span className="mx-2 text-gray-300">|</span>
-                      <span className="text-gray-600 dark:text-gray-400">{user?.phoneNumber || 'N/A'}</span>
-                    </p>
-                  </div>
+                  
+                  
 
                   {/* Timeline Panel (Dates from the first task) */}
                   <div className="space-y-3 col-span-1 md:col-span-2 bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl">

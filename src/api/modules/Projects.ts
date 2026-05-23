@@ -12,13 +12,13 @@ export interface CreateProjectData {
 }
 export interface Project{
   id:string
-   title: string ;
+  title: string ;
   description?: string;
 }
 
 
 export const getAllProjects = (params?: GetProjectsParams) => {
-  return axiosClient.get("/Project/manager", {
+  return axiosClient.get("/Project", {
     params: {
       pageNumber: params?.pageNumber || 1,
       pageSize: params?.pageSize || 10,

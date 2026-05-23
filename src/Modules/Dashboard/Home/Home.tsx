@@ -20,6 +20,7 @@ import { AuthContext } from "../../../Contexts/AuthContext";
 import NoData from "../../Shared/NoData/NoData";
 import OnlyAdmins from "../../Shared/OnlyAdmins/OnlyAdmins";
 import AppChatBot from "../../Shared/AppChatBot/AppChatBot";
+import OnlyUsers from "../../Shared/OnlyUsers/OnlyUsers";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -178,6 +179,8 @@ export default function Home() {
               </p>
             </div>
 
+
+
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <StatCard
                 isLoading={loadingTasks}
@@ -206,9 +209,12 @@ export default function Home() {
                 iconBgColor="bg-fuchsia-200"
               />
             </div>
-            <div className="h-48 mt-5 relative flex justify-center items-center px-10">
+
+            <OnlyAdmins>
+
+            <div className="h-48 mt-5 relative flex justify-center items-center ">
               {loadingTasks ? (
-                <div className="h-48 w-48 rounded-full border-\[20px\] border-gray-300 border-t-gray-200 animate-spin"></div>
+                <div className="h-48  w-48 rounded-full border-\[20px\] border-gray-300 border-t-gray-200 animate-spin"></div>
               ) : hasData ? (
                 <Doughnut data={chartTasksData} options={chartOptions} />
               ) : (
@@ -217,7 +223,28 @@ export default function Home() {
                 </div>
               )}
             </div>
+            </OnlyAdmins>
+
+
           </div>
+
+          <OnlyUsers>
+            <div className="  relative grid grid-cols-1 bg-white  dark:bg-gray-800 rounded-xl shadow-md p-4">
+              {loadingTasks ? (
+                <div className="h-48  w-48 rounded-full border-\[20px\] border-gray-300 border-t-gray-200 animate-spin"></div>
+              ) : hasData ? (
+                <div className=" ">
+
+                  <Doughnut data={chartTasksData} options={chartOptions} />
+                </div>
+              ) : (
+                <div className="pt-7   ">
+                  <NoData />
+                </div>
+              )}
+            </div>
+          </OnlyUsers>
+
           {/* users counts */}
           <OnlyAdmins>
             <div

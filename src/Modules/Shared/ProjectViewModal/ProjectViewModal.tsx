@@ -1,5 +1,6 @@
 import { Calendar, Clock, X } from 'lucide-react';
 import React from 'react'
+import OnlyAdmins from '../OnlyAdmins/OnlyAdmins';
 
 interface Project {
   id: number;
@@ -40,7 +41,7 @@ export default function ProjectViewModal({ project, isOpen, setIsOpen }: Project
             <div
 
               onClick={(e) => e.stopPropagation()}
-              className="w-[95%] md:w-[70%] lg:w-[50%] bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-10 relative transition-all duration-300 scale-100  overflow-y-scroll scrollbar-track-gray-800 scrollbar- scrollbar-thumb-accent scrollbar-thin max-h-full"
+              className="w-[95%] md:w-[70%] lg:w-[50%] bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-10 relative transition-all duration-300 scale-100  "
             >
               <button
                 onClick={() => setIsOpen(false)}
@@ -63,6 +64,8 @@ export default function ProjectViewModal({ project, isOpen, setIsOpen }: Project
                     {project?.manager?.isActivated ? 'Active' : 'Inactive'}
                   </span>
                 </div>
+                <OnlyAdmins>
+
                 {/* Project Manager */}
                 <div className="space-y-1">
                   <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Project Manager</p>
@@ -75,12 +78,6 @@ export default function ProjectViewModal({ project, isOpen, setIsOpen }: Project
                     {project?.manager?.email}
                   </p>
                 </div>
-                {/* Created At */}
-                <div>
-                  <p className="text-gray-500 font-bold tracking-wider  mb-1">Created At</p>
-                  <p className=" text-[16px]">{project?.creationDate}</p>
-                </div>
-                
                 {/* Contact & phone Number */}
                 <div className="space-y-1">
                   <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Contact & phone Number</p>
@@ -90,6 +87,14 @@ export default function ProjectViewModal({ project, isOpen, setIsOpen }: Project
                     <span className="text-gray-600 dark:text-gray-400">{project?.manager?.phoneNumber}</span>
                   </p>
                 </div>
+                </OnlyAdmins>
+                {/* Created At */}
+                <div>
+                  <p className="text-gray-500 font-bold tracking-wider  mb-1">Created At</p>
+                  <p className=" text-[16px]">{project?.creationDate}</p>
+                </div>
+                
+                
 
                 <div className="space-y-3 col-span-1 md:col-span-2 bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl">
                   <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Timeline</p>

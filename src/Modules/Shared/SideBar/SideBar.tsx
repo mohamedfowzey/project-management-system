@@ -65,6 +65,21 @@ export default function SideBar() {
             >
               Dashboard
             </MenuItem>
+            <MenuItem
+                icon={<LayoutDashboard size={22} />}
+                component={
+                  <Link
+                    to="projects"
+                    className={
+                      location.pathname === "/dashboard/projects"
+                        ? "active-link"
+                        : ""
+                    }
+                  />
+                }
+              >
+                Projects 
+              </MenuItem>
             <OnlyAdmins>
               <MenuItem
                 icon={<Users size={22} />}
@@ -82,21 +97,7 @@ export default function SideBar() {
                 Users
               </MenuItem>
 
-              <MenuItem
-                icon={<LayoutDashboard size={22} />}
-                component={
-                  <Link
-                    to="projects"
-                    className={
-                      location.pathname === "/dashboard/projects"
-                        ? "active-link"
-                        : ""
-                    }
-                  />
-                }
-              >
-                Projects
-              </MenuItem>
+              
 
               <MenuItem
                 icon={<ListTodo size={22} />}

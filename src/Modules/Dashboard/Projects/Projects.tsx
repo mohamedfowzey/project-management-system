@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ProjectsApi } from "../../../api";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
@@ -16,6 +16,11 @@ import NoData from "../../Shared/NoData/NoData";
 import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
 import AppChatBot from "../../Shared/AppChatBot/AppChatBot";
+import { AuthContext } from "../../../Contexts/AuthContext";
+import { getEmployeeProjects } from "../../../api/modules/Projects";
+import { jwtDecode } from "jwt-decode";
+import type { User } from "../../../api/modules/user";
+import OnlyAdmins from "../../Shared/OnlyAdmins/OnlyAdmins";
 
 interface Project {
   id: number;
@@ -47,17 +52,36 @@ export default function Projects() {
   const [totalResults, setTotalResults] = useState(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
+  const userData=jwtDecode<User>(localStorage.getItem('token')||"");
+
+  
+
+
+
   const navigate = useNavigate();
 
   const fetchProjects = async () => {
     try {
-      setLoading(true);
 
-      const response = await ProjectsApi.getAllProjects({
-        pageNumber: currentPage,
-        pageSize: pageSize,
-        search: searchTerm,
-      });
+      
+      setLoading(true);
+      let response;
+      if(userData?.userGroup === "Employee"){
+        response = await getEmployeeProjects({
+       pageNumber: currentPage,
+       pageSize: pageSize,
+       search: searchTerm,
+     });        
+
+      }else{
+        response = await ProjectsApi.getAllProjects({
+         pageNumber: currentPage,
+         pageSize: pageSize,
+         search: searchTerm,
+       });
+      }
+
+  
       console.log("API Response:", response.data.data);
 
       setProjects(response.data.data);
@@ -125,8 +149,10 @@ export default function Projects() {
     : projects;
 
   useEffect(() => {
+  
     const delay = setTimeout(() => {
       fetchProjects();
+
     }, 500);
 
     return () => clearTimeout(delay);
@@ -134,8 +160,8 @@ export default function Projects() {
 
   return (
     <>
-      <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
-        <h1>Projects</h1>
+      <div className="flex justify-between items-center  mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
+        <h1 className="text-3xl font-semibold">Projects</h1>
         <div
           className="shrink "
           onClick={() => navigate("/dashboard/add-project")}
@@ -251,9 +277,9 @@ export default function Projects() {
                                   />{" "}
                                   View
                                 </button>
-
+                                <OnlyAdmins>
                                 <button
-                                  className="action-btn edit-btn dark:text-emerald-900"
+                                  className="action-btn edit-btn  dark:text-emerald-900"
                                   onClick={() =>
                                     navigate(
                                       `/dashboard/edit-project/${project?.id}`,
@@ -280,6 +306,7 @@ export default function Projects() {
                                   />{" "}
                                   Delete
                                 </button>
+                                </OnlyAdmins>
                               </div>
                             )}
                           </div>

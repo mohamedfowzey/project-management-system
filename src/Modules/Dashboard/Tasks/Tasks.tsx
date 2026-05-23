@@ -141,13 +141,13 @@ export default function TasksList() {
 
   return (
     <>
-      <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
-        <h1>Tasks</h1>
+      <div className="flex justify-between items-center  mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
+        <h1 className="text-3xl font-semibold">Tasks</h1>
         <div
-          className="shrink cursor-pointer"
+          className="shrink cursor-pointer "
           onClick={() => navigate("/dashboard/add-task")}
         >
-          <CustomButton text=" + add Task " />
+          <CustomButton  text=" + add Task " />
         </div>
       </div>
       <div className="table-wrapper">

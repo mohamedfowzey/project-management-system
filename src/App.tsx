@@ -49,7 +49,7 @@ function App() {
       children: [
         { index: true, element: <Home /> },
         { path: "home", element: <Home /> },
-        { path: "projects", element: <OnlyAdminsRoute><Projects /> </OnlyAdminsRoute> },
+        { path: "projects", element: <Projects /> },
         { path: "add-project", element: <OnlyAdminsRoute><ProjectDataForm /> </OnlyAdminsRoute> },
         { path: "edit-project/:id", element: <OnlyAdminsRoute><ProjectDataForm /> </OnlyAdminsRoute> },
         { path: "tasks", element: <OnlyAdminsRoute><Tasks /> </OnlyAdminsRoute> },

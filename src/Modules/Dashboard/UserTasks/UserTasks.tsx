@@ -49,8 +49,8 @@ export default function UserTasks() {
   }, [])
     return (
       <div className='h-[calc(100vh-80px)] w-full bg-gray-100 dark:bg-neutral-800 flex flex-col'>
-          <div className="py-4 ps-8 bg-white dark:bg-neutral-700 shrink">
-            <h1>Task Board</h1>
+          <div className="py-6 ps-8 bg-white dark:bg-neutral-700 shrink">
+            <h1 className="text-3xl font-semibold" >Task Board</h1>
           </div>
           <div className='flex gap-4 p-4 grow text-white'>
         <DndContext onDragEnd={onDragEnd}>
