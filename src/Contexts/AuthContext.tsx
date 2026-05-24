@@ -10,7 +10,7 @@ interface User {
   imagePath?: string;
   userGroup: string;
 }
-interface Profile {
+export interface Profile {
   userName:string;
   email:string;
   country:string;

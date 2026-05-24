@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import noUserImg from "../../../assets/Images/noDataUser.jpg";
 import { AuthContext } from "../../../Contexts/AuthContext";
 import { updateCurrentUser } from "../../../api/modules/user";
+import { API_BASE_URL } from "../../../api/axsiosClient";
 
 
 export default function EditProfile() {
@@ -58,7 +59,7 @@ export default function EditProfile() {
     console.log(currentUserData);
     
       if(currentUserData?.imagePath){
-        setPreviewImage(`https://upskilling-egypt.com:3003/${currentUserData.imagePath}`)
+        setPreviewImage(`${API_BASE_URL}/${currentUserData.imagePath}`)
       }
         setValue('userName',currentUserData?.userName)
         setValue('email',currentUserData?.email)
@@ -88,17 +89,6 @@ export default function EditProfile() {
             accept="image/*"
             onChange={handleImageChange}
           />
-          {/* <button
-            type="button"
-            className="absolute top-0  left-full text-white rounded-full px-2 opacity-75 hover:opacity-100 transition-opacity cursor-pointer"
-            onClick={(e) => {
-              setPreviewImage(noUserImg);              
-              fileInputRef.current!.value = "";
-              e.stopPropagation();
-            }}
-          > */}
-            {/* <X className="text-main-color" opacity={1} strokeWidth={4} />
-          </button> */}
         </div>
         <div className="p-10 w-full md:w-3/4 lg:w-1/2 mx-auto space-y-4">
           <CustomInput

@@ -3,7 +3,7 @@ import type { User } from '../../../api/modules/user';
 import { Calendar, Clock, X } from 'lucide-react';
 
 interface UsersViewModalProps {
-  user: User;
+  user: User ;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

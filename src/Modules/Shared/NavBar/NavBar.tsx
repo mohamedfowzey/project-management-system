@@ -14,8 +14,11 @@ import Darklogo from "../../../assets/Images/favicon.png";
 import logo from "../../../assets/Images/masterLogo.png";
 import smallLogo from '../../../assets/Images/favicon copy.png'
 import { AuthContext } from "../../../Contexts/AuthContext";
+import UserViewModal from "../UserViewModal/UserViewModal";
+import ProfileViewModal from "../ProfileModal/ProfileModal";
 
 export default function NavBar() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
@@ -109,15 +112,28 @@ export default function NavBar() {
                     <LayoutDashboard className="w-4 h-4 text-gray-400" />
                     <span>Dashboard</span>
                   </Link>
-
                   <Link
-                    to="edit-profile"
-                    onClick={() => setIsDropdownOpen(false)}
+                  to=''
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      setIsModalOpen(true);
+                    }}
+                    className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 dark:hover:text-gray-400 hover:bg-gray-50 hover:text-slate-900 dark:hover:bg-black transition-colors"
+                  >
+                    <User className="w-4 h-4 text-gray-400" />
+                    <span>Profile</span>
+                  </Link>
+                  <Link
+                  to='edit-profile'
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                    }}
                     className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 dark:hover:text-gray-400 hover:bg-gray-50 hover:text-slate-900 dark:hover:bg-black transition-colors"
                   >
                     <User className="w-4 h-4 text-gray-400" />
                     <span>Edit Profile</span>
                   </Link>
+
                   <Link
                     to="/change-password"
                     onClick={() => setIsDropdownOpen(false)}
@@ -159,6 +175,7 @@ export default function NavBar() {
             </span>
           </label>
         </div>
+        <ProfileViewModal user={currentUserData!} isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
       </nav>
     </>
   );
