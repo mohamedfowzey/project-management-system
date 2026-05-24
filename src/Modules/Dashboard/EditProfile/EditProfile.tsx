@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import CustomButton from "../../Shared/CustomButton/CustomButton";
 import { Validations } from "../../../Constants/Validations";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import { Save, X } from "lucide-react";
@@ -8,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import noUserImg from "../../../assets/Images/noDataUser.jpg";
 import { AuthContext } from "../../../Contexts/AuthContext";
 import { updateCurrentUser } from "../../../api/modules/user";
-import { axiosClient } from "../../../api";
-import axios from "axios";
 
 
 export default function EditProfile() {
@@ -18,7 +15,8 @@ export default function EditProfile() {
   const [previewImage, setPreviewImage] = useState<string>(noUserImg);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const {currentUserData} = useContext(AuthContext)!;
+  const {currentUserData,saveUserData
+  } = useContext(AuthContext)!;
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
@@ -44,18 +42,21 @@ export default function EditProfile() {
     formData.append("country", data.country);
     formData.append("phoneNumber", data.phoneNumber);
     formData.append("confirmPassword", data.confirmPassword);
+    formData.append("profileImage", fileInputRef.current?.files?.[0] || '');
+    try{
 
-    const profileFile = fileInputRef.current?.files?.[0];
-    if (profileFile) {
-      formData.append("profileImage", profileFile);
-    } else{
-      formData.append("profileImage", '');
-    }
-    await updateCurrentUser(formData);
+      await updateCurrentUser(formData);
       setLoading(false);
       navigate("/dashboard");
+      saveUserData();
+    }
+    catch{
+      setLoading(false);
+    }
   };
   useEffect(() => {
+    console.log(currentUserData);
+    
       if(currentUserData?.imagePath){
         setPreviewImage(`https://upskilling-egypt.com:3003/${currentUserData.imagePath}`)
       }
@@ -87,7 +88,7 @@ export default function EditProfile() {
             accept="image/*"
             onChange={handleImageChange}
           />
-          <button
+          {/* <button
             type="button"
             className="absolute top-0  left-full text-white rounded-full px-2 opacity-75 hover:opacity-100 transition-opacity cursor-pointer"
             onClick={(e) => {
@@ -95,9 +96,9 @@ export default function EditProfile() {
               fileInputRef.current!.value = "";
               e.stopPropagation();
             }}
-          >
-            <X className="text-main-color" opacity={1} strokeWidth={4} />
-          </button>
+          > */}
+            {/* <X className="text-main-color" opacity={1} strokeWidth={4} />
+          </button> */}
         </div>
         <div className="p-10 w-full md:w-3/4 lg:w-1/2 mx-auto space-y-4">
           <CustomInput
@@ -125,7 +126,7 @@ export default function EditProfile() {
             error={errors.phoneNumber?.message as string}
           />
           <CustomInput
-            register={register("confirmPassword", Validations.confirmPassword)}
+            register={register("confirmPassword", Validations.password)}
             HTMLtype="password"
             label="Confirm Password"
             error={errors.confirmPassword?.message as string}
@@ -138,7 +139,15 @@ export default function EditProfile() {
 
         <button
           type="submit"> 
-          <Save className="text-accent cursor-pointer" opacity={1} strokeWidth={1}  />
+          {loading ? ( <div role="status"
+            className="relative inline-block w-8 h-8 rounded-full bg-transparent border-2 animate-spin border-accent">
+            <div
+               className="absolute top-1 left-1 w-2 h-2 rounded-full border-2 border-accent bg-accent">
+            </div>
+            <span className="sr-only">Loading…</span>
+         </div>):(
+          <Save className="text-accent cursor-pointer" size={30} opacity={1} strokeWidth={1}  />
+         )}
         </button>
           </div>
       </form>
