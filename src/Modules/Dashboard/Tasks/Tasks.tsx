@@ -193,7 +193,16 @@ export default function TasksList() {
           </div>
 
           <button
-            onClick={() => setShowFilters(!showFilters)}
+            onClick={() => {
+              if (showFilters) {
+                setFilterTitle("");
+                setFilterDesc("");
+                setFilterStatus("");
+                setFilterUser("");
+                setFilterProject("");
+              }
+              setShowFilters(!showFilters);
+            }}
             className={`hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border transition-all cursor-pointer ${
               showFilters
                 ? "bg-emerald-50 border-emerald-500 text-emerald-700 dark:bg-emerald-950/30 dark:border-emerald-500 dark:text-emerald-400"
