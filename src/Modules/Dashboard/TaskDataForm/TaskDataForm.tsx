@@ -57,7 +57,7 @@ export default function ProjectDataForm() {
     setSelectedUser(response.data.employee)
   };
   const getProjects = async () => {
-    const response = await getAllProjects();
+    const response = await getAllProjects({pageNumber:1,pageSize:1000000});
     setProjects(response.data.data);
   };
   const getAllUsers = async () => {

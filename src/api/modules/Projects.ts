@@ -18,7 +18,7 @@ export interface Project{
 
 
 export const getAllProjects = (params?: GetProjectsParams) => {
-  return axiosClient.get("/Project", {
+  return axiosClient.get("/Project/manager", {
     params: {
       pageNumber: params?.pageNumber || 1,
       pageSize: params?.pageSize || 10,
