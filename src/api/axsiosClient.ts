@@ -1,8 +1,10 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
+export const API_BASE_URL = "https://upskilling-egypt.com:3003";
+
 const axiosClient = axios.create({
-  baseURL: "https://upskilling-egypt.com:3003/api/v1",
+  baseURL: `${API_BASE_URL}/api/v1`,
 });
 
  axiosClient.interceptors.request.use(

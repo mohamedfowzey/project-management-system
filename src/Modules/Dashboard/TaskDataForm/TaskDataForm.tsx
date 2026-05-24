@@ -10,7 +10,8 @@ import {
   type CreateTaskData,
 } from "../../../api/modules/tasks";
 import { getAllProjects, type Project } from "../../../api/modules/Projects";
-import { getUsers, type User } from "../../../api/modules/user";
+import { getUsers, type User, type UsersPaginatedResponse } from "../../../api/modules/user";
+import axiosClient from "../../../api/axsiosClient";
 
 export default function ProjectDataForm() {
   const { id } = useParams();
@@ -29,12 +30,16 @@ export default function ProjectDataForm() {
   } = useForm<CreateTaskData>();
   const onsubmit = async (data: CreateTaskData) => {
     setLoading(true);
+    try{
     if (id) {
       await updateTask(Number(id), data);
     } else {
       await CreateTask(data);
     }
+  }finally{
+
     setLoading(false);
+  }
     navigate("/dashboard/tasks");
   };
   const getTask = async (id: string | undefined) => {
@@ -56,7 +61,12 @@ export default function ProjectDataForm() {
     setProjects(response.data.data);
   };
   const getAllUsers = async () => {
-    const response = await getUsers();
+    const response = await axiosClient.get<UsersPaginatedResponse>("/Users", {
+      params: {
+        pageNumber: 1,
+        pageSize: 10000000,
+      },
+    });
     setEmployees(response.data.data);
   };
   useEffect(() => {
@@ -131,29 +141,30 @@ export default function ProjectDataForm() {
               </div>
 
               <div className="mb-4">
+                {!!id ||(
+                   editing ? (<>
                 <span className="text-sm  font-medium text-gray-700 dark:text-gray-200">
-                  {" "}
                   project
                 </span>
-                {editing ? (
                   <div className="h-11 bg-gray-700 dark:bg-gray-400 rounded-2xl w-full mb-4 animate-pulse" />
-                ) : (
+                </>) : (<>
                   <select
-                  {...register('projectId')}
+                  {...register('projectId',{required:'project is required'})}
                     className="block w-full px-3 py-2.5 border text-heading text-sm rounded-2xl focus-visible:outline-0 shadow-xs placeholder:text-body mb-4"
                   >
                     <option className="bg-white dark:bg-gray-900 " value={selectedProject?.id || ''}>{selectedProject?.title||'Choose a project'}</option>
 
                     {projects?.map((p) => (
-                      <option value={p?.id} className="bg-white dark:bg-gray-900 ">{p.title}</option>
+                      <option key={p?.id} value={p?.id} className="bg-white dark:bg-gray-900 ">{p.title}</option>
                     ))}
                   </select>
-                )}
-                {!!errors.title && (
+                  
+                {!!errors.projectId && (
                   <p className="mt-1 text-xs text-red-500">
-                    {errors.title.message}
+                    {errors.projectId?.message}
                   </p>
                 )}
+               </> ))}
               </div>
               <div className="mb-4">
                 <span className="text-sm  font-medium text-gray-700 dark:text-gray-200">
@@ -162,22 +173,23 @@ export default function ProjectDataForm() {
                 </span>
                 {editing ? (
                   <div className="h-11 bg-gray-700 dark:bg-gray-400 rounded-2xl w-full mb-4 animate-pulse" />
-                ) : (
+                ) : (<>
                   <select
-                  {...register('employeeId')}
+                  {...register('employeeId',{required:'employee is required'})}
                     className="block w-full px-3 py-2.5 border text-heading text-sm rounded-2xl focus-visible:outline-0 shadow-xs placeholder:text-body mb-4"
                   >
                     <option className="bg-white dark:bg-gray-900 " value={selectedUser?.id || ''}>{selectedUser?.userName || 'Choose a User'}</option>
                     {employees?.map((p) => (
-                      <option className="bg-white dark:bg-gray-900 " value={p?.id}>{p.userName}</option>
+                      <option key={p?.id} className="bg-white dark:bg-gray-900 " value={p?.id}>{p.userName}</option>
                     ))}
                   </select>
-                )}
-                {!!errors.title && (
+                  {!!errors.employeeId && (
                   <p className="mt-1 text-xs text-red-500">
-                    {errors.title.message}
+                    {errors.employeeId?.message}
                   </p>
+                )}</>
                 )}
+                
               </div>
               <div className="flex justify-end gap-2">
                 <button

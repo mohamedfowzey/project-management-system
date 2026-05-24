@@ -1,18 +1,27 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext, use, useEffect, useState, type ReactNode } from "react";
+import { createContext,  useEffect, useState, type ReactNode } from "react";
 import { toast } from "react-toastify";
 import { getCurrentUser } from "../api/modules/user";
 interface User {
   id: string;
   userEmail: string;
   userName: string;
-  exp: string;
+  exp: string;  
   imagePath?: string;
+  userGroup: string;
+}
+export interface Profile {
+  userName:string;
+  email:string;
+  country:string;
+  phoneNumber:string;
+  imagePath?:string;
 }
 export interface AuthContextType {
   userData: User | null;
-  currentUserData: User | null;
+  currentUserData: Profile | null;
   isLoading: boolean;
+  smallScreen:boolean;
   mood:'light'|'dark'
   toggleMood:()=>void;
   saveUserData: () => Promise<void>;
@@ -26,7 +35,8 @@ interface AuthContextProvProp {
 }
 export default function AuthContextProvider({ children }: AuthContextProvProp) {
   const [userData, setUserData] = useState<User | null>(null);
-  const [currentUserData, setCurrentUserData] = useState<User | null>(null);
+  const [currentUserData, setCurrentUserData] = useState<Profile | null>(null);
+  const [smallScreen,setSmallScreen] = useState<boolean>(window.innerWidth <= 768)
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [mood,setMood] = useState<'light'|'dark'>('dark')
   const toggleMood = ()=>{setMood(p=>p=='light'?'dark':'light')}
@@ -40,6 +50,7 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
     try {
       const response = await getCurrentUser();
       setCurrentUserData(response?.data);
+      
     } catch (error) {
       console.error(error);
     }
@@ -50,6 +61,7 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
       setIsLoading(true);
       const decoded = jwtDecode<User>(encoded);
       if (+decoded.exp > Math.trunc(Date.now() / 1000)) {
+                
         setUserData(decoded);
         await fetchCurrentUserProfile();
       } else {
@@ -59,16 +71,23 @@ export default function AuthContextProvider({ children }: AuthContextProvProp) {
     }
     setIsLoading(false);
   };
+  useEffect(()=>{
+     window.addEventListener('resize',()=>{
+      setSmallScreen(window.innerWidth <= 768)
+     })
+  },[])
   useEffect(() => {
+    
     if (localStorage.getItem("token")) {
       (() => {
         saveUserData();
       })();
     }
+    
   }, []);
   return (
     <AuthContext.Provider
-      value={{ userData, saveUserData, logOut, currentUserData, isLoading, mood, toggleMood }}
+      value={{ userData, saveUserData, logOut, currentUserData, isLoading, mood, toggleMood, smallScreen }}
     >
       {children}
     </AuthContext.Provider>

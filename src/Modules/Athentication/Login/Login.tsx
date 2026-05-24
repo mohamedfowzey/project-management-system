@@ -32,7 +32,7 @@ export default function Login() {
       const response = await Loginn(data);
       localStorage.setItem("token", response.data.token);
       saveUserData();
-      navigate("/dashboard/home");
+      navigate("/dashboard");
     } finally {
       setLoading(false);
     }

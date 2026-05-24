@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
-import { ProjectsApi } from "../../../api";
-import { useNavigate } from "react-router-dom";
-import CustomButton from "../../Shared/CustomButton/CustomButton";
+import { jwtDecode } from "jwt-decode";
 import {
+  ArrowDownZA,
   ArrowUpZA,
   ChevronLeft,
   ChevronRight,
@@ -11,10 +9,18 @@ import {
   Search,
   Trash2,
 } from "lucide-react";
-import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
-import NoData from "../../Shared/NoData/NoData";
-import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ProjectsApi } from "../../../api";
+import { getEmployeeProjects } from "../../../api/modules/Projects";
+import type { User } from "../../../api/modules/user";
+import CustomButton from "../../Shared/CustomButton/CustomButton";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
+import NoData from "../../Shared/NoData/NoData";
+import OnlyAdmins from "../../Shared/OnlyAdmins/OnlyAdmins";
+import OnlyUsers from "../../Shared/OnlyUsers/OnlyUsers";
+import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
+import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 
 interface Project {
   id: number;
@@ -34,9 +40,17 @@ interface Project {
     phoneNumber: string;
     imagPath: string;
   };
+  task?: {
+    status: string;
+    title:string;
+    id:number;
+  }[];
+
+
 }
 
 export default function Projects() {
+  const [sorting,setSorting] = useState<'asc'|'desc'>('asc');
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [openMenu, setOpenMenu] = useState<number | null>(null);
@@ -46,17 +60,38 @@ export default function Projects() {
   const [totalResults, setTotalResults] = useState(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
+  const userData = jwtDecode<User>(localStorage.getItem('token') || "");
+
+
+
+
+
   const navigate = useNavigate();
 
   const fetchProjects = async () => {
     try {
-      setLoading(true);
 
-      const response = await ProjectsApi.getAllProjects({
-        pageNumber: currentPage,
-        pageSize: pageSize,
-        search: searchTerm,
-      });
+
+      setLoading(true);
+      let response;
+      if (userData?.userGroup === "Employee") {
+        response = await getEmployeeProjects({
+
+          pageNumber: currentPage,
+          pageSize: pageSize,
+          search: searchTerm,
+        });
+        console.log(response);
+
+      } else {
+        response = await ProjectsApi.getAllProjects({
+          pageNumber: currentPage,
+          pageSize: pageSize,
+          search: searchTerm,
+        });
+      }
+
+
       console.log("API Response:", response.data.data);
 
       setProjects(response.data.data);
@@ -124,8 +159,10 @@ export default function Projects() {
     : projects;
 
   useEffect(() => {
+
     const delay = setTimeout(() => {
       fetchProjects();
+
     }, 500);
 
     return () => clearTimeout(delay);
@@ -133,8 +170,8 @@ export default function Projects() {
 
   return (
     <>
-      <div className="flex justify-between items-center mt-2 mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
-        <h1>Projects</h1>
+      <div className="flex justify-between items-center  mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
+        <h1 className="text-3xl font-semibold">Projects</h1>
         <div
           className="shrink "
           onClick={() => navigate("/dashboard/add-project")}
@@ -162,24 +199,39 @@ export default function Projects() {
         ) : (
           <>
             <div className="table-container">
-              <table className="data-table">
+              {/* Desktop Table */}
+              <table className="data-table hidden md:table">
                 <thead>
-                  <tr className="bg-emerald-800  text-white dark:bg-gray-700">
+                  <tr className="bg-emerald-800 text-white dark:bg-gray-700 sticky top-0">
                     <th className="flex gap-1 items-center ">
                       Title{" "}
-                      <ArrowUpZA
-                        size={20}
+                      <span
+                        onClick={()=>setSorting(p=>p=='asc'?'desc':'asc')}
+                      >
+                        {sorting === 'asc'
+                         ? (
+                         <ArrowUpZA
+                         size={20}
                         strokeWidth={1.5}
                         absoluteStrokeWidth
-                      />
+                          />
+                         ) : (
+                         <ArrowDownZA
+                         size={20}
+                        strokeWidth={1.5}
+                        absoluteStrokeWidth
+                          />
+                         )}
+                        </span>
                     </th>
+
+                    <th>description</th>
                     <th>Status</th>
-                    <th>phone Number</th>
-                    <th>country</th>
                     <th>Date Created</th>
                     <th></th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {filteredProjects.length > 0 ? (
                     filteredProjects.map((project) => (
@@ -188,20 +240,62 @@ export default function Projects() {
                         className="table-row dark:bg-taupe-900"
                       >
                         <td>{project.title}</td>
-                        <td>
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
-                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                            : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                            }`}>
-                            <span className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated ? 'bg-green-500' : 'bg-red-500'}`}></span>
-                            {project?.manager?.isActivated ? 'Active' : 'Inactive'}
-                          </span>
-                        </td>
-                        <td>{project.manager?.phoneNumber}</td>
-                        <td>{project?.manager?.country}</td>
+
+                        <td>{project.description}</td>
+
+                        <OnlyAdmins>
+
+                          <td>
+                            <span
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
+                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                                }`}
+                            >
+                              <span
+                                className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated
+                                    ? "bg-green-500"
+                                    : "bg-red-500"
+                                  } `}
+                              ></span>
+
+
+
+                              <OnlyAdmins>
+                                {project?.manager?.isActivated
+                                  ? "Active"
+                                  : "Inactive"}
+                              </OnlyAdmins>
+                            </span>
+                          </td>
+                        </OnlyAdmins>
+
+                        <OnlyUsers>
+                          <td>
+                            <span
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold 
+                              ${project?.task?.[0]?.status == "ToDo" ? "bg-amber-200 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                                  : project?.task?.[0]?.status == "InProgress" ? "bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                    : "bg-green-200 text-green-700 dark:bg-green-900/30 dark:text-green-400"}
+                              `}
+                            >
+                              <span
+                                className={`w-2 h-2 rounded-full mr-2 ${project?.task?.[0]?.status == "ToDo" ? "bg-yellow-700" : project?.task?.[0]?.status == "InProgress" ? "bg-blue-500" : "bg-green-600"}`}
+                              ></span>
+
+                              <OnlyUsers>
+                                {project?.task?.[0]?.status}
+                              </OnlyUsers>
+
+
+                            </span>
+                          </td>
+                        </OnlyUsers>
+
                         <td>
                           {new Date(project.creationDate).toLocaleDateString()}
                         </td>
+
                         <td className="actions-cell">
                           <div className="actions-wrapper">
                             <button
@@ -214,15 +308,16 @@ export default function Projects() {
                             >
                               ⋮
                             </button>
+
                             {openMenu === project.id && (
-                              <div className="actions-menu bg-amber-50  dark:bg-gray-400 ">
+                              <div className="actions-menu bg-amber-50 dark:bg-gray-400 overflow-hidden">
                                 <button
                                   onClick={() => {
                                     handleView(project);
                                     setIsOpen(true);
                                     setOpenMenu(null);
                                   }}
-                                  className="action-btn view-btn  dark:text-gray-700 "
+                                  className="action-btn view-btn dark:text-gray-700"
                                 >
                                   <Eye
                                     color="var(--bg-main-color)"
@@ -232,33 +327,36 @@ export default function Projects() {
                                   />{" "}
                                   View
                                 </button>
-                                <button
-                                  className="action-btn edit-btn  dark:text-emerald-900"
-                                  onClick={() =>
-                                    navigate(
-                                      `/dashboard/edit-project/${project?.id}`,
-                                    )
-                                  }
-                                >
-                                  <FilePenLine
-                                    color="var(--bg-main-color)"
-                                    size={20}
-                                    strokeWidth={1.5}
-                                    absoluteStrokeWidth
-                                  />{" "}
-                                  Edit
-                                </button>
-                                <button
-                                  className="action-btn delete-btn dark:text-red-900 "
-                                  onClick={() => handleOpenDelete(project)}
-                                >
-                                  <Trash2
-                                    size={20}
-                                    strokeWidth={1.5}
-                                    absoluteStrokeWidth
-                                  />{" "}
-                                  Delete
-                                </button>
+                                <OnlyAdmins>
+                                  <button
+                                    className="action-btn edit-btn  dark:text-emerald-900"
+                                    onClick={() =>
+                                      navigate(
+                                        `/dashboard/edit-project/${project?.id}`,
+                                      )
+                                    }
+                                  >
+                                    <FilePenLine
+                                      color="var(--bg-main-color)"
+                                      size={20}
+                                      strokeWidth={1.5}
+                                      absoluteStrokeWidth
+                                    />{" "}
+                                    Edit
+                                  </button>
+
+                                  <button
+                                    className="action-btn delete-btn dark:text-red-900"
+                                    onClick={() => handleOpenDelete(project)}
+                                  >
+                                    <Trash2
+                                      size={20}
+                                      strokeWidth={1.5}
+                                      absoluteStrokeWidth
+                                    />{" "}
+                                    Delete
+                                  </button>
+                                </OnlyAdmins>
                               </div>
                             )}
                           </div>
@@ -274,6 +372,165 @@ export default function Projects() {
                   )}
                 </tbody>
               </table>
+
+              {/* Mobile Cards */}
+              <div className="grid gap-4 md:hidden">
+                {filteredProjects.length > 0 ? (
+                  filteredProjects.map((project) => (
+                    <div
+                      key={project.id}
+                      className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm p-4 space-y-4"
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <h2 className="text-lg font-semibold break-words">
+                            {project.title}
+                          </h2>
+
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 break-words">
+                            {project.description}
+                          </p>
+                        </div>
+
+                        <div className="relative ml-3">
+                          <button
+                            className="menu-btn"
+                            onClick={() =>
+                              setOpenMenu(
+                                openMenu === project.id ? null : project.id,
+                              )
+                            }
+                          >
+                            ⋮
+                          </button>
+
+                          {openMenu === project.id && (
+                            <div className="actions-menu bg-amber-50 dark:bg-gray-400 right-0">
+                              <button
+                                onClick={() => {
+                                  handleView(project);
+                                  setIsOpen(true);
+                                  setOpenMenu(null);
+                                }}
+                                className="action-btn view-btn dark:text-gray-700"
+                              >
+                                <Eye
+                                  color="var(--bg-main-color)"
+                                  size={20}
+                                  strokeWidth={1.5}
+                                  absoluteStrokeWidth
+                                />{" "}
+                                View
+                              </button>
+
+                              <button
+                                className="action-btn edit-btn dark:text-emerald-900"
+                                onClick={() =>
+                                  navigate(
+                                    `/dashboard/edit-project/${project?.id}`,
+                                  )
+                                }
+                              >
+                                <FilePenLine
+                                  color="var(--bg-main-color)"
+                                  size={20}
+                                  strokeWidth={1.5}
+                                  absoluteStrokeWidth
+                                />{" "}
+                                Edit
+                              </button>
+
+                              <button
+                                className="action-btn delete-btn dark:text-red-900"
+                                onClick={() => handleOpenDelete(project)}
+                              >
+                                <Trash2
+                                  size={20}
+                                  strokeWidth={1.5}
+                                  absoluteStrokeWidth
+                                />{" "}
+                                Delete
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 flex-wrap">
+
+                          {/* Status  */}
+                          <OnlyAdmins>
+                            <span
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
+                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                                }`}
+                            >
+                              <span
+                                className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated
+                                    ? "bg-green-500"
+                                    : "bg-red-500"
+                                  } `}
+                              ></span>
+
+
+
+                              <OnlyAdmins>
+                                {project?.manager?.isActivated
+                                  ? "Active"
+                                  : "Inactive"}
+                              </OnlyAdmins>
+                            </span>
+                          
+                        </OnlyAdmins>
+                         <OnlyUsers>
+                        
+                            <span
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold 
+                              ${project?.task?.[0]?.status == "ToDo" ? "bg-amber-200 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                                  : project?.task?.[0]?.status == "InProgress" ? "bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                    : "bg-green-200 text-green-700 dark:bg-green-900/30 dark:text-green-400"}
+                              `}
+                            >
+                              <span
+                                className={`w-2 h-2 rounded-full mr-2 ${project?.task?.[0]?.status == "ToDo" ? "bg-yellow-700" : project?.task?.[0]?.status == "InProgress" ? "bg-blue-500" : "bg-green-600"}`}
+                              ></span>
+
+                              <OnlyUsers>
+                                {project?.task?.[0]?.status}
+                              </OnlyUsers>
+                            </span>
+                          
+                        </OnlyUsers>
+
+                        {/* <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
+                              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                              : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                            }`}
+                        >
+                          <span
+                            className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated
+                                ? "bg-green-500"
+                                : "bg-red-500"
+                              }`}
+                          ></span>
+
+                          {project?.manager?.isActivated
+                            ? "Active"
+                            : "Inactive"}
+                        </span> */}
+
+                            {/*  creationDate */}
+                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                          {new Date(project.creationDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <NoData />
+                )}
+              </div>
             </div>
 
             <div className="pagination ">

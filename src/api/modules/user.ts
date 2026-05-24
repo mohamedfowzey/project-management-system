@@ -60,7 +60,7 @@ export const getUsers = (params?: GetUsersParams) => {
   return axiosClient.get<UsersPaginatedResponse>("/Users/Manager", {
     params: {
       pageNumber: params?.pageNumber || 1,
-      pageSize: params?.pageSize || 10,
+      pageSize: params?.pageSize || 10000000,
     },
   });
 
@@ -68,7 +68,7 @@ export const getUsers = (params?: GetUsersParams) => {
   return axiosClient.get(`/Users/${id}`);
 };
 
-export const toggleActivatedEmployee = (id: UserId) => {
+export const toggleActivatedEmployee = (id: number) => {
   return axiosClient.put(`/Users/${id}`);
 };
 
@@ -78,6 +78,9 @@ export const createUsers = (data: createUserData) => {
 
 export const getCurrentUser = () => {
   return axiosClient.get("/Users/currentUser");
+};
+export const updateCurrentUser = (data: FormData) => {
+  return axiosClient.put("/Users", data);
 };
 export const getUserCount = () => {
   return axiosClient.get<UserCountresponse>("/Users/count");

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Calendar, Clock, X } from 'lucide-react';
 import type { Task } from '../../Dashboard/Tasks/Tasks';
+import OnlyAdmins from '../OnlyAdmins/OnlyAdmins';
 
 interface TasksViewModalProps {
   task: Task;
@@ -25,7 +26,7 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
             >
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="w-[95%] md:w-[70%] lg:w-[50%] bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-10 relative transition-all duration-300 scale-100"
+                className="w-[95%] md:w-[70%] lg:w-[50%] overflow-y-scroll scrollbar-track-gray-800 scrollbar- scrollbar-thumb-accent scrollbar-thin max-h-full bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-10 relative transition-all duration-300 scale-100"
               >
                 <button
                   onClick={() => setIsOpen(false)}
@@ -37,40 +38,52 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
                 <h2 className=" font-black uppercase tracking-[0.3em] text-blue-500 mb-1">Task Details</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 border-t border-b border-gray-100 dark:border-gray-700 py-3 mb-8">
                   <div className='space-y-1'>
-                  <h3 className='text-3xl font-bold text-slate-800 dark:text-white tracking-tight leading-none'>{task?.title}</h3>
+                    <h3 className='text-3xl font-bold text-slate-800 dark:text-white tracking-tight leading-none'>{task?.title}</h3>
                   </div>
                   <div className='space-y-1'> </div>
                   {/* Project Title */}
                   <div className="space-y-1">
-                    <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Project Name</p>
+                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Project Name</p>
                     <p className="text-base font-bold text-slate-700 dark:text-slate-200">{task?.project?.title}</p>
                   </div>
                   {/* Status */}
                   <div className="space-y-1">
-                    <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Status</p>
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${task?.status === 'ToDo'
-                      ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
-                      : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                      }`}>
-                      <span className={`w-2 h-2 rounded-full mr-2 ${task?.status === 'ToDo' ? 'bg-amber-500' : 'bg-green-500'}`}></span>
+                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Status</p>
+                    <span
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${task?.status === "ToDo"
+                        ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                        : task?.status === "InProgress"
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                          : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                        }`}
+                    >
+                      <span
+                        className={`w-2 h-2 rounded-full mr-1.5 ${task?.status === "ToDo"
+                          ? "bg-amber-500"
+                          : task?.status === "InProgress"
+                            ? "bg-blue-500"
+                            : "bg-green-500"
+                          }`}
+                      ></span>
                       {task?.status}
                     </span>
                   </div>
+                  <OnlyAdmins>
                   {/* Assigned Employee */}
                   <div className="space-y-1">
-                    <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Assigned Employee</p>
+                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Assigned Employee</p>
                     <p className="text-base font-semibold">{task?.employee?.userName || 'N/A'}</p>
                     <p className="text-xs  font-medium text-blue-600 dark:text-blue-400 break-all leading-tight">{task?.employee?.email}</p>
                   </div>
                   {/* Project Manager */}
                   <div className="space-y-1">
-                    <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Project Manager</p>
+                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Project Manager</p>
                     <p className="text-base font-semibold">{task?.project?.manager?.userName}</p>
                     <p className="text-xs  font-medium text-blue-600 dark:text-blue-400 break-all leading-tight">{task?.project?.manager?.email}</p>
                   </div>
                   {/* Contact & Phone Number */}
                   <div className="space-y-1">
-                    <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Manager Contact</p>
+                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Manager Contact</p>
                     <p className="text-sm">
                       <span className="font-bold uppercase text-gray-700 dark:text-gray-300">{task?.project?.manager?.country}</span>
                       <span className="mx-2 text-gray-300">|</span>
@@ -78,8 +91,9 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
                     </p>
                   </div>
                   {/* Manager Status */}
+
                   <div className="space-y-1">
-                    <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Manager Account Status</p>
+                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Manager Account Status</p>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold ${task?.project?.manager?.isActivated
                       ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
                       : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
@@ -87,9 +101,10 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
                       {task?.project?.manager?.isActivated ? 'Activated' : 'Deactivated'}
                     </span>
                   </div>
+                  </OnlyAdmins>
                   {/* Timeline Panel */}
                   <div className="space-y-3 col-span-1 md:col-span-2 bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl">
-                    <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Timeline</p>
+                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Timeline</p>
                     <div className="flex flex-wrap gap-6">
                       <div className="flex items-center gap-2">
                         <Calendar size={16} className="text-blue-500" />
@@ -103,7 +118,7 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
                   </div>
                   {/* task description */}
                   <div className="col-span-1 md:col-span-2 space-y-2">
-                    <p className="text-[11px] font-black uppercase tracking-widest text-gray-400">Description</p>
+                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Description</p>
                     <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-300 bg-slate-50 dark:bg-transparent p-3 rounded-lg border border-dashed border-gray-200 dark:border-gray-700">
                       {task?.description || "No description provided for this task."}
                     </p>

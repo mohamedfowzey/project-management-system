@@ -12,7 +12,7 @@ export interface CreateProjectData {
 }
 export interface Project{
   id:string
-   title: string ;
+  title: string ;
   description?: string;
 }
 
