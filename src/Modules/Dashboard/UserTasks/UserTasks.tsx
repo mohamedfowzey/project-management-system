@@ -3,12 +3,19 @@ import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import { useEffect, useState } from 'react';
 import Column from '../../Shared/BoardColumn/Column';
 import { getMyTasks, updateTaskStatus } from '../../../api/modules/myTasks';
+import type  Task  from '../Tasks/Tasks';
 
-export interface Task {
-  id: string;
-  title: string;
-  status: string;
-}
+// export interface Task {
+
+// creationDate:string;
+//  description: string;
+
+// modificationDate:string;
+// project:{ title: string, description: string}
+// status:string;
+// title:string;
+// id:string;
+// }
 export interface Column {
   id: string;
   title: string;
@@ -43,9 +50,7 @@ export default function UserTasks() {
   };
   useEffect(() => {
     
-    getMyTasks({ pageNumber: 1, pageSize: 10000 }).then((response) => {
-      console.log(response?.data?.data);
-      
+    getMyTasks({ pageNumber: 1, pageSize: 10000 }).then((response) => {      
       setTasksState(response.data?.data);
     })
     

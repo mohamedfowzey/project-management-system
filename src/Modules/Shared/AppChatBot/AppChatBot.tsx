@@ -105,7 +105,7 @@ export default function AppChatBot() {
         greeting: {
           message:
             "Welcome back! 😊 How can I help you in the dashboard today?",
-          options: ["Projects", "Tasks", "Users"],
+          options: ["Projects", "Tasks", "Users", "Developers", "UpSkilling", "Eng.Nadia"],
           path: async ({ userInput }: any) => handleRouting(userInput),
         },
 
@@ -172,7 +172,7 @@ export default function AppChatBot() {
 
         end: {
           message: "Is there anything else I can assist you with? 😊",
-          options: ["Projects", "Tasks", "Users", "Developers"],
+          options: ["Projects", "Tasks", "Users", "Developers", "UpSkilling", "Eng.Nadia"],
           path: async ({ userInput }: any) => handleRouting(userInput),
         },
       }}

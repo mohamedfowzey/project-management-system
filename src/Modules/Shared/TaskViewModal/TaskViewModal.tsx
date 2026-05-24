@@ -1,6 +1,7 @@
 import React from 'react'
 import { Calendar, Clock, X } from 'lucide-react';
 import type { Task } from '../../Dashboard/Tasks/Tasks';
+import OnlyAdmins from '../OnlyAdmins/OnlyAdmins';
 
 interface TasksViewModalProps {
   task: Task;
@@ -67,6 +68,7 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
                       {task?.status}
                     </span>
                   </div>
+                  <OnlyAdmins>
                   {/* Assigned Employee */}
                   <div className="space-y-1">
                     <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Assigned Employee</p>
@@ -89,6 +91,7 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
                     </p>
                   </div>
                   {/* Manager Status */}
+
                   <div className="space-y-1">
                     <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Manager Account Status</p>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold ${task?.project?.manager?.isActivated
@@ -98,6 +101,7 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
                       {task?.project?.manager?.isActivated ? 'Activated' : 'Deactivated'}
                     </span>
                   </div>
+                  </OnlyAdmins>
                   {/* Timeline Panel */}
                   <div className="space-y-3 col-span-1 md:col-span-2 bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl">
                     <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Timeline</p>
