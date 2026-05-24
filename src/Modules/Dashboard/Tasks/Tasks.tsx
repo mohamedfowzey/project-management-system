@@ -203,11 +203,10 @@ export default function TasksList() {
               }
               setShowFilters(!showFilters);
             }}
-            className={`hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border transition-all cursor-pointer ${
-              showFilters
+            className={`hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border transition-all cursor-pointer ${showFilters
                 ? "bg-emerald-50 border-emerald-500 text-emerald-700 dark:bg-emerald-950/30 dark:border-emerald-500 dark:text-emerald-400"
                 : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 dark:bg-gray-900 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-800"
-            }`}
+              }`}
           >
             <SlidersHorizontal size={16} />
             Filter
@@ -331,17 +330,24 @@ export default function TasksList() {
                           className="flex justify-between items-center md:table-cell py-2 md:py-4 p-3 before:content-[attr(data-label)] before:font-bold before:text-gray-500 md:before:content-none"
                         >
                           <span
-                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
-                              task?.status === "ToDo"
-                                ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${task?.status === "ToDo"
+                              ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                              : task?.status === "InProgress"
+                                ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
                                 : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                            }`}
+                              }`}
                           >
                             <span
-                              className={`w-2 h-2 rounded-full mr-2 ${task?.status === "ToDo" ? "bg-amber-500" : "bg-green-500"}`}
+                              className={`w-2 h-2 rounded-full mr-1.5 ${task?.status === "ToDo"
+                                ? "bg-amber-500"
+                                : task?.status === "InProgress"
+                                  ? "bg-blue-500"
+                                  : "bg-green-500"
+                                }`}
                             ></span>
                             {task?.status}
                           </span>
+
                         </td>
 
                         <td

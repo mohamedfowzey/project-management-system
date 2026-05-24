@@ -1,7 +1,4 @@
-import { useState, useEffect, useContext } from "react";
-import { ProjectsApi } from "../../../api";
-import { useNavigate } from "react-router-dom";
-import CustomButton from "../../Shared/CustomButton/CustomButton";
+import { jwtDecode } from "jwt-decode";
 import {
   ArrowUpZA,
   ChevronLeft,
@@ -11,16 +8,18 @@ import {
   Search,
   Trash2,
 } from "lucide-react";
-import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
-import NoData from "../../Shared/NoData/NoData";
-import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
-import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
-import AppChatBot from "../../Shared/AppChatBot/AppChatBot";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ProjectsApi } from "../../../api";
 import { getEmployeeProjects } from "../../../api/modules/Projects";
-import { jwtDecode } from "jwt-decode";
 import type { User } from "../../../api/modules/user";
+import CustomButton from "../../Shared/CustomButton/CustomButton";
+import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
+import NoData from "../../Shared/NoData/NoData";
 import OnlyAdmins from "../../Shared/OnlyAdmins/OnlyAdmins";
 import OnlyUsers from "../../Shared/OnlyUsers/OnlyUsers";
+import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
+import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 
 interface Project {
   id: number;
@@ -42,9 +41,11 @@ interface Project {
   };
   task?: {
     status: string;
+    title:string;
+    id:number;
   }[];
-  
-  
+
+
 }
 
 export default function Projects() {
@@ -57,9 +58,9 @@ export default function Projects() {
   const [totalResults, setTotalResults] = useState(0);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const userData=jwtDecode<User>(localStorage.getItem('token')||"");
+  const userData = jwtDecode<User>(localStorage.getItem('token') || "");
 
-  
+
 
 
 
@@ -68,27 +69,27 @@ export default function Projects() {
   const fetchProjects = async () => {
     try {
 
-      
+
       setLoading(true);
       let response;
-      if(userData?.userGroup === "Employee"){
+      if (userData?.userGroup === "Employee") {
         response = await getEmployeeProjects({
-          
+
           pageNumber: currentPage,
           pageSize: pageSize,
           search: searchTerm,
-        });        
+        });
         console.log(response);
 
-      }else{
+      } else {
         response = await ProjectsApi.getAllProjects({
-         pageNumber: currentPage,
-         pageSize: pageSize,
-         search: searchTerm,
-       });
+          pageNumber: currentPage,
+          pageSize: pageSize,
+          search: searchTerm,
+        });
       }
 
-  
+
       console.log("API Response:", response.data.data);
 
       setProjects(response.data.data);
@@ -151,12 +152,12 @@ export default function Projects() {
 
   const filteredProjects = searchTerm
     ? projects.filter((project) =>
-        project.title.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
     : projects;
 
   useEffect(() => {
-  
+
     const delay = setTimeout(() => {
       fetchProjects();
 
@@ -229,53 +230,51 @@ export default function Projects() {
 
                         <OnlyAdmins>
 
-                        <td>
-                          <span
-                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
-                              project?.manager?.isActivated
-                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                            }`}
-                          >
+                          <td>
                             <span
-                              className={`w-2 h-2 rounded-full mr-2 ${
-                                project?.manager?.isActivated
-                                  ? "bg-green-500"
-                                  : "bg-red-500"
-                              } `  }
-                            ></span>
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
+                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                                }`}
+                            >
+                              <span
+                                className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated
+                                    ? "bg-green-500"
+                                    : "bg-red-500"
+                                  } `}
+                              ></span>
 
-                            
-                            
+
+
                               <OnlyAdmins>
-                            {project?.manager?.isActivated
-                              ? "Active"
-                              : "Inactive"}
+                                {project?.manager?.isActivated
+                                  ? "Active"
+                                  : "Inactive"}
                               </OnlyAdmins>
-                          </span>
-                        </td>
+                            </span>
+                          </td>
                         </OnlyAdmins>
 
                         <OnlyUsers>
-                        <td>
-                          <span
-                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold 
-                              ${project?.task?.[0]?.status =="ToDo" ? "bg-amber-200 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
-                                 : project?.task?.[0]?.status =="InProgress" ? "bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" 
-                                 :"bg-green-200 text-green-700 dark:bg-green-900/30 dark:text-green-400"}
-                              `}
-                          >
+                          <td>
                             <span
-                              className={`w-2 h-2 rounded-full mr-2 ${project?.task?.[0]?.status =="ToDo" ? "bg-yellow-700" : project?.task?.[0]?.status =="InProgress" ? "bg-blue-500" :"bg-green-600"}`  }
-                            ></span>
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold 
+                              ${project?.task?.[0]?.status == "ToDo" ? "bg-amber-200 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                                  : project?.task?.[0]?.status == "InProgress" ? "bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                    : "bg-green-200 text-green-700 dark:bg-green-900/30 dark:text-green-400"}
+                              `}
+                            >
+                              <span
+                                className={`w-2 h-2 rounded-full mr-2 ${project?.task?.[0]?.status == "ToDo" ? "bg-yellow-700" : project?.task?.[0]?.status == "InProgress" ? "bg-blue-500" : "bg-green-600"}`}
+                              ></span>
 
-                            <OnlyUsers>
-                              {project?.task?.[0]?.status}
-                            </OnlyUsers>
-                            
-                              
-                          </span>
-                        </td>
+                              <OnlyUsers>
+                                {project?.task?.[0]?.status}
+                              </OnlyUsers>
+
+
+                            </span>
+                          </td>
                         </OnlyUsers>
 
                         <td>
@@ -296,7 +295,7 @@ export default function Projects() {
                             </button>
 
                             {openMenu === project.id && (
-                              <div className="actions-menu bg-amber-50 dark:bg-gray-400">
+                              <div className="actions-menu bg-amber-50 dark:bg-gray-400 overflow-hidden">
                                 <button
                                   onClick={() => {
                                     handleView(project);
@@ -314,34 +313,34 @@ export default function Projects() {
                                   View
                                 </button>
                                 <OnlyAdmins>
-                                <button
-                                  className="action-btn edit-btn  dark:text-emerald-900"
-                                  onClick={() =>
-                                    navigate(
-                                      `/dashboard/edit-project/${project?.id}`,
-                                    )
-                                  }
-                                >
-                                  <FilePenLine
-                                    color="var(--bg-main-color)"
-                                    size={20}
-                                    strokeWidth={1.5}
-                                    absoluteStrokeWidth
-                                  />{" "}
-                                  Edit
-                                </button>
+                                  <button
+                                    className="action-btn edit-btn  dark:text-emerald-900"
+                                    onClick={() =>
+                                      navigate(
+                                        `/dashboard/edit-project/${project?.id}`,
+                                      )
+                                    }
+                                  >
+                                    <FilePenLine
+                                      color="var(--bg-main-color)"
+                                      size={20}
+                                      strokeWidth={1.5}
+                                      absoluteStrokeWidth
+                                    />{" "}
+                                    Edit
+                                  </button>
 
-                                <button
-                                  className="action-btn delete-btn dark:text-red-900"
-                                  onClick={() => handleOpenDelete(project)}
-                                >
-                                  <Trash2
-                                    size={20}
-                                    strokeWidth={1.5}
-                                    absoluteStrokeWidth
-                                  />{" "}
-                                  Delete
-                                </button>
+                                  <button
+                                    className="action-btn delete-btn dark:text-red-900"
+                                    onClick={() => handleOpenDelete(project)}
+                                  >
+                                    <Trash2
+                                      size={20}
+                                      strokeWidth={1.5}
+                                      absoluteStrokeWidth
+                                    />{" "}
+                                    Delete
+                                  </button>
                                 </OnlyAdmins>
                               </div>
                             )}
@@ -441,28 +440,72 @@ export default function Projects() {
                           )}
                         </div>
                       </div>
-
                       <div className="flex items-center justify-between gap-3 flex-wrap">
-                        <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
-                            project?.manager?.isActivated
+
+                          {/* Status  */}
+                          <OnlyAdmins>
+                            <span
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
+                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                                }`}
+                            >
+                              <span
+                                className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated
+                                    ? "bg-green-500"
+                                    : "bg-red-500"
+                                  } `}
+                              ></span>
+
+
+
+                              <OnlyAdmins>
+                                {project?.manager?.isActivated
+                                  ? "Active"
+                                  : "Inactive"}
+                              </OnlyAdmins>
+                            </span>
+                          
+                        </OnlyAdmins>
+                         <OnlyUsers>
+                        
+                            <span
+                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold 
+                              ${project?.task?.[0]?.status == "ToDo" ? "bg-amber-200 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                                  : project?.task?.[0]?.status == "InProgress" ? "bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                    : "bg-green-200 text-green-700 dark:bg-green-900/30 dark:text-green-400"}
+                              `}
+                            >
+                              <span
+                                className={`w-2 h-2 rounded-full mr-2 ${project?.task?.[0]?.status == "ToDo" ? "bg-yellow-700" : project?.task?.[0]?.status == "InProgress" ? "bg-blue-500" : "bg-green-600"}`}
+                              ></span>
+
+                              <OnlyUsers>
+                                {project?.task?.[0]?.status}
+                              </OnlyUsers>
+                            </span>
+                          
+                        </OnlyUsers>
+
+                        {/* <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
                               ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
                               : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                          }`}
+                            }`}
                         >
                           <span
-                            className={`w-2 h-2 rounded-full mr-2 ${
-                              project?.manager?.isActivated
+                            className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated
                                 ? "bg-green-500"
                                 : "bg-red-500"
-                            }`}
+                              }`}
                           ></span>
 
                           {project?.manager?.isActivated
                             ? "Active"
                             : "Inactive"}
-                        </span>
+                        </span> */}
 
+                            {/*  creationDate */}
                         <span className="text-sm text-gray-500 dark:text-gray-400">
                           {new Date(project.creationDate).toLocaleDateString()}
                         </span>
