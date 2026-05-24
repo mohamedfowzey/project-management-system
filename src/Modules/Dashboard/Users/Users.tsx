@@ -203,7 +203,7 @@ export default function Users() {
           <>
             <div className="table-container overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800">
               <table className="data-table w-full border-collapse">
-                <thead className="hidden md:table-header-group">
+                <thead className="hidden md:table-header-group sticky top-0">
                   <tr className="bg-emerald-800 text-white dark:bg-gray-700">
                     {/* Username */}
                     <th className="p-3 text-left align-top min-w-[160px]">

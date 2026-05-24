@@ -1,5 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import {
+  ArrowDownZA,
   ArrowUpZA,
   ChevronLeft,
   ChevronRight,
@@ -49,6 +50,7 @@ interface Project {
 }
 
 export default function Projects() {
+  const [sorting,setSorting] = useState<'asc'|'desc'>('asc');
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [openMenu, setOpenMenu] = useState<number | null>(null);
@@ -200,14 +202,27 @@ export default function Projects() {
               {/* Desktop Table */}
               <table className="data-table hidden md:table">
                 <thead>
-                  <tr className="bg-emerald-800 text-white dark:bg-gray-700">
+                  <tr className="bg-emerald-800 text-white dark:bg-gray-700 sticky top-0">
                     <th className="flex gap-1 items-center ">
                       Title{" "}
-                      <ArrowUpZA
-                        size={20}
+                      <span
+                        onClick={()=>setSorting(p=>p=='asc'?'desc':'asc')}
+                      >
+                        {sorting === 'asc'
+                         ? (
+                         <ArrowUpZA
+                         size={20}
                         strokeWidth={1.5}
                         absoluteStrokeWidth
-                      />
+                          />
+                         ) : (
+                         <ArrowDownZA
+                         size={20}
+                        strokeWidth={1.5}
+                        absoluteStrokeWidth
+                          />
+                         )}
+                        </span>
                     </th>
 
                     <th>description</th>

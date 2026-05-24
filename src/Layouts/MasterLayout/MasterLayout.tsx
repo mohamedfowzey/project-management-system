@@ -21,7 +21,7 @@ export default function MasterLayout() {
           </div>
           <div className="flex-1 min-w-0  dark:bg-gray-900">
             <Outlet />
-              <AppChatBot />
+            <AppChatBot />
           </div>
         </div>
 
