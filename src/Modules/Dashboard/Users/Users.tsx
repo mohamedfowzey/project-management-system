@@ -14,7 +14,6 @@ import { UsersApi } from "../../../api/index";
 import type { User } from "../../../api/modules/user";
 import UserViewModal from "../../Shared/UserViewModal/UserViewModal";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
-import AppChatBot from "../../Shared/AppChatBot/AppChatBot";
 
 export default function Users() {
   const [users, setUsers] = useState<User[]>([]);
@@ -412,7 +411,6 @@ export default function Users() {
           setIsOpen={setIsOpen}
         />
       )}
-      <AppChatBot />
     </>
   );
 }

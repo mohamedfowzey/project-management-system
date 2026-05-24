@@ -16,7 +16,6 @@ import NoData from "../../Shared/NoData/NoData";
 import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
 import AppChatBot from "../../Shared/AppChatBot/AppChatBot";
-import { AuthContext } from "../../../Contexts/AuthContext";
 import { getEmployeeProjects } from "../../../api/modules/Projects";
 import { jwtDecode } from "jwt-decode";
 import type { User } from "../../../api/modules/user";
@@ -557,7 +556,6 @@ export default function Projects() {
           }
         />
       )}
-      <AppChatBot/>
     </>
   );
 }

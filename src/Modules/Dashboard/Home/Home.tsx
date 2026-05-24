@@ -19,7 +19,6 @@ import {
 import { AuthContext } from "../../../Contexts/AuthContext";
 import NoData from "../../Shared/NoData/NoData";
 import OnlyAdmins from "../../Shared/OnlyAdmins/OnlyAdmins";
-import AppChatBot from "../../Shared/AppChatBot/AppChatBot";
 import OnlyUsers from "../../Shared/OnlyUsers/OnlyUsers";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -300,7 +299,6 @@ export default function Home() {
           </OnlyAdmins>
         </div>
       </div>
-      <AppChatBot />
     </>
   );
 }

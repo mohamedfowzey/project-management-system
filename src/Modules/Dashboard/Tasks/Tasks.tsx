@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { TasksApi } from "../../../api";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
-import AppChatBot from "../../Shared/AppChatBot/AppChatBot";
 
 export interface Task {
   id: number;
@@ -508,7 +507,6 @@ export default function TasksList() {
           setIsOpen={setIsOpen}
         />
       )}
-      <AppChatBot />
     </>
   );
 }

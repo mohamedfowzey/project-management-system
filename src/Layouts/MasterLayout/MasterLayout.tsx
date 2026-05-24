@@ -3,6 +3,7 @@ import NavBar from "../../Modules/Shared/NavBar/NavBar";
 import SideBar from "../../Modules/Shared/SideBar/SideBar";
 import { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthContext";
+import AppChatBot from "../../Modules/Shared/AppChatBot/AppChatBot";
 
 export default function MasterLayout() {
   // const {mood} = useContext(AuthContext)
@@ -22,6 +23,8 @@ export default function MasterLayout() {
             <Outlet />
           </div>
         </div>
+              <AppChatBot />
+
       </div>
        
     </>
