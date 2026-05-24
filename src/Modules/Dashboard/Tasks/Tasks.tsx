@@ -129,17 +129,16 @@ export default function TasksList() {
     const matchesTitle = task.title
       .toLowerCase()
       .includes(filterTitle.toLowerCase());
-    const matchesDesc =
-      task.description?.toLowerCase().includes(filterDesc.toLowerCase()) ||
-      true;
+    const matchesDesc = task.description
+      ?.toLowerCase()
+      .includes(filterDesc.toLowerCase());
     const matchesStatus = filterStatus ? task.status === filterStatus : true;
-    const matchesUser =
-      task.employee?.userName
-        .toLowerCase()
-        .includes(filterUser.toLowerCase()) || true;
-    const matchesProject =
-      task.project?.title.toLowerCase().includes(filterProject.toLowerCase()) ||
-      true;
+    const matchesUser = task.employee?.userName
+      .toLowerCase()
+      .includes(filterUser.toLowerCase());
+    const matchesProject = task.project?.title
+      .toLowerCase()
+      .includes(filterProject.toLowerCase());
 
     return (
       matchesSearch &&
