@@ -14,7 +14,6 @@ import { UsersApi } from "../../../api/index";
 import type { User } from "../../../api/modules/user";
 import UserViewModal from "../../Shared/UserViewModal/UserViewModal";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
-import AppChatBot from "../../Shared/AppChatBot/AppChatBot";
 
 export default function Users() {
   const [users, setUsers] = useState<User[]>([]);
@@ -35,6 +34,8 @@ export default function Users() {
         pageNumber: currentPage,
         pageSize: pageSize,
       });
+      console.log(response);
+      
 
       setUsers(response?.data?.data || []);
       setTotalResults(response.data.totalNumberOfRecords || 0);
@@ -93,8 +94,8 @@ export default function Users() {
 
   const filteredUsers = searchTerm
     ? users.filter((user) =>
-        user.userName?.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+      user.userName?.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
     : users;
 
   useEffect(() => {
@@ -200,11 +201,10 @@ export default function Users() {
               "
                         >
                           <span
-                            className={`inline-flex items-center px-3 py-2 rounded-full text-xs font-bold ${
-                              user?.isActivated
+                            className={`inline-flex items-center px-3 py-2 rounded-full text-xs font-bold ${user?.isActivated
                                 ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
                                 : "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400"
-                            }`}
+                              }`}
                           >
                             {user?.isActivated ? "Activated" : "Not Activated"}
                           </span>
@@ -299,8 +299,7 @@ export default function Users() {
 
                                 <button
                                   onClick={() => handleOpenBlockModal(user)}
-                                  className="action-btn block-btn dark:text-emerald-900"
-                                >
+                                  className={`action-btn ${user?.isActivated ? "bg-red-700" : "bg-green-700"} text-amber-50`}                                >
                                   <ShieldAlert
                                     size={20}
                                     strokeWidth={1.5}
@@ -316,7 +315,7 @@ export default function Users() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={6}   className="text-center  dark:text-black">
+                      <td colSpan={6} className="text-center  dark:text-black">
                         <NoData />
                       </td>
                     </tr>
@@ -412,7 +411,6 @@ export default function Users() {
           setIsOpen={setIsOpen}
         />
       )}
-      <AppChatBot/>
     </>
   );
 }

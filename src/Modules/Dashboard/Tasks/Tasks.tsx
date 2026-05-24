@@ -6,6 +6,7 @@ import {
   FilePenLine,
   Search,
   Trash2,
+  SlidersHorizontal,
 } from "lucide-react";
 import NoData from "../../Shared/NoData/NoData";
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
@@ -15,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { TasksApi } from "../../../api";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
-import AppChatBot from "../../Shared/AppChatBot/AppChatBot";
 
 export interface Task {
   id: number;
@@ -53,6 +53,13 @@ export default function TasksList() {
   const [pageSize, setPageSize] = useState(10);
   const [totalResults, setTotalResults] = useState(0);
 
+  const [showFilters, setShowFilters] = useState(false);
+  const [filterTitle, setFilterTitle] = useState("");
+  const [filterDesc, setFilterDesc] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterUser, setFilterUser] = useState("");
+  const [filterProject, setFilterProject] = useState("");
+
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
@@ -86,7 +93,6 @@ export default function TasksList() {
 
     try {
       await TasksApi.deleteTask(selectedTask.id);
-
       setTasks(tasks.filter((t) => t.id !== selectedTask.id));
       setIsDeleteOpen(false);
     } catch (err) {
@@ -116,11 +122,33 @@ export default function TasksList() {
     setCurrentPage(1);
   };
 
-  const filteredTasks = searchTerm
-    ? tasks.filter((task) =>
-        task.title.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
-    : tasks;
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch = task.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesTitle = task.title
+      .toLowerCase()
+      .includes(filterTitle.toLowerCase());
+    const matchesDesc = task.description
+      ?.toLowerCase()
+      .includes(filterDesc.toLowerCase());
+    const matchesStatus = filterStatus ? task.status === filterStatus : true;
+    const matchesUser = task.employee?.userName
+      .toLowerCase()
+      .includes(filterUser.toLowerCase());
+    const matchesProject = task.project?.title
+      .toLowerCase()
+      .includes(filterProject.toLowerCase());
+
+    return (
+      matchesSearch &&
+      matchesTitle &&
+      matchesDesc &&
+      matchesStatus &&
+      matchesUser &&
+      matchesProject
+    );
+  });
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -129,8 +157,6 @@ export default function TasksList() {
 
     return () => clearTimeout(delay);
   }, [searchTerm, currentPage, pageSize]);
-
-  // modal states views
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTasks, setSelectedTasks] = useState<Task | null>(null);
@@ -141,52 +167,141 @@ export default function TasksList() {
 
   return (
     <>
-      <div className="flex justify-between items-center  mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
+      <div className="flex justify-between items-center mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950">
         <h1 className="text-3xl font-semibold">Tasks</h1>
         <div
-          className="shrink cursor-pointer "
+          className="shrink cursor-pointer"
           onClick={() => navigate("/dashboard/add-task")}
         >
-          <CustomButton  text=" + add Task " />
+          <CustomButton text=" + add Task " />
         </div>
       </div>
+
       <div className="table-wrapper">
-        <div className="search-filter-container">
-          <div className="search-wrapper">
-            <span className="search-icon">
-              <Search size={20} strokeWidth={1.75} />
+        <div className="flex items-center gap-3 mb-6">
+          <div className="relative flex-1 max-w-md">
+            <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+              <Search size={18} strokeWidth={1.75} />
             </span>
             <input
               type="text"
-              placeholder="Search By Title"
-              className="search-input dark:text-white"
+              placeholder="Search By Title..."
+              className="w-full pl-10 pr-4 py-2 text-sm rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-900 dark:text-white transition-all"
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
             />
           </div>
+
+          <button
+            onClick={() => {
+              if (showFilters) {
+                setFilterTitle("");
+                setFilterDesc("");
+                setFilterStatus("");
+                setFilterUser("");
+                setFilterProject("");
+              }
+              setShowFilters(!showFilters);
+            }}
+            className={`hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border transition-all cursor-pointer ${
+              showFilters
+                ? "bg-emerald-50 border-emerald-500 text-emerald-700 dark:bg-emerald-950/30 dark:border-emerald-500 dark:text-emerald-400"
+                : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 dark:bg-gray-900 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-800"
+            }`}
+          >
+            <SlidersHorizontal size={16} />
+            Filter
+          </button>
         </div>
+
         {loading ? (
           <TableSkeleton />
         ) : (
           <>
-            <div className="table-container">
-              <table className="data-table w-full">
+            <div className="table-container overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800">
+              <table className="data-table w-full border-collapse">
                 <thead className="hidden md:table-header-group">
                   <tr className="bg-emerald-800 text-white dark:bg-gray-700">
-                    <th className="flex gap-1 items-center ">
-                      Title{" "}
-                      <ArrowUpZA
-                        size={20}
-                        strokeWidth={1.5}
-                        absoluteStrokeWidth
-                      />
+                    <th className="p-3 text-left align-top min-w-[160px]">
+                      <div className="flex gap-1 items-center font-semibold mb-2">
+                        Title
+                        <ArrowUpZA size={16} strokeWidth={1.5} />
+                      </div>
+                      {showFilters && (
+                        <input
+                          type="text"
+                          placeholder="Filter title..."
+                          className="w-full px-2 py-1 text-xs font-normal rounded border border-emerald-700 bg-white text-gray-900 dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                          value={filterTitle}
+                          onChange={(e) => setFilterTitle(e.target.value)}
+                        />
+                      )}
                     </th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>User</th>
-                    <th>Project</th>
-                    <th>Date Created</th>
-                    <th></th>
+
+                    <th className="p-3 text-left align-top min-w-[160px]">
+                      <div className="font-semibold mb-2">Description</div>
+                      {showFilters && (
+                        <input
+                          type="text"
+                          placeholder="Filter desc..."
+                          className="w-full px-2 py-1 text-xs font-normal rounded border border-emerald-700 bg-white text-gray-900 dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                          value={filterDesc}
+                          onChange={(e) => setFilterDesc(e.target.value)}
+                        />
+                      )}
+                    </th>
+
+                    <th className="p-3 text-left align-top min-w-[130px]">
+                      <div className="font-semibold mb-2">Status</div>
+                      {showFilters && (
+                        <select
+                          className="w-full px-2 py-1 text-xs font-normal rounded border border-emerald-700 bg-white text-gray-900 dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                          value={filterStatus}
+                          onChange={(e) => setFilterStatus(e.target.value)}
+                        >
+                          <option value="">All</option>
+                          <option value="ToDo">ToDo</option>
+                          <option value="InProgress">InProgress</option>
+                          <option value="Done">Done</option>
+                        </select>
+                      )}
+                    </th>
+
+                    <th className="p-3 text-left align-top min-w-[140px]">
+                      <div className="font-semibold mb-2">User</div>
+                      {showFilters && (
+                        <input
+                          type="text"
+                          placeholder="Filter user..."
+                          className="w-full px-2 py-1 text-xs font-normal rounded border border-emerald-700 bg-white text-gray-900 dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                          value={filterUser}
+                          onChange={(e) => setFilterUser(e.target.value)}
+                        />
+                      )}
+                    </th>
+
+                    <th className="p-3 text-left align-top min-w-[140px]">
+                      <div className="font-semibold mb-2">Project</div>
+                      {showFilters && (
+                        <input
+                          type="text"
+                          placeholder="Filter project..."
+                          className="w-full px-2 py-1 text-xs font-normal rounded border border-emerald-700 bg-white text-gray-900 dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                          value={filterProject}
+                          onChange={(e) => setFilterProject(e.target.value)}
+                        />
+                      )}
+                    </th>
+
+                    <th className="p-3 text-left align-top min-w-[140px]">
+                      <div className="font-semibold mb-2">Date Created</div>
+                      {showFilters && <div className="h-6"></div>}
+                    </th>
+
+                    <th className="p-3 w-[60px] align-top">
+                      <div className="mb-2">&nbsp;</div>
+                      {showFilters && <div className="h-6"></div>}
+                    </th>
                   </tr>
                 </thead>
 
@@ -195,57 +310,25 @@ export default function TasksList() {
                     filteredTasks.map((task) => (
                       <tr
                         key={task?.id}
-                        className="
-              block md:table-row
-              mb-4 md:mb-0
-              rounded-2xl
-              border border-gray-200 dark:border-gray-700
-              bg-white dark:bg-gray-900
-              shadow-sm
-              p-4 md:p-0
-            "
+                        className="block md:table-row mb-4 md:mb-0 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm p-4 md:p-0"
                       >
                         <td
                           data-label="Title"
-                          className="
-                flex justify-between items-center
-                md:table-cell
-                py-2 md:py-4
-                before:content-[attr(data-label)]
-                before:font-bold
-                before:text-gray-500
-                md:before:content-none
-              "
+                          className="flex justify-between items-center md:table-cell py-2 md:py-4 p-3 before:content-[attr(data-label)] before:font-bold before:text-gray-500 md:before:content-none"
                         >
                           {task.title}
                         </td>
 
                         <td
                           data-label="Description"
-                          className="
-                flex justify-between items-center
-                md:table-cell
-                py-2 md:py-4
-                before:content-[attr(data-label)]
-                before:font-bold
-                before:text-gray-500
-                md:before:content-none
-              "
+                          className="flex justify-between items-center md:table-cell py-2 md:py-4 p-3 before:content-[attr(data-label)] before:font-bold before:text-gray-500 md:before:content-none"
                         >
                           {task?.description}
                         </td>
 
                         <td
                           data-label="Status"
-                          className="
-                flex justify-between items-center
-                md:table-cell
-                py-2 md:py-4
-                before:content-[attr(data-label)]
-                before:font-bold
-                before:text-gray-500
-                md:before:content-none
-              "
+                          className="flex justify-between items-center md:table-cell py-2 md:py-4 p-3 before:content-[attr(data-label)] before:font-bold before:text-gray-500 md:before:content-none"
                         >
                           <span
                             className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
@@ -255,11 +338,7 @@ export default function TasksList() {
                             }`}
                           >
                             <span
-                              className={`w-2 h-2 rounded-full mr-2 ${
-                                task?.status === "ToDo"
-                                  ? "bg-amber-500"
-                                  : "bg-green-500"
-                              }`}
+                              className={`w-2 h-2 rounded-full mr-2 ${task?.status === "ToDo" ? "bg-amber-500" : "bg-green-500"}`}
                             ></span>
                             {task?.status}
                           </span>
@@ -267,56 +346,26 @@ export default function TasksList() {
 
                         <td
                           data-label="User"
-                          className="
-                flex justify-between items-center
-                md:table-cell
-                py-2 md:py-4
-                before:content-[attr(data-label)]
-                before:font-bold
-                before:text-gray-500
-                md:before:content-none
-              "
+                          className="flex justify-between items-center md:table-cell py-2 md:py-4 p-3 before:content-[attr(data-label)] before:font-bold before:text-gray-500 md:before:content-none"
                         >
                           {task.employee?.userName}
                         </td>
 
                         <td
                           data-label="Project"
-                          className="
-                flex justify-between items-center
-                md:table-cell
-                py-2 md:py-4
-                before:content-[attr(data-label)]
-                before:font-bold
-                before:text-gray-500
-                md:before:content-none
-              "
+                          className="flex justify-between items-center md:table-cell py-2 md:py-4 p-3 before:content-[attr(data-label)] before:font-bold before:text-gray-500 md:before:content-none"
                         >
                           {task?.project?.title}
                         </td>
 
                         <td
                           data-label="Date"
-                          className="
-                flex justify-between items-center
-                md:table-cell
-                py-2 md:py-4
-                before:content-[attr(data-label)]
-                before:font-bold
-                before:text-gray-500
-                md:before:content-none
-              "
+                          className="flex justify-between items-center md:table-cell py-2 md:py-4 p-3 before:content-[attr(data-label)] before:font-bold before:text-gray-500 md:before:content-none"
                         >
                           {new Date(task.creationDate).toLocaleDateString()}
                         </td>
 
-                        <td
-                          className="
-                flex justify-end
-                md:table-cell
-                pt-4 md:pt-0
-              "
-                        >
+                        <td className="flex justify-end md:table-cell pt-4 md:pt-0 p-3">
                           <div className="actions-wrapper">
                             <button
                               className="menu-btn"
@@ -337,7 +386,7 @@ export default function TasksList() {
                                     setIsOpen(true);
                                     setOpenMenu(null);
                                   }}
-                                  className="action-btn view-btn dark:text-gray-700 "
+                                  className="action-btn view-btn dark:text-gray-700"
                                 >
                                   <Eye
                                     color="var(--bg-main-color)"
@@ -383,7 +432,10 @@ export default function TasksList() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={7} className="text-center dark:text-black">
+                      <td
+                        colSpan={7}
+                        className="text-center dark:text-black py-4"
+                      >
                         <NoData />
                       </td>
                     </tr>
@@ -398,20 +450,12 @@ export default function TasksList() {
                 <select
                   value={pageSize}
                   onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-                  className="page-size-select bg-white dark:bg-black "
+                  className="page-size-select bg-white dark:bg-black"
                 >
-                  <option className=" dark:text-gray-300" value={5}>
-                    5
-                  </option>
-                  <option className=" dark:text-gray-300" value={10}>
-                    10
-                  </option>
-                  <option className=" dark:text-gray-300" value={15}>
-                    15
-                  </option>
-                  <option className=" dark:text-gray-300" value={20}>
-                    20
-                  </option>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
                 </select>
                 <span>of {totalResults} Results</span>
                 <span className="ml-4">
@@ -428,7 +472,7 @@ export default function TasksList() {
                     size={20}
                     strokeWidth={1.5}
                     absoluteStrokeWidth
-                  />{" "}
+                  />
                 </button>
                 <button
                   className="page-btn dark:bg-cyan-900 dark:text-white"
@@ -471,7 +515,6 @@ export default function TasksList() {
           setIsOpen={setIsOpen}
         />
       )}
-      <AppChatBot/>
     </>
   );
 }
