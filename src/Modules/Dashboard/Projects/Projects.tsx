@@ -21,6 +21,7 @@ import { getEmployeeProjects } from "../../../api/modules/Projects";
 import { jwtDecode } from "jwt-decode";
 import type { User } from "../../../api/modules/user";
 import OnlyAdmins from "../../Shared/OnlyAdmins/OnlyAdmins";
+import OnlyUsers from "../../Shared/OnlyUsers/OnlyUsers";
 
 interface Project {
   id: number;
@@ -40,6 +41,11 @@ interface Project {
     phoneNumber: string;
     imagPath: string;
   };
+  task?: {
+    status: string;
+  }[];
+  
+  
 }
 
 export default function Projects() {
@@ -68,10 +74,12 @@ export default function Projects() {
       let response;
       if(userData?.userGroup === "Employee"){
         response = await getEmployeeProjects({
-       pageNumber: currentPage,
-       pageSize: pageSize,
-       search: searchTerm,
-     });        
+          
+          pageNumber: currentPage,
+          pageSize: pageSize,
+          search: searchTerm,
+        });        
+        console.log(response);
 
       }else{
         response = await ProjectsApi.getAllProjects({
@@ -220,6 +228,8 @@ export default function Projects() {
 
                         <td>{project.description}</td>
 
+                        <OnlyAdmins>
+
                         <td>
                           <span
                             className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
@@ -233,14 +243,41 @@ export default function Projects() {
                                 project?.manager?.isActivated
                                   ? "bg-green-500"
                                   : "bg-red-500"
-                              }`}
+                              } `  }
                             ></span>
 
+                            
+                            
+                              <OnlyAdmins>
                             {project?.manager?.isActivated
                               ? "Active"
                               : "Inactive"}
+                              </OnlyAdmins>
                           </span>
                         </td>
+                        </OnlyAdmins>
+
+                        <OnlyUsers>
+                        <td>
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold 
+                              ${project?.task?.[0]?.status =="ToDo" ? "bg-amber-200 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                                 : project?.task?.[0]?.status =="InProgress" ? "bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400" 
+                                 :"bg-green-200 text-green-700 dark:bg-green-900/30 dark:text-green-400"}
+                              `}
+                          >
+                            <span
+                              className={`w-2 h-2 rounded-full mr-2 ${project?.task?.[0]?.status =="ToDo" ? "bg-yellow-700" : project?.task?.[0]?.status =="InProgress" ? "bg-blue-500" :"bg-green-600"}`  }
+                            ></span>
+
+                            <OnlyUsers>
+                              {project?.task?.[0]?.status}
+                            </OnlyUsers>
+                            
+                              
+                          </span>
+                        </td>
+                        </OnlyUsers>
 
                         <td>
                           {new Date(project.creationDate).toLocaleDateString()}
