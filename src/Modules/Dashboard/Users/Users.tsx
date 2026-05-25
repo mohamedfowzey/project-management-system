@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import {
+  ArrowDownZA,
   ArrowUpZA,
   ChevronLeft,
   ChevronRight,
@@ -18,6 +19,8 @@ import UserViewModal from "../../Shared/UserViewModal/UserViewModal";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
 
 export default function Users() {
+    const [sorting, setSorting] = useState<"asc" | "desc">("asc");
+  
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [openMenu, setOpenMenu] = useState<number | null>(null);
@@ -209,7 +212,26 @@ export default function Users() {
                     <th className="p-3 text-left align-top min-w-[160px]">
                       <div className="flex gap-1 items-center font-semibold mb-2">
                         User Name
-                        <ArrowUpZA size={16} strokeWidth={1.5} />
+                        <span
+                          className="cursor-pointer"
+                          onClick={() =>
+                            setSorting((p) => (p === "asc" ? "desc" : "asc"))
+                          }
+                        >
+                          {sorting === "asc" ? (
+                            <ArrowUpZA
+                              size={18}
+                              strokeWidth={1.5}
+                              absoluteStrokeWidth
+                            />
+                          ) : (
+                            <ArrowDownZA
+                              size={18}
+                              strokeWidth={1.5}
+                              absoluteStrokeWidth
+                            />
+                          )}
+                        </span>
                       </div>
 
                       {showFilters && (
@@ -287,7 +309,7 @@ export default function Users() {
 
                 <tbody className="block md:table-row-group">
                   {filteredUsers.length > 0 ? (
-                    filteredUsers.map((user) => (
+                    filteredUsers.sort(sorting=='asc'?(a,b)=>a.userName.localeCompare(b.userName):(a,b)=>b.userName.localeCompare(a.userName)).map((user) => (
                       <tr
                         key={user?.id}
                         className="block md:table-row mb-4 md:mb-0 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm p-4 md:p-0"

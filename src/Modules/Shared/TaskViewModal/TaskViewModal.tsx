@@ -26,7 +26,7 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
             >
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="w-[95%] md:w-[70%] lg:w-[50%] overflow-y-scroll scrollbar-track-gray-800 scrollbar- scrollbar-thumb-accent scrollbar-thin max-h-full bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-10 relative transition-all duration-300 scale-100"
+                className="w-[95%] md:w-[70%] lg:w-[50%] overflow-y-auto scrollbar-track-gray-800 scrollbar-thumb-accent scrollbar-thin max-h-full bg-white dark:bg-gray-800 dark:text-white rounded-2xl shadow-xl p-10 relative transition-all duration-300 scale-100"
               >
                 <button
                   onClick={() => setIsOpen(false)}
@@ -108,11 +108,11 @@ export default function TaskViewModal({ task, isOpen, setIsOpen }: TasksViewModa
                     <div className="flex flex-wrap gap-6">
                       <div className="flex items-center gap-2">
                         <Calendar size={16} className="text-blue-500" />
-                        <span className="text-sm font-medium">Created: <span className="text-gray-500">{new Date(task?.creationDate).toLocaleDateString()}</span></span>
+                        <span className="text-sm font-medium text-black dark:text-white">Created: <span className="text-gray-500">{new Date(task?.creationDate).toLocaleDateString()}</span></span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Clock size={16} className="text-purple-500" />
-                        <span className="text-sm font-medium">Modified: <span className="text-gray-500">{new Date(task?.modificationDate).toLocaleDateString()}</span></span>
+                        <span className="text-sm font-medium text-black dark:text-white">Modified: <span className="text-gray-500">{new Date(task?.modificationDate).toLocaleDateString()}</span></span>
                       </div>
                     </div>
                   </div>

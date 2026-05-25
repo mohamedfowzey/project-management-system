@@ -33,6 +33,7 @@ export interface User {
   isActivated: boolean;
   imagePath?: string; 
   task: Task[];      
+  userGroup?: string;
 }
 
 export interface UsersPaginatedResponse {

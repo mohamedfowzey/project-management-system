@@ -7,6 +7,7 @@ import {
   Search,
   Trash2,
   SlidersHorizontal,
+  ArrowDownZA,
 } from "lucide-react";
 import NoData from "../../Shared/NoData/NoData";
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
@@ -45,6 +46,8 @@ export interface Task {
 }
 
 export default function TasksList() {
+    const [sorting, setSorting] = useState<"asc" | "desc">("asc");
+  
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [openMenu, setOpenMenu] = useState<number | null>(null);
@@ -224,7 +227,26 @@ export default function TasksList() {
                     <th className="p-3 text-left align-top min-w-[160px]">
                       <div className="flex gap-1 items-center font-semibold mb-2">
                         Title
-                        <ArrowUpZA size={16} strokeWidth={1.5} />
+                        <span
+                          className="cursor-pointer"
+                          onClick={() =>
+                            setSorting((p) => (p === "asc" ? "desc" : "asc"))
+                          }
+                        >
+                          {sorting === "asc" ? (
+                            <ArrowUpZA
+                              size={18}
+                              strokeWidth={1.5}
+                              absoluteStrokeWidth
+                            />
+                          ) : (
+                            <ArrowDownZA
+                              size={18}
+                              strokeWidth={1.5}
+                              absoluteStrokeWidth
+                            />
+                          )}
+                        </span>
                       </div>
                       {showFilters && (
                         <input
@@ -306,7 +328,7 @@ export default function TasksList() {
 
                 <tbody className="block md:table-row-group">
                   {filteredTasks.length > 0 ? (
-                    filteredTasks.map((task) => (
+                    filteredTasks.sort(sorting=='asc'?(a,b)=>a.title.localeCompare(b.title):(a,b)=>b.title.localeCompare(a.title)).map((task) => (
                       <tr
                         key={task?.id}
                         className="block md:table-row mb-4 md:mb-0 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm p-4 md:p-0"

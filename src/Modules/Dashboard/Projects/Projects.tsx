@@ -28,7 +28,7 @@ interface Project {
   status: boolean;
   numUsers: number;
   numTasks: number;
-  dateCreated: string;
+  dateCreated?: string;
   creationDate: string;
   modificationDate: string;
   description: string;
@@ -308,7 +308,7 @@ export default function Projects() {
 
                 <tbody>
                   {filteredProjects.length > 0 ? (
-                    filteredProjects.map((project) => (
+                    filteredProjects.sort(sorting=='asc'?(a,b)=>a.title.localeCompare(b.title):(a,b)=>b.title.localeCompare(a.title)).map((project) => (
                       <tr
                         key={project?.id}
                         className="table-row "
