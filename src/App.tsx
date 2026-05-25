@@ -20,7 +20,7 @@ import { ToastContainer } from "react-toastify";
 import ProtectedRoutes from "./Modules/Shared/ProtectedRoutes/ProtectedRoutes";
 import OnlyAdminsRoute from "./Modules/Shared/OnlyAdmins/OnlyAdminsRoute";
 import OnlyUsersRoute from "./Modules/Shared/OnlyUsers/OnlyUsersRoute";
-import EditProfile from "./Modules/Dashboard/EditProfile/editProfile";
+import EditProfile from "./Modules/Dashboard/EditProfile/EditProfile";
 
 
 function App() {

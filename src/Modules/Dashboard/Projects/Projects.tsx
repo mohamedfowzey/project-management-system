@@ -7,6 +7,7 @@ import {
   Eye,
   FilePenLine,
   Search,
+  SlidersHorizontal,
   Trash2,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -18,7 +19,6 @@ import CustomButton from "../../Shared/CustomButton/CustomButton";
 import DeleteConfirm from "../../Shared/DeleteConfirm/DeleteConfirm";
 import NoData from "../../Shared/NoData/NoData";
 import OnlyAdmins from "../../Shared/OnlyAdmins/OnlyAdmins";
-import OnlyUsers from "../../Shared/OnlyUsers/OnlyUsers";
 import ProjectViewModal from "../../Shared/ProjectViewModal/ProjectViewModal";
 import TableSkeleton from "../../Shared/TableSkeleton/TableSkeleton";
 
@@ -28,10 +28,11 @@ interface Project {
   status: boolean;
   numUsers: number;
   numTasks: number;
-  dateCreated: string;
+  dateCreated?: string;
   creationDate: string;
   modificationDate: string;
   description: string;
+
   manager: {
     isActivated: boolean;
     userName: string;
@@ -40,49 +41,52 @@ interface Project {
     phoneNumber: string;
     imagPath: string;
   };
+
   task?: {
     status: string;
-    title:string;
-    id:number;
+    title: string;
+    id: number;
   }[];
-
-
 }
 
 export default function Projects() {
-  const [sorting,setSorting] = useState<'asc'|'desc'>('asc');
+  const [sorting, setSorting] = useState<"asc" | "desc">("asc");
+
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+
   const [openMenu, setOpenMenu] = useState<number | null>(null);
+
   const [searchTerm, setSearchTerm] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalResults, setTotalResults] = useState(0);
+
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const userData = jwtDecode<User>(localStorage.getItem('token') || "");
+  // Filters
+  const [showFilters, setShowFilters] = useState(false);
 
+  const [filterTitle, setFilterTitle] = useState("");
+  const [filterDescription, setFilterDescription] = useState("");
 
-
-
+  const userData = jwtDecode<User>(localStorage.getItem("token") || "");
 
   const navigate = useNavigate();
 
   const fetchProjects = async () => {
     try {
-
-
       setLoading(true);
+
       let response;
+
       if (userData?.userGroup === "Employee") {
         response = await getEmployeeProjects({
-
           pageNumber: currentPage,
           pageSize: pageSize,
           search: searchTerm,
         });
-        console.log(response);
-
       } else {
         response = await ProjectsApi.getManagerProjects({
           pageNumber: currentPage,
@@ -91,10 +95,7 @@ export default function Projects() {
         });
       }
 
-
-      console.log("API Response:", response.data.data);
-
-      setProjects(response.data.data);
+      setProjects(response.data.data || []);
       setTotalResults(response.data.totalNumberOfRecords || 0);
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -103,13 +104,15 @@ export default function Projects() {
     }
   };
 
-  // Delete Modal State
+  // Delete Modal
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const confirmDelete = async (id: number) => {
     try {
       await ProjectsApi.deleteProject(id);
+
       setProjects(projects.filter((p) => p.id !== id));
+
       setIsDeleteOpen(false);
     } catch (err) {
       console.error("Error deleting project:", err);
@@ -122,7 +125,7 @@ export default function Projects() {
     setOpenMenu(null);
   };
 
-  // View Modal State
+  // View Modal
   const [isOpen, setIsOpen] = useState(false);
 
   const handleView = (project: Project) => {
@@ -152,17 +155,25 @@ export default function Projects() {
     setCurrentPage(1);
   };
 
-  const filteredProjects = searchTerm
-    ? projects.filter((project) =>
-      project.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
-    : projects;
+  const filteredProjects = projects.filter((project) => {
+    const matchesSearch = project.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    const matchesTitle = project.title
+      .toLowerCase()
+      .includes(filterTitle.toLowerCase());
+
+    const matchesDescription = project.description
+      ?.toLowerCase()
+      .includes(filterDescription.toLowerCase());
+
+    return matchesSearch && matchesTitle && matchesDescription;
+  });
 
   useEffect(() => {
-
     const delay = setTimeout(() => {
       fetchProjects();
-
     }, 500);
 
     return () => clearTimeout(delay);
@@ -170,79 +181,141 @@ export default function Projects() {
 
   return (
     <>
-      <div className="flex justify-between items-center  mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950 ">
+      <div className="flex justify-between items-center mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950">
         <h1 className="text-3xl font-semibold">Projects</h1>
+
         <div
-          className="shrink "
+          className="shrink"
           onClick={() => navigate("/dashboard/add-project")}
         >
           <CustomButton text=" + add project " />
         </div>
       </div>
+
       <div className="table-wrapper">
-        <div className="search-filter-container">
-          <div className="search-wrapper  ">
-            <span className="search-icon">
-              <Search size={20} strokeWidth={1.75} />
+        {/* Search + Filter */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="relative flex-1 max-w-md">
+            <span className="absolute inset-y-0 left-3 flex items-center text-gray-400">
+              <Search size={18} strokeWidth={1.75} />
             </span>
+
             <input
               type="text"
-              placeholder="Search By Title"
-              className="search-input dark:text-white"
+              placeholder="Search By Title..."
+              className="w-full pl-10 pr-4 py-2 text-sm rounded-full border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-gray-900 dark:text-white transition-all"
               value={searchTerm}
               onChange={(e) => handleSearch(e.target.value)}
             />
           </div>
+
+          <button
+            onClick={() => {
+              if (showFilters) {
+                setFilterTitle("");
+                setFilterDescription("");
+              }
+
+              setShowFilters(!showFilters);
+            }}
+            className={`hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border transition-all cursor-pointer ${
+              showFilters
+                ? "bg-emerald-50 border-emerald-500 text-emerald-700 dark:bg-emerald-950/30 dark:border-emerald-500 dark:text-emerald-400"
+                : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50 dark:bg-gray-900 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-800"
+            }`}
+          >
+            <SlidersHorizontal size={16} />
+            Filter
+          </button>
         </div>
+
         {loading ? (
           <TableSkeleton />
         ) : (
           <>
-            <div className="table-container">
+            <div className="table-container overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800">
               {/* Desktop Table */}
-              <table className="data-table hidden md:table">
+              <table className="data-table hidden md:table w-full border-collapse">
                 <thead>
-                  <tr className="bg-emerald-800 text-white dark:bg-gray-700 sticky top-0">
-                    <th className="flex gap-1 items-center ">
-                      Title{" "}
-                      <span
-                        onClick={()=>setSorting(p=>p=='asc'?'desc':'asc')}
-                      >
-                        {sorting === 'asc'
-                         ? (
-                         <ArrowUpZA
-                         size={20}
-                        strokeWidth={1.5}
-                        absoluteStrokeWidth
-                          />
-                         ) : (
-                         <ArrowDownZA
-                         size={20}
-                        strokeWidth={1.5}
-                        absoluteStrokeWidth
-                          />
-                         )}
+                  <tr className="bg-emerald-800 text-white dark:bg-gray-700">
+                    {/* Title */}
+                    <th className="p-3 text-left align-top min-w-[180px]">
+                      <div className="flex gap-1 items-center font-semibold mb-2">
+                        Title
+                        <span
+                          className="cursor-pointer"
+                          onClick={() =>
+                            setSorting((p) => (p === "asc" ? "desc" : "asc"))
+                          }
+                        >
+                          {sorting === "asc" ? (
+                            <ArrowUpZA
+                              size={18}
+                              strokeWidth={1.5}
+                              absoluteStrokeWidth
+                            />
+                          ) : (
+                            <ArrowDownZA
+                              size={18}
+                              strokeWidth={1.5}
+                              absoluteStrokeWidth
+                            />
+                          )}
                         </span>
+                      </div>
+
+                      {showFilters && (
+                        <input
+                          type="text"
+                          placeholder="Filter title..."
+                          className="w-full px-2 py-1 text-xs font-normal rounded border border-emerald-700 bg-white text-gray-900 dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                          value={filterTitle}
+                          onChange={(e) => setFilterTitle(e.target.value)}
+                        />
+                      )}
                     </th>
 
-                    <th>description</th>
-                    <th>Date Created</th>
-                    <th></th>
+                    {/* Description */}
+                    <th className="p-3 text-left align-top min-w-[220px]">
+                      <div className="font-semibold mb-2">Description</div>
+
+                      {showFilters && (
+                        <input
+                          type="text"
+                          placeholder="Filter description..."
+                          className="w-full px-2 py-1 text-xs font-normal rounded border border-emerald-700 bg-white text-gray-900 dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                          value={filterDescription}
+                          onChange={(e) => setFilterDescription(e.target.value)}
+                        />
+                      )}
+                    </th>
+
+                    {/* Date */}
+                    <th className="p-3 text-left align-top min-w-[140px]">
+                      <div className="font-semibold mb-2">Date Created</div>
+
+                      {showFilters && <div className="h-6"></div>}
+                    </th>
+
+                    {/* Actions */}
+                    <th className="p-3 w-[60px] align-top">
+                      <div className="mb-2">&nbsp;</div>
+
+                      {showFilters && <div className="h-6"></div>}
+                    </th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {filteredProjects.length > 0 ? (
-                    filteredProjects.map((project) => (
+                    filteredProjects.sort(sorting=='asc'?(a,b)=>a.title.localeCompare(b.title):(a,b)=>b.title.localeCompare(a.title)).map((project) => (
                       <tr
                         key={project?.id}
-                        className="table-row dark:bg-taupe-900"
+                        className="table-row "
                       >
                         <td>{project.title}</td>
 
                         <td>{project.description}</td>
-
-                        
 
                         <td>
                           {new Date(project.creationDate).toLocaleDateString()}
@@ -276,12 +349,13 @@ export default function Projects() {
                                     size={20}
                                     strokeWidth={1.5}
                                     absoluteStrokeWidth
-                                  />{" "}
+                                  />
                                   View
                                 </button>
+
                                 <OnlyAdmins>
                                   <button
-                                    className="action-btn edit-btn  dark:text-emerald-900"
+                                    className="action-btn edit-btn dark:text-emerald-900"
                                     onClick={() =>
                                       navigate(
                                         `/dashboard/edit-project/${project?.id}`,
@@ -293,7 +367,7 @@ export default function Projects() {
                                       size={20}
                                       strokeWidth={1.5}
                                       absoluteStrokeWidth
-                                    />{" "}
+                                    />
                                     Edit
                                   </button>
 
@@ -305,7 +379,7 @@ export default function Projects() {
                                       size={20}
                                       strokeWidth={1.5}
                                       absoluteStrokeWidth
-                                    />{" "}
+                                    />
                                     Delete
                                   </button>
                                 </OnlyAdmins>
@@ -317,7 +391,10 @@ export default function Projects() {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={6} className="text-center dark:text-black">
+                      <td
+                        colSpan={6}
+                        className="text-center dark:text-black py-4"
+                      >
                         <NoData />
                       </td>
                     </tr>
@@ -371,7 +448,7 @@ export default function Projects() {
                                   size={20}
                                   strokeWidth={1.5}
                                   absoluteStrokeWidth
-                                />{" "}
+                                />
                                 View
                               </button>
 
@@ -388,7 +465,7 @@ export default function Projects() {
                                   size={20}
                                   strokeWidth={1.5}
                                   absoluteStrokeWidth
-                                />{" "}
+                                />
                                 Edit
                               </button>
 
@@ -400,18 +477,15 @@ export default function Projects() {
                                   size={20}
                                   strokeWidth={1.5}
                                   absoluteStrokeWidth
-                                />{" "}
+                                />
                                 Delete
                               </button>
                             </div>
                           )}
                         </div>
                       </div>
+
                       <div className="flex items-center justify-between gap-3 flex-wrap">
-
-                          
-
-                            {/*  creationDate */}
                         <span className="text-sm text-gray-500 dark:text-gray-400">
                           {new Date(project.creationDate).toLocaleDateString()}
                         </span>
@@ -424,32 +498,29 @@ export default function Projects() {
               </div>
             </div>
 
-            <div className="pagination ">
+            {/* Pagination */}
+            <div className="pagination">
               <div className="pagination-info">
                 <span>Showing</span>
+
                 <select
                   value={pageSize}
                   onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-                  className="page-size-select bg-white dark:bg-black "
+                  className="page-size-select bg-white dark:bg-black"
                 >
-                  <option className=" dark:text-gray-300" value={5}>
-                    5
-                  </option>
-                  <option className=" dark:text-gray-300" value={10}>
-                    10
-                  </option>
-                  <option className=" dark:text-gray-300" value={15}>
-                    15
-                  </option>
-                  <option className=" dark:text-gray-300" value={20}>
-                    20
-                  </option>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
                 </select>
+
                 <span>of {totalResults} Results</span>
+
                 <span className="ml-4">
                   Page {currentPage} of {Math.ceil(totalResults / pageSize)}
                 </span>
               </div>
+
               <div className="pagination-controls">
                 <button
                   className="page-btn"
@@ -460,8 +531,9 @@ export default function Projects() {
                     size={20}
                     strokeWidth={1.5}
                     absoluteStrokeWidth
-                  />{" "}
+                  />
                 </button>
+
                 <button
                   className="page-btn dark:bg-cyan-900 dark:text-white"
                   onClick={handleNextPage}
@@ -479,6 +551,7 @@ export default function Projects() {
         )}
       </div>
 
+      {/* View Modal */}
       {selectedProject && (
         <ProjectViewModal
           project={selectedProject}
@@ -487,6 +560,7 @@ export default function Projects() {
         />
       )}
 
+      {/* Delete Modal */}
       {selectedProject && (
         <DeleteConfirm
           isOpen={isDeleteOpen}
