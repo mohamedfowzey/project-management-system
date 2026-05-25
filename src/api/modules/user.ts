@@ -60,7 +60,7 @@ export const getUsers = (params?: GetUsersParams) => {
   return axiosClient.get<UsersPaginatedResponse>("/Users/Manager", {
     params: {
       pageNumber: params?.pageNumber || 1,
-      pageSize: params?.pageSize || 10000000,
+      pageSize: params?.pageSize || 10,
     },
   });
 

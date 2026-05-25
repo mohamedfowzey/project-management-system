@@ -35,7 +35,9 @@ export default function SideBar() {
   return (
     <>
       <div className="sidebar-container relative h-full">
-        <button
+        {auth?.smallScreen  || (
+
+          <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="toggle-sidebar-btn absolute top-[1%] right-0 z-50 flex h-14 w-7 items-center justify-center rounded-l-xl transition-all duration-300"
           style={{
@@ -44,14 +46,15 @@ export default function SideBar() {
             cursor: "pointer",
             border: "none",
           }}
-        >
+          >
           {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
         </button>
+        )}
         <Sidebar
           collapsed={auth?.smallScreen ? true : isCollapsed}
           className="text-white "
         >
-          <Menu className="mt-20">
+          <Menu className="mt-5 md:mt-20">
             <MenuItem
               icon={<Home size={22} />}
               component={

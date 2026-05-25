@@ -84,7 +84,7 @@ export default function Projects() {
         console.log(response);
 
       } else {
-        response = await ProjectsApi.getAllProjects({
+        response = await ProjectsApi.getManagerProjects({
           pageNumber: currentPage,
           pageSize: pageSize,
           search: searchTerm,
@@ -226,7 +226,6 @@ export default function Projects() {
                     </th>
 
                     <th>description</th>
-                    <th>Status</th>
                     <th>Date Created</th>
                     <th></th>
                   </tr>
@@ -243,54 +242,7 @@ export default function Projects() {
 
                         <td>{project.description}</td>
 
-                        <OnlyAdmins>
-
-                          <td>
-                            <span
-                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
-                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                                }`}
-                            >
-                              <span
-                                className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated
-                                    ? "bg-green-500"
-                                    : "bg-red-500"
-                                  } `}
-                              ></span>
-
-
-
-                              <OnlyAdmins>
-                                {project?.manager?.isActivated
-                                  ? "Active"
-                                  : "Inactive"}
-                              </OnlyAdmins>
-                            </span>
-                          </td>
-                        </OnlyAdmins>
-
-                        <OnlyUsers>
-                          <td>
-                            <span
-                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold 
-                              ${project?.task?.[0]?.status == "ToDo" ? "bg-amber-200 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
-                                  : project?.task?.[0]?.status == "InProgress" ? "bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                                    : "bg-green-200 text-green-700 dark:bg-green-900/30 dark:text-green-400"}
-                              `}
-                            >
-                              <span
-                                className={`w-2 h-2 rounded-full mr-2 ${project?.task?.[0]?.status == "ToDo" ? "bg-yellow-700" : project?.task?.[0]?.status == "InProgress" ? "bg-blue-500" : "bg-green-600"}`}
-                              ></span>
-
-                              <OnlyUsers>
-                                {project?.task?.[0]?.status}
-                              </OnlyUsers>
-
-
-                            </span>
-                          </td>
-                        </OnlyUsers>
+                        
 
                         <td>
                           {new Date(project.creationDate).toLocaleDateString()}
@@ -457,68 +409,7 @@ export default function Projects() {
                       </div>
                       <div className="flex items-center justify-between gap-3 flex-wrap">
 
-                          {/* Status  */}
-                          <OnlyAdmins>
-                            <span
-                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
-                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                                }`}
-                            >
-                              <span
-                                className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated
-                                    ? "bg-green-500"
-                                    : "bg-red-500"
-                                  } `}
-                              ></span>
-
-
-
-                              <OnlyAdmins>
-                                {project?.manager?.isActivated
-                                  ? "Active"
-                                  : "Inactive"}
-                              </OnlyAdmins>
-                            </span>
                           
-                        </OnlyAdmins>
-                         <OnlyUsers>
-                        
-                            <span
-                              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold 
-                              ${project?.task?.[0]?.status == "ToDo" ? "bg-amber-200 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
-                                  : project?.task?.[0]?.status == "InProgress" ? "bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                                    : "bg-green-200 text-green-700 dark:bg-green-900/30 dark:text-green-400"}
-                              `}
-                            >
-                              <span
-                                className={`w-2 h-2 rounded-full mr-2 ${project?.task?.[0]?.status == "ToDo" ? "bg-yellow-700" : project?.task?.[0]?.status == "InProgress" ? "bg-blue-500" : "bg-green-600"}`}
-                              ></span>
-
-                              <OnlyUsers>
-                                {project?.task?.[0]?.status}
-                              </OnlyUsers>
-                            </span>
-                          
-                        </OnlyUsers>
-
-                        {/* <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
-                              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                              : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                            }`}
-                        >
-                          <span
-                            className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated
-                                ? "bg-green-500"
-                                : "bg-red-500"
-                              }`}
-                          ></span>
-
-                          {project?.manager?.isActivated
-                            ? "Active"
-                            : "Inactive"}
-                        </span> */}
 
                             {/*  creationDate */}
                         <span className="text-sm text-gray-500 dark:text-gray-400">

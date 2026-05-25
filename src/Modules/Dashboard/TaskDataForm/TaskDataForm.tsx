@@ -9,7 +9,7 @@ import {
   updateTask,
   type CreateTaskData,
 } from "../../../api/modules/tasks";
-import { getAllProjects, type Project } from "../../../api/modules/Projects";
+import { getAllProjects, getManagerProjects, type Project } from "../../../api/modules/Projects";
 import { getUsers, type User, type UsersPaginatedResponse } from "../../../api/modules/user";
 import axiosClient from "../../../api/axsiosClient";
 
@@ -57,7 +57,7 @@ export default function ProjectDataForm() {
     setSelectedUser(response.data.employee)
   };
   const getProjects = async () => {
-    const response = await getAllProjects({pageNumber:1,pageSize:1000000});
+    const response = await getManagerProjects({pageNumber:1,pageSize:1000000});
     setProjects(response.data.data);
   };
   const getAllUsers = async () => {
