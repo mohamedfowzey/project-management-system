@@ -81,7 +81,7 @@ export default function Projects() {
           pageSize: pageSize,
           search: searchTerm,
         });
-        console.log(response);
+        console.log("API Response Employee:",response);
 
       } else {
         response = await ProjectsApi.getManagerProjects({
@@ -127,6 +127,8 @@ export default function Projects() {
 
   const handleView = (project: Project) => {
     setSelectedProject(project);
+    console.log(selectedProject);
+    
     setIsOpen(true);
   };
 
