@@ -63,16 +63,7 @@ export default function ProjectViewModal({ project, isOpen, setIsOpen }: Project
                 {/* Status */}
                 <div className="space-y-1">
                   <p className="text-[14px] font-black uppercase tracking-widest text-gray-400 pb-2">Task Name | Status</p>
-                  <OnlyAdmins>
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${project?.manager?.isActivated
-                      ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                      : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                      }`}>
-                      <span className={`w-2 h-2 rounded-full mr-2 ${project?.manager?.isActivated ? 'bg-green-500' : 'bg-red-500'}`}></span>
-                      {project?.manager?.isActivated ? 'Active' : 'Inactive'}
-                    </span>
-                  </OnlyAdmins>
-                  <OnlyUsers>
+                  
                     
                     {project?.task && project.task.length > 0 && project.task.map((utask, index) => (
                       
@@ -107,33 +98,9 @@ export default function ProjectViewModal({ project, isOpen, setIsOpen }: Project
 
                       </div>
                     ))}
-                  </OnlyUsers>
 
                 </div>
-                <OnlyAdmins>
-
-                  {/* Project Manager */}
-                  <div className="space-y-1">
-                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Project Manager</p>
-                    <p className="text-base font-semibold">{project?.manager?.userName}</p>
-                  </div>
-                  {/* Email Address */}
-                  <div className="space-y-1">
-                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Email Address</p>
-                    <p className="text-base font-medium text-blue-600 dark:text-blue-400 break-all leading-tight">
-                      {project?.manager?.email}
-                    </p>
-                  </div>
-                  {/* Contact & phone Number */}
-                  <div className="space-y-1">
-                    <p className="text-[14px] font-black uppercase tracking-widest text-gray-400">Contact & phone Number</p>
-                    <p className="text-sm">
-                      <span className="font-bold">{project?.manager?.country}</span>
-                      <span className="mx-2 text-gray-300">|</span>
-                      <span className="text-gray-600 dark:text-gray-400">{project?.manager?.phoneNumber}</span>
-                    </p>
-                  </div>
-                </OnlyAdmins>
+            
                 {/* Created At */}
                 <div>
                   <p className="text-gray-500 font-bold tracking-wider  mb-1">Created At</p>

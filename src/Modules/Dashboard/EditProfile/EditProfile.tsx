@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Validations } from "../../../Constants/Validations";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
-import { Save, X } from "lucide-react";
+import { Save } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import noUserImg from "../../../assets/Images/noDataUser.jpg";
