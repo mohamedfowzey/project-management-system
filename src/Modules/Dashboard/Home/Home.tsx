@@ -16,12 +16,20 @@ import {
   getUserCount as getUserCountApi,
   type UserCountresponse,
 } from "../../../api/modules/user";
-import { AuthContext } from "../../../Contexts/AuthContext";
+import { AuthContext } from "../../../Contexts/AuthContext2";
 import NoData from "../../Shared/NoData/NoData";
 import OnlyAdmins from "../../Shared/OnlyAdmins/OnlyAdmins";
 import OnlyUsers from "../../Shared/OnlyUsers/OnlyUsers";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+interface StatCardProps {
+  icon: React.ElementType;
+  title: string;
+  count: number;
+  bgColor: string;
+  iconBgColor: string;
+  isLoading: boolean;
+}
 
 const StatCard = ({
   icon: Icon,
@@ -30,7 +38,7 @@ const StatCard = ({
   bgColor,
   iconBgColor,
   isLoading,
-}: any) => {
+}: StatCardProps) => {
   if (isLoading) {
     return (
       <div className="bg-gray-100 rounded-xl shadow-sm p-4 flex flex-col justify-between animate-pulse ">
@@ -54,7 +62,7 @@ const StatCard = ({
   );
 };
 export default function Home() {
-  const { userData, mood } = useContext(AuthContext) || {};
+  const {currentUserData, userData, mood } = useContext(AuthContext) || {};
   const [loadingTasks, setLoadingTasks] = useState(true);
   const [loadingUsers, setLoadingUsers] = useState(true);
 
@@ -93,10 +101,13 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getTasksCount();
-    if (userData?.userGroup == "Manager") {
-      getUserCount();
-    }
+    (()=>{
+
+      getTasksCount();
+      if (userData?.userGroup == "Manager") {
+        getUserCount();
+      }
+    })()
   }, []);
 
   const chartTasksData = {
@@ -154,7 +165,7 @@ export default function Home() {
             <h1 className="text-3xl font-light my-3.5">
               Welcome{" "}
               <span className="text-main-color">
-                {userData?.userName || "Upskilling"}
+                {currentUserData?.userName || "Upskilling"}
               </span>
             </h1>
             <p className="text-2xl font-extralight my-4">
@@ -217,7 +228,7 @@ export default function Home() {
               ) : hasData ? (
                 <Doughnut data={chartTasksData} options={chartOptions} />
               ) : (
-                <div className="pt-7   ">
+                <div className="pt-7">
                   <NoData />
                 </div>
               )}

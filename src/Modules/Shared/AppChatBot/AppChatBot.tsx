@@ -1,4 +1,5 @@
 import ChatBot from "react-chatbotify";
+import caticon from '../../../assets/Images/favicon copy.png'
 
 export default function AppChatBot() {
   const handleRouting = (userInput: string) => {
@@ -71,16 +72,26 @@ export default function AppChatBot() {
     <ChatBot
       settings={{
         general: {
-          primaryColor: "#0f766e",
-          secondaryColor: "#f59e0b",
+          primaryColor: "#ef9b28",
+          secondaryColor: "#315951",
           fontFamily: "Inter",
+          showHeader: true,
         },
+        
         chatHistory: {
           storageKey: "dashboard-chatbot",
         },
         botBubble: {
           showAvatar: true,
+          avatar: caticon,
         },
+        header:{
+          title:"PMS Assistant",
+          showAvatar:true,
+          avatar:caticon,
+
+
+        }
       }}
       flow={{
         start: {
@@ -99,21 +110,21 @@ export default function AppChatBot() {
             "UpSkilling",
             "Eng.Nadia",
           ],
-          path: async ({ userInput }: any) => handleRouting(userInput),
+          path: async ({ userInput }: { userInput: string }) => handleRouting(userInput),
         },
 
         greeting: {
           message:
             "Welcome back! 😊 How can I help you in the dashboard today?",
           options: ["Projects", "Tasks", "Users", "Developers", "UpSkilling", "Eng.Nadia"],
-          path: async ({ userInput }: any) => handleRouting(userInput),
+          path: async ({ userInput }: { userInput: string }) => handleRouting(userInput),
         },
 
         thx: {
           message:
             "You are most welcome! Always here to help. 🤍 Do you need anything else?",
           options: ["Yes, please", "No, thanks"],
-          path: async ({ userInput }: any) => {
+          path: async ({ userInput }: { userInput: string }) => {
             const input = userInput.trim().toLowerCase();
             if (input.includes("no") || input.includes("لا")) return "end";
             return "help";
@@ -131,7 +142,7 @@ export default function AppChatBot() {
             "UpSkilling",
             "Eng.Nadia",
           ],
-          path: async ({ userInput }: any) => handleRouting(userInput),
+          path: async ({ userInput }: { userInput: string }) => handleRouting(userInput),
         },
 
         projects: {
@@ -173,7 +184,7 @@ export default function AppChatBot() {
         end: {
           message: "Is there anything else I can assist you with? 😊",
           options: ["Projects", "Tasks", "Users", "Developers", "UpSkilling", "Eng.Nadia"],
-          path: async ({ userInput }: any) => handleRouting(userInput),
+          path: async ({ userInput }: { userInput: string }) => handleRouting(userInput),
         },
       }}
     />

@@ -82,7 +82,7 @@ export default function DeleteConfirm({
           >
             <Icon className={iconColor} size={40} />
           </div>
-          <h2 className="text-xl tracking-wider font-medium font-black text-gray-900 dark:text-white text-center">
+          <h2 className="text-xl tracking-wider font-black text-gray-900 dark:text-white text-center">
             {title}
           </h2>
         </div>
@@ -100,7 +100,7 @@ export default function DeleteConfirm({
           )} */}
         </div>
 
-        <div className="p-6  pt-0 flex flex-row flex-row-reverse gap-5">
+        <div className="p-6  pt-0 flex flex-row-reverse gap-5">
           <button
             onClick={() => {
               onConfirm();

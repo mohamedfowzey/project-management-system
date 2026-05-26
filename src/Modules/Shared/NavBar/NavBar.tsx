@@ -13,8 +13,7 @@ import { Link } from "react-router-dom";
 import Darklogo from "../../../assets/Images/favicon.png";
 import logo from "../../../assets/Images/masterLogo.png";
 import smallLogo from '../../../assets/Images/favicon copy.png'
-import { AuthContext } from "../../../Contexts/AuthContext";
-import UserViewModal from "../UserViewModal/UserViewModal";
+import { AuthContext } from "../../../Contexts/AuthContext2";
 import ProfileViewModal from "../ProfileModal/ProfileModal";
 
 export default function NavBar() {
@@ -24,7 +23,7 @@ export default function NavBar() {
 
   const auth = useContext(AuthContext);
   if (!auth) return null;
-  const { userData, logOut, currentUserData, isLoading, mood, toggleMood, smallScreen } =
+  const {  logOut, currentUserData, isLoading, mood, toggleMood, smallScreen } =
     auth;
   return (
     <>
@@ -75,10 +74,10 @@ export default function NavBar() {
                 ) : (
                   <>
                     <span className="text-sm font-semibold  text-main-color leading-none">
-                      {userData?.userName || "User Name"}
+                      {currentUserData?.userName || "User Name"}
                     </span>
                     <span className="text-xs text-gray-400 mt-1">
-                      {userData?.userEmail || "example@gmail.com"}
+                      {currentUserData?.email || "example@gmail.com"}
                     </span>
                   </>
                 )}
@@ -170,7 +169,7 @@ export default function NavBar() {
               onChange={toggleMood}
             />
 
-            <span className="absolute inset-y-0 start-0 m-1 size-6 rounded-full bg-white transition-[inset-inline-start] peer-checked:start-[calc(100%-30px)] dark:bg-gray-900">
+            <span className="absolute inset-y-0 inset-s-0 m-1 size-6 rounded-full bg-white transition-[inset-inline-start] peer-checked:inset-s-[calc(100%-30px)] dark:bg-gray-900">
               {mood == "dark" ? <Sun fill="black" /> : <Moon fill="black" />}
             </span>
           </label>

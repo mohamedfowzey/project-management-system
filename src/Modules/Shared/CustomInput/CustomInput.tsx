@@ -26,7 +26,7 @@ export default function CustomInput({ register, HTMLtype, label, error,showSucce
           {...register}
           type={actualType}
           id={register.name} 
-          className={`block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-1 appearance-none focus:outline-none focus:ring-0 peer ${
+          className={`block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b appearance-none focus:outline-none focus:ring-0 peer ${
             error ? 'border-red-500 focus:border-red-500' : 'border-default-medium focus:border-brand'
           }`}
           placeholder=" "
@@ -51,7 +51,7 @@ export default function CustomInput({ register, HTMLtype, label, error,showSucce
         
         <label
           htmlFor={register.name}
-          className="text-main-color absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          className="text-main-color absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:inset-s-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
         >
           {label}
         </label>

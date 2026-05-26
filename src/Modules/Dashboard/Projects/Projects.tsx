@@ -28,7 +28,7 @@ interface Project {
   status: boolean;
   numUsers: number;
   numTasks: number;
-  dateCreated?: string;
+  dateCreated: string;
   creationDate: string;
   modificationDate: string;
   description: string;
@@ -239,7 +239,7 @@ export default function Projects() {
                 <thead>
                   <tr className="bg-emerald-800 text-white dark:bg-gray-700">
                     {/* Title */}
-                    <th className="p-3 text-left align-top min-w-[180px]">
+                    <th className="p-3 text-left align-top min-w-45">
                       <div className="flex gap-1 items-center font-semibold mb-2">
                         Title
                         <span
@@ -291,7 +291,7 @@ export default function Projects() {
                     </th>
 
                     {/* Date */}
-                    <th className="p-3 text-left align-top min-w-[140px]">
+                    <th className="p-3 text-left align-top min-w-35">
                       <div className="font-semibold mb-2">Date Created</div>
 
                       {showFilters && <div className="h-6"></div>}

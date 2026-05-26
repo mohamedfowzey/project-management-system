@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "../../Modules/Shared/NavBar/NavBar";
 import SideBar from "../../Modules/Shared/SideBar/SideBar";
 import { useContext } from "react";
-import { AuthContext } from "../../Contexts/AuthContext";
+import { AuthContext } from "../../Contexts/AuthContext2";
 import AppChatBot from "../../Modules/Shared/AppChatBot/AppChatBot";
 
 export default function MasterLayout() {

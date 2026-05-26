@@ -3,7 +3,7 @@ import { DndContext, type DragEndEvent } from '@dnd-kit/core';
 import { useEffect, useState } from 'react';
 import Column from '../../Shared/BoardColumn/Column';
 import { getMyTasks, updateTaskStatus } from '../../../api/modules/myTasks';
-import type  Task  from '../Tasks/Tasks';
+import { type  Task}  from '../Tasks/Tasks';
 
 // export interface Task {
 
@@ -20,13 +20,13 @@ export interface Column {
   id: string;
   title: string;
 }
+const columnsState: Column[] = [
+  { id: 'ToDo', title: 'To Do' },
+  { id: 'InProgress', title: 'In Progress' },
+  { id: 'Done', title: 'Done' },
+];
 export default function UserTasks() {
   const [tasksState, setTasksState] = useState<Task[]|undefined>(undefined);
-  const [columnsState, setColumnsState] = useState<Column[]>([
-    { id: 'ToDo', title: 'To Do' },
-    { id: 'InProgress', title: 'In Progress' },
-    { id: 'Done', title: 'Done' },
-  ]);
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over) {
@@ -40,7 +40,7 @@ export default function UserTasks() {
     })
     setTasksState((prev) => {
        return prev?.map((task) => {
-        if (task.id === taskId) {
+        if (task.id === +taskId) {
           return { ...task, status: newcolumnId };
         }
         return task;

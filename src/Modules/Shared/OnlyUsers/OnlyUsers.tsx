@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import { AuthContext } from '../../../Contexts/AuthContext';
+import { AuthContext } from '../../../Contexts/AuthContext2';
 
 export default function OnlyUsers({children}:{children:React.ReactNode} ) {
-    const {userData} = useContext(AuthContext);
-    if (userData?.userGroup == 'Employee') {
+    const auth = useContext(AuthContext);
+    if (auth?.userData?.userGroup == 'Employee') {
         return children
     }
     return <></>

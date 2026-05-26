@@ -13,10 +13,10 @@ export default function NotFound() {
           alt="PMS Logo"
           className="h-15 mb-5  md:h-20  object-contain"
         />
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-l from-white to-gray-500 bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl font-bold bg-linear-to-l from-white to-gray-500 bg-clip-text text-transparent">
           404 Not Found
         </h1>
-        <div className="h-px w-80 rounded bg-gradient-to-r from-gray-400 to-gray-800 my-5 md:my-7"></div>
+        <div className="h-px w-80 rounded bg-linear-to-r from-gray-400 to-gray-800 my-5 md:my-7"></div>
         <p className="md:text-xl text-gray-400 max-w-lg text-center">
           The page you are looking for does not exist or has been moved.
         </p>

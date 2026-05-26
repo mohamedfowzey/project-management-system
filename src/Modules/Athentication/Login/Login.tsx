@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../Contexts/AuthContext";
+import { AuthContext } from "../../../Contexts/AuthContext2";
 import CustomInput from "../../Shared/CustomInput/CustomInput";
 import CustomButton from "../../Shared/CustomButton/CustomButton";
 import { Validations } from "../../../Constants/Validations";
@@ -66,7 +66,6 @@ export default function Login() {
           text="Login"
           loading={loading}
           disabled={false}
-          // onClick={handleSubmit(onsubmit)}
         />
       </form>
     </>

@@ -9,8 +9,8 @@ import {
   updateTask,
   type CreateTaskData,
 } from "../../../api/modules/tasks";
-import { getAllProjects, getManagerProjects, type Project } from "../../../api/modules/Projects";
-import { getUsers, type User, type UsersPaginatedResponse } from "../../../api/modules/user";
+import { getManagerProjects, type Project } from "../../../api/modules/Projects";
+import { type User, type UsersPaginatedResponse } from "../../../api/modules/user";
 import axiosClient from "../../../api/axsiosClient";
 
 export default function ProjectDataForm() {
@@ -104,7 +104,7 @@ export default function ProjectDataForm() {
                     })}
                     type="text"
                     placeholder="title"
-                    className="mt-0.5 w-full rounded-2xl p-2 border-1 focus-visible:outline-0  border-gray-300 shadow-sm md:text-xl dark:shadow-sm shadow-gray-600 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                    className="mt-0.5 w-full rounded-2xl p-2 border focus-visible:outline-0  border-gray-300 shadow-sm md:text-xl dark:shadow-sm shadow-gray-600 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
                   />
                 )}
                 {!!errors.title && (
@@ -130,7 +130,7 @@ export default function ProjectDataForm() {
                       },
                     })}
                     placeholder="description"
-                    className="mt-0.5 w-full rounded-2xl p-2 border-1 focus-visible:outline-0  border-gray-300 shadow-sm md:text-xl dark:shadow-sm shadow-gray-600 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                    className="mt-0.5 w-full rounded-2xl p-2 border focus-visible:outline-0  border-gray-300 shadow-sm md:text-xl dark:shadow-sm shadow-gray-600 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
                   ></textarea>
                 )}
                 {!!errors.description && (

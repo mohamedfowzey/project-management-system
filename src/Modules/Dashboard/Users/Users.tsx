@@ -209,7 +209,7 @@ export default function Users() {
                 <thead className="hidden md:table-header-group sticky top-0">
                   <tr className="bg-emerald-800 text-white dark:bg-gray-700">
                     {/* Username */}
-                    <th className="p-3 text-left align-top min-w-[160px]">
+                    <th className="p-3 text-left align-top min-w-40">
                       <div className="flex gap-1 items-center font-semibold mb-2">
                         User Name
                         <span
@@ -246,7 +246,7 @@ export default function Users() {
                     </th>
 
                     {/* Status */}
-                    <th className="p-3 text-left align-top min-w-[160px]">
+                    <th className="p-3 text-left align-top min-w-40">
                       <div className="font-semibold mb-2">Status</div>
 
                       {showFilters && (
@@ -263,7 +263,7 @@ export default function Users() {
                     </th>
 
                     {/* Phone */}
-                    <th className="p-3 text-left align-top min-w-[160px]">
+                    <th className="p-3 text-left align-top min-w-40">
                       <div className="font-semibold mb-2">Phone Number</div>
 
                       {showFilters && (
@@ -278,7 +278,7 @@ export default function Users() {
                     </th>
 
                     {/* Email */}
-                    <th className="p-3 text-left align-top min-w-[180px]">
+                    <th className="p-3 text-left align-top min-w-45">
                       <div className="font-semibold mb-2">Email</div>
 
                       {showFilters && (
@@ -293,13 +293,13 @@ export default function Users() {
                     </th>
 
                     {/* Date */}
-                    <th className="p-3 text-left align-top min-w-[140px]">
+                    <th className="p-3 text-left align-top min-w-35">
                       <div className="font-semibold mb-2">Date Created</div>
 
                       {showFilters && <div className="h-6"></div>}
                     </th>
 
-                    <th className="p-3 w-[60px] align-top">
+                    <th className="p-3 w-15 align-top">
                       <div className="mb-2">&nbsp;</div>
 
                       {showFilters && <div className="h-6"></div>}
