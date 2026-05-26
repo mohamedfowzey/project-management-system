@@ -1,26 +1,23 @@
-import { AuthContext } from "../../../Contexts/AuthContext2";
 import {
-  Users,
-  Briefcase,
-  SquareCheck,
-  LogOut,
-  ChevronRight,
   ChevronLeft,
+  ChevronRight,
+  Home,
   LayoutDashboard,
   ListTodo,
+  LogOut,
   ShieldAlert,
-  Home,
+  Users
 } from "lucide-react";
 import { useContext, useState } from "react";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../Contexts/AuthContext2";
 import DeleteConfirm from "../DeleteConfirm/DeleteConfirm";
 import OnlyAdmins from "../OnlyAdmins/OnlyAdmins";
 import OnlyUsers from "../OnlyUsers/OnlyUsers";
 
 export default function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
   const auth = useContext(AuthContext);
 
   const location = useLocation();
