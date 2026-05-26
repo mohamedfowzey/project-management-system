@@ -224,7 +224,7 @@ export default function TasksList() {
               <table className="data-table w-full border-collapse">
                 <thead className="hidden md:table-header-group sticky top-0">
                   <tr className="bg-emerald-800 text-white dark:bg-gray-700">
-                    <th className="p-3 text-left align-top min-w-[160px]">
+                    <th className="p-3 text-left align-top min-w-40">
                       <div className="flex gap-1 items-center font-semibold mb-2">
                         Title
                         <span
@@ -259,7 +259,7 @@ export default function TasksList() {
                       )}
                     </th>
 
-                    <th className="p-3 text-left align-top min-w-[160px]">
+                    <th className="p-3 text-left align-top min-w-40">
                       <div className="font-semibold mb-2">Description</div>
                       {showFilters && (
                         <input
@@ -272,7 +272,7 @@ export default function TasksList() {
                       )}
                     </th>
 
-                    <th className="p-3 text-left align-top min-w-[130px]">
+                    <th className="p-3 text-left align-top min-w-32.5">
                       <div className="font-semibold mb-2">Status</div>
                       {showFilters && (
                         <select
@@ -288,7 +288,7 @@ export default function TasksList() {
                       )}
                     </th>
 
-                    <th className="p-3 text-left align-top min-w-[140px]">
+                    <th className="p-3 text-left align-top min-w-35">
                       <div className="font-semibold mb-2">User</div>
                       {showFilters && (
                         <input
@@ -301,7 +301,7 @@ export default function TasksList() {
                       )}
                     </th>
 
-                    <th className="p-3 text-left align-top min-w-[140px]">
+                    <th className="p-3 text-left align-top min-w-35">
                       <div className="font-semibold mb-2">Project</div>
                       {showFilters && (
                         <input
@@ -314,12 +314,12 @@ export default function TasksList() {
                       )}
                     </th>
 
-                    <th className="p-3 text-left align-top min-w-[140px]">
+                    <th className="p-3 text-left align-top min-w-35">
                       <div className="font-semibold mb-2">Date Created</div>
                       {showFilters && <div className="h-6"></div>}
                     </th>
 
-                    <th className="p-3 w-[60px] align-top">
+                    <th className="p-3 w-15 align-top">
                       <div className="mb-2">&nbsp;</div>
                       {showFilters && <div className="h-6"></div>}
                     </th>

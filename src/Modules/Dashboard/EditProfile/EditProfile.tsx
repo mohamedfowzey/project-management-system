@@ -5,15 +5,24 @@ import { Save } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import noUserImg from "../../../assets/Images/noDataUser.jpg";
-import { AuthContext } from "../../../Contexts/AuthContext";
+import { AuthContext } from "../../../Contexts/AuthContext2";
 import { updateCurrentUser } from "../../../api/modules/user";
 import { API_BASE_URL } from "../../../api/axsiosClient";
 
+interface EditProfileFormData {
+  userName: string;
+  email: string;  
+  country: string;
+  phoneNumber: string;
+  confirmPassword: string;
+  profileImage: FileList;
+}
 
 export default function EditProfile() {
-    const {register,handleSubmit,formState: {errors},setValue} = useForm({mode:'onChange'});
+    const {register,handleSubmit,formState: {errors},setValue} = useForm<EditProfileFormData>({mode:'onChange'});
     const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string>(noUserImg);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const {currentUserData,saveUserData
@@ -26,6 +35,7 @@ export default function EditProfile() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onload = (event) => {
         setPreviewImage(event.target?.result as string);
@@ -34,7 +44,7 @@ export default function EditProfile() {
     }
   };
 
-  const onsubmit = async (data) => {
+  const onsubmit = async (data : EditProfileFormData) => {
     setLoading(true);
 
     const formData = new FormData();
@@ -43,7 +53,7 @@ export default function EditProfile() {
     formData.append("country", data.country);
     formData.append("phoneNumber", data.phoneNumber);
     formData.append("confirmPassword", data.confirmPassword);
-    formData.append("profileImage", fileInputRef.current?.files?.[0] || '');
+    formData.append("profileImage", selectedFile || '');
     try{
 
       await updateCurrentUser(formData);
@@ -56,19 +66,20 @@ export default function EditProfile() {
     }
   };
   useEffect(() => {
-    console.log(currentUserData);
-    
+    (()=>{
+
       if(currentUserData?.imagePath){
         setPreviewImage(`${API_BASE_URL}/${currentUserData.imagePath}`)
       }
-        setValue('userName',currentUserData?.userName)
-        setValue('email',currentUserData?.email)
-        setValue('country',currentUserData?.country)
-        setValue('phoneNumber',currentUserData?.phoneNumber)
+      setValue('userName',currentUserData?.userName || '')
+      setValue('email',currentUserData?.email || '')
+      setValue('country',currentUserData?.country || '')
+      setValue('phoneNumber',currentUserData?.phoneNumber || '')
       
+    })()    
     
     
-}, [currentUserData])
+}, [currentUserData, setValue])
   
   return (
     <form className="pt-10 relative " onSubmit={handleSubmit(onsubmit)}>

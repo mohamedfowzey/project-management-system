@@ -1,7 +1,5 @@
 import { Calendar, Clock, X } from 'lucide-react';
-import React from 'react'
-import OnlyAdmins from '../OnlyAdmins/OnlyAdmins';
-import OnlyUsers from '../OnlyUsers/OnlyUsers';
+import React from 'react';
 
 interface Project {
   id: number;

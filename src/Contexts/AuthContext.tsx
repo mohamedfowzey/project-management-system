@@ -1,8 +1,10 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext,  useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { toast } from "react-toastify";
 import { getCurrentUser } from "../api/modules/user";
-interface User {
+import { AuthContext } from "./AuthContext2";
+
+export interface User {
   id: string;
   userEmail: string;
   userName: string;
@@ -17,18 +19,7 @@ export interface Profile {
   phoneNumber:string;
   imagePath?:string;
 }
-export interface AuthContextType {
-  userData: User | null;
-  currentUserData: Profile | null;
-  isLoading: boolean;
-  smallScreen:boolean;
-  mood:'light'|'dark'
-  toggleMood:()=>void;
-  saveUserData: () => Promise<void>;
-  logOut: () => void;
-}
 
-export const AuthContext = createContext<AuthContextType | null>(null);
 
 interface AuthContextProvProp {
   children: ReactNode;
