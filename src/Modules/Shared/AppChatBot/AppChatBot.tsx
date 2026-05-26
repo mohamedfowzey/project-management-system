@@ -1,9 +1,13 @@
 import ChatBot from "react-chatbotify";
 import caticon from '../../../assets/Images/favicon copy.png'
+import { askAI } from "../../../api/askAI";
+
+
 
 export default function AppChatBot() {
-  const handleRouting = (userInput: string) => {
-    const input = userInput.trim().toLowerCase();
+  const handleRouting = async(userInput: string) => {
+
+     const input = userInput.trim().toLowerCase();
 
     if (
       input.includes("hello") ||
@@ -65,9 +69,18 @@ export default function AppChatBot() {
       return "users";
     }
 
-    return "unknown";
+    //  await askAI(userInput);
+    // setAiResponse(ai);
+    return "askAI";
   };
-
+  const options = [
+    "Projects",
+    "Tasks",
+    "Users",
+    "Developers",
+    "UpSkilling",
+    "Eng.Nadia",
+  ];
   return (
     <ChatBot
       settings={{
@@ -86,7 +99,7 @@ export default function AppChatBot() {
           avatar: caticon,
         },
         header:{
-          title:"PMS Assistant",
+          title:"Ziko - Your Assistant",
           showAvatar:true,
           avatar:caticon,
 
@@ -102,21 +115,14 @@ export default function AppChatBot() {
         help: {
           message:
             "I can help you with Projects, Tasks and Users Management 🚀. How can I assist you today?",
-          options: [
-            "Projects",
-            "Tasks",
-            "Users",
-            "Developers",
-            "UpSkilling",
-            "Eng.Nadia",
-          ],
+          options,
           path: async ({ userInput }: { userInput: string }) => handleRouting(userInput),
         },
 
         greeting: {
           message:
             "Welcome back! 😊 How can I help you in the dashboard today?",
-          options: ["Projects", "Tasks", "Users", "Developers", "UpSkilling", "Eng.Nadia"],
+          options,
           path: async ({ userInput }: { userInput: string }) => handleRouting(userInput),
         },
 
@@ -131,18 +137,10 @@ export default function AppChatBot() {
           },
         },
 
-        unknown: {
-          message:
-            "Sorry, I didn't quite catch that. 😅 Could you please choose one of these options or clarify your request?",
-          options: [
-            "Projects",
-            "Tasks",
-            "Users",
-            "Developers",
-            "UpSkilling",
-            "Eng.Nadia",
-          ],
-          path: async ({ userInput }: { userInput: string }) => handleRouting(userInput),
+        askAI:{
+          message:  ({ userInput }) =>  askAI(userInput),
+          // async () => await askAI(input),
+         path: async ({ userInput }: { userInput: string }) => handleRouting(userInput),
         },
 
         projects: {
@@ -183,10 +181,11 @@ export default function AppChatBot() {
 
         end: {
           message: "Is there anything else I can assist you with? 😊",
-          options: ["Projects", "Tasks", "Users", "Developers", "UpSkilling", "Eng.Nadia"],
+          options,
           path: async ({ userInput }: { userInput: string }) => handleRouting(userInput),
         },
       }}
+      
     />
   );
 }
