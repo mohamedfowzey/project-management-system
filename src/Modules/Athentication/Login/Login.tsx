@@ -37,7 +37,9 @@ export default function Login() {
       setLoading(false);
     }
   };
-
+if(localStorage.getItem("token")){
+  navigate("/dashboard");
+}
   return (
     <>
       <CustomHeader title="Login" />
