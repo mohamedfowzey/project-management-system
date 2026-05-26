@@ -276,7 +276,7 @@ export default function Projects() {
                     </th>
 
                     {/* Description */}
-                    <th className="p-3 text-left align-top min-w-[220px]">
+                    <th className="p-3 text-left align-top min-w-55">
                       <div className="font-semibold mb-2">Description</div>
 
                       {showFilters && (
@@ -298,7 +298,7 @@ export default function Projects() {
                     </th>
 
                     {/* Actions */}
-                    <th className="p-3 w-[60px] align-top">
+                    <th className="p-3 w-15 align-top">
                       <div className="mb-2">&nbsp;</div>
 
                       {showFilters && <div className="h-6"></div>}
@@ -412,11 +412,11 @@ export default function Projects() {
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
-                          <h2 className="text-lg font-semibold break-words">
+                          <h2 className="text-lg font-semibold wrap-break-word">
                             {project.title}
                           </h2>
 
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 break-words">
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 wrap-break-word">
                             {project.description}
                           </p>
                         </div>
