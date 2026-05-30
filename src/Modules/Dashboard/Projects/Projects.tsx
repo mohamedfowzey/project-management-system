@@ -184,12 +184,14 @@ export default function Projects() {
       <div className="flex justify-between items-center mb-10 py-4 px-2 md:px-9.5 bg-white dark:bg-gray-950">
         <h1 className="text-3xl font-semibold">Projects</h1>
 
-        <div
+       <OnlyAdmins>
+         <div
           className="shrink"
           onClick={() => navigate("/dashboard/add-project")}
         >
           <CustomButton text=" + add project " />
         </div>
+       </OnlyAdmins>
       </div>
 
       <div className="table-wrapper">
