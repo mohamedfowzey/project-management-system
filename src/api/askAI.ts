@@ -1,5 +1,5 @@
 import axios from "axios";
-import {  KEY_2 } from "../Constants/OPEN_ROUTER_KEY";
+import {  KEY } from "../Constants/OPEN_ROUTER_KEY";
 
 export const askAI = async (userInput: string) => {
 const payLoad = {
@@ -15,7 +15,7 @@ const payLoad = {
   try {
     const response = await axios.post("https://openrouter.ai/api/v1/chat/completions", payLoad, {
       headers: {
-        authorization: `Bearer ${KEY_2}`,
+        authorization: `Bearer ${KEY}`,
         "Content-Type": "application/json"
       }
 
