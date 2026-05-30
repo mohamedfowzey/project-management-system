@@ -238,7 +238,7 @@ export default function Projects() {
             <div className="table-container overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800">
               {/* Desktop Table */}
               <table className="data-table hidden md:table w-full border-collapse">
-                <thead>
+                <thead className="sticky top-0">
                   <tr className="bg-emerald-800 text-white dark:bg-gray-700">
                     {/* Title */}
                     <th className="p-3 text-left align-top min-w-45">
