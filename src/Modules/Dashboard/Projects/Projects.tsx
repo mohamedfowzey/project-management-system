@@ -453,7 +453,7 @@ export default function Projects() {
                                 />
                                 View
                               </button>
-
+                                <OnlyAdmins>
                               <button
                                 className="action-btn edit-btn dark:text-emerald-900"
                                 onClick={() =>
@@ -482,6 +482,7 @@ export default function Projects() {
                                 />
                                 Delete
                               </button>
+                              </OnlyAdmins>
                             </div>
                           )}
                         </div>
